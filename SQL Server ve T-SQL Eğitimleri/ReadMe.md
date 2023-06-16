@@ -26,3 +26,71 @@
 ```SQL
 USE Northwind
 ```
+
+***
+## 4-) T-SQL Select Komutu
+
+```SQL
+USE Northwind
+```
+- SELECT KOMUTU
+  * Verdiğimiz herhangi bir değeri bize tablo olarak döndüren bir komuttur.
+
+```SQL
+SELECT 3
+SELECT 'MUSA'
+PRINT 'MUSA'
+SELECT 3,5,7
+SELECT 'MUSA', 'UYUMAZ',24
+```
+
+- `*` Karakteri tablonun içerisindeki bütün kolonları ifade eden bir karakterdir.
+
+```SQL
+SELECT * FROM Personeller
+SELECT Adi,SoyAdi FROM Personeller
+```
+
+- ALIAS ATAMA
+
+- Ben bir tabloyu `SELECT` ile çektiğim zaman tablo içindeki kolonların isimleri neyse `SELECT`in sonuç olarak oluşturduğu tabloda o kolon isimleri fiziksel kolondakilerle aynıdır. Haliyle ben buradaki isimleri değiştirebilirim.
+
+- Yani kolona bir nitelik atıyoruz.
+
+```SQL
+SELECT 3 AS DEĞER
+SELECT 3 DEĞER
+SELECT 'MUSA' ADI, 'UYUMAZ' SOYADI
+SELECT Adi İSİMLER, SoyAdi SOYİSİMLER FROM Personeller
+```
+
+- Boşluk Karakteri Olan Alias Atama
+
+```SQL
+SELECT 1453 İSTANBULUN FETHİ
+SELECT 1453 [İSTANBULUN FETHİ]
+```
+
+-Boşluk Karakteri Olan Tabloyu Sorgulama
+
+```SQL
+SELECT * FROM Satis Detaylari
+SELECT * FROM [Satis Detaylari]
+```
+
+- Kolonları Birleştirme
+
+```SQL
+SELECT Adi,SoyAdi FROM Personeller
+SELECT Adi + ' ' + SoyAdi [PERSONEL BİLGİLERİ] FROM Personeller
+```
+
+- Farklı Tipte Kolonları Birleştirme
+
+- İki farklı tipteki kolon direkt olarak `+` operatörü ile birleştirilemez. Bu yüzden birleştirme işleminde aynı türe dönüştürmek gerekir
+
+```SQL
+SELECT Adi + ' ' + IseBaslamaTarihi FROM Personeller
+SELECT Adi + ' ' + CONVERT(NVARCHAR, IseBaslamaTarihi) FROM Personeller
+SELECT Adi + ' ' + CAST(IseBaslamaTarihi AS NVARCHAR) FROM Personeller
+```
