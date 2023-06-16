@@ -1,0 +1,1 @@
+-- Bir veritabanýnýn MDF ve LDF dosyalarý üzerinden eklemek için Attach kullanabiliriz.
