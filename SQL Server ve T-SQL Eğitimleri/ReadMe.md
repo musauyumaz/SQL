@@ -489,3 +489,10 @@ SELECT DATEPART(DAY,GETDATE())
 ```SQL
 SELECT TOP 3 * FROM Personeller
 ```
+
+# 15-) T-SQL Distinct Komutu
+## DISTINCT Komutu
+- Bir kolondaki benzer olan verileri teke indirmemizi sağlayan bir komuttur.
+```SQL
+SELECT DISTINCT Sehir FROM Personeller
+```
