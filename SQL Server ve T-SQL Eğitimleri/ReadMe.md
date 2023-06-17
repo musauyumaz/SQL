@@ -291,3 +291,21 @@ SELECT * FROM Personeller WHERE Adi LIKE '[^a]%'
 ```SQL
 SELECT * FROM Personeller WHERE Adi LIKE '[^an]%'
 ```
+
+***
+# 9-) T-SQL Like Sorgularında Escape(Kaçış) Karakterleri
+## Escape(Kaçış) Karakterleri
+- LIKE sorgularında kullandığımız %, _, [] gibi özel ifadeler eğer ki verilerimiz içerisinde geçiyorsa sorgulama esnasında hata ile karşılaşabiliriz. Böyle durumlarda bu ifadelerin özel ifade olmadığını escape karakterleri ile belirleyebiliriz.
+
+## `[]` Operatörü İle
+## ESCAPE Komutu İle
+
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE '[_]%'
+```
+
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE '?_%' ESCAPE '?'
+```
+
+
