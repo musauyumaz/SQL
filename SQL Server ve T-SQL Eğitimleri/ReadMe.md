@@ -198,3 +198,96 @@ SELECT * FROM Personeller WHERE YEAR(DogumTarihi) BETWEEN 1950 AND 1965
 ```SQL
 SELECT Adi FROM Personeller WHERE Sehir IN('London','Tacoma','Kirkland')
 ```
+
+***
+# 8-) T-SQL Like Sorguları
+## LIKE Sorguları
+- Veriler içerisinde belirli şartlar koyabildiğimiz bir sorgulama çeşididir. 
+- WHERE'de kolonlara belirli şartlar koyarken LIKE sorgusuyla birlikte kolonlar içerisindeki verilere şartlarımızı koyabiliriz.
+
+## `%`(Genel Önemli Değil) Operatörü
+- İsminin baş harfi j olan personellerin adını soyadını yazdıralım
+```SQL
+SELECT Adi,SoyAdi FROM Personeller WHERE Adi LIKE 'j%'
+```
+
+- İsminin son harfi y olan personellerin adını soyadını yazdıralım
+```SQL
+SELECT Adi,SoyAdi FROM Personeller WHERE Adi LIKE '%y'
+```
+
+- İsminin son üç harfi ert olan personeli getirelim
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE '%ert'
+```
+
+- İsminin ilk harfi r, son harfi t olan personeli getirelim
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE 'r%t'
+```
+
+- Gereksiz bir kullanım
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE 'r%' AND Adi LIKE '%t'
+```
+
+- İsminde an geçen personelin adını yazdıralım
+```SQL
+SELECT Adi FROM Personeller WHERE Adi LIKE '%an%'
+```
+
+- İsminin baş harfi n olan ve içerisinde an geçen personeli getirelim.
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE 'n%an%'
+```
+
+- Gereksiz Bir kullanım
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE 'n%' AND Adi LIKE '%an%'
+```
+
+## `_`(Özel Önemli Değil) Operatörü
+- O anki karakterin önemli olmadığını belirtir.
+
+- İsminin ilk harfi a ikinci harfi farketmez ve üçüncü harfi d olan personeli getirelim
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE 'a_d%'
+```
+
+- İsminin ilk harfi m ikinci,üçüncü,dördüncü farketmez ve beşinci harfi a olan personeli getirelim
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE 'm___a%'
+```
+
+## `[]`(ya da) Operatörü
+- Arka planda OR mantığıyla çalışır
+
+- İsminin ilk harfi n ya da m ya da r olan personelleri getirelim
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE '[nmr]%'
+```
+
+- İsminin içerisinde a ya da i geçen personelleri getirelim
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE '%[ai]%'
+```
+
+## `[*-*]`(Alfabetik Arasında) Operatörü
+- iki harf arasındaki tüm harfleri kapsayan bir operatördür.
+
+- İsminin baş harfi a ile k arasında alfabetik sıraya göre herhangi bir harf olan personellerin adını yazdıralım
+```SQL
+SELECT Adi FROM Personeller WHERE Adi LIKE '[a-k]%'
+```
+
+## `[^*]`(Değil) Operatörü
+- O anki bulunduğumuz karakterin değilini ifade eder.
+- İsminin baş harfi a olmayan personelleri getirelim.
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE '[^a]%'
+```
+
+- İsminin baş harfleri an olmayan personelleri getirelim
+```SQL
+SELECT * FROM Personeller WHERE Adi LIKE '[^an]%'
+```
