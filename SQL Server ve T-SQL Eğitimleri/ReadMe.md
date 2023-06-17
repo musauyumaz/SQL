@@ -178,3 +178,13 @@ SELECT * FROM Personeller WHERE YEAR(DogumTarihi)> 1950 AND YEAR(DogumTarihi) < 
 SELECT Adi FROM Personeller WHERE Sehir IN('London','Tacoma','Kirkland')
 SELECT Adi FROM Personeller WHERE Sehir ='London' OR Sehir = 'Tacoma' OR Sehir = 'Kirkland'
 ```
+
+***
+# 6-) T-SQL Where Komutunda Between Komutunun Kullanımı
+## BETWEEN Komutu
+- Eğer ki WHERE şartı ile belirli bir değer aralığını belirtilecekse yani şartımız belirli bir değer aralığıysa eğer BETWEEN komutu ile daha pratik şekilde şartımızı yazabiliriz.
+
+- Doğum yılı 1950 ile 1965 yılları arasında olan personelleri getirelim
+```SQL
+SELECT * FROM Personeller WHERE YEAR(DogumTarihi) BETWEEN 1950 AND 1965
+```
