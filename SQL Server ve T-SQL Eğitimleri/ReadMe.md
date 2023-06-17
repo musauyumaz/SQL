@@ -409,3 +409,48 @@ SELECT SUBSTRING(MusteriAdi,0, CHARINDEX(' ',MusteriAdi)) FROM Musteriler
 ```SQL
 SELECT SUBSTRING(MusteriAdi, CHARINDEX(' ', MusteriAdi),LEN(MusteriAdi) - (CHARINDEX(' ', MusteriAdi) - 1)) FROM Musteriler
 ```
+
+***
+# 12-) T-SQL Sayısal Değer İşlemleri
+## Sayısal Değer İşlemleri
+
+```SQL
+SELECT 3 + 2
+SELECT 3 * 3
+SELECT 4 / 2
+SELECT 9 - 7
+```
+
+- `PI` : Pi sayısını verir.
+```SQL
+SELECT PI()
+```
+
+- `SIN` : Sinüs alır.
+```SQL
+SELECT SIN(PI())
+SELECT SIN(90)
+```
+
+- `POWER` : Üs alır.
+```SQL
+SELECT POWER(2,3)
+```
+
+- `ABS` : Mutlak değer alır.
+```SQL
+SELECT ABS(-12)
+```
+
+- `RAND` : 0 - 1 arasında rastgele sayı üretir.
+```SQL
+SELECT RAND()
+```
+
+- `FLOOR` : Yuvarlama yapar.
+```SQL
+SELECT FLOOR(RAND() * 100)
+SELECT ROUND(RAND() * 10,0)
+```
+
+
