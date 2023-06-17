@@ -453,4 +453,31 @@ SELECT FLOOR(RAND() * 100)
 SELECT ROUND(RAND() * 10,0)
 ```
 
+# 13-) T-SQL Tarih Fonksiyonları
+## Tarih Fonksiyonları
 
+- GETDATE : Bugünün tarihini verir.
+```SQL
+SELECT GETDATE()
+```
+
+- DATEADD : Verilen tarihe verildiği kadar gün, ay, yıl ekler
+```SQL
+SELECT DATEADD(DAY,999,GETDATE())
+SELECT DATEADD(MONTH,999,GETDATE())
+SELECT DATEADD(YEAR,999,GETDATE())
+```
+
+- DATEDIFF : İki tarih arasında günü, ayı veya yılı hesaplar.
+```SQL
+SELECT DATEDIFF(DAY,'14.02.1999',GETDATE())
+SELECT DATEDIFF(MONTH,'14.02.1999',GETDATE())
+SELECT DATEDIFF(YEAR,'14.02.1999',GETDATE())
+```
+
+- DATEPART : Verilen tarihin haftanın, ayın yahut yılın kaçıncı günü olduğunu hesaplar
+```SQL
+SELECT DATEPART(DW,GETDATE())
+SELECT DATEPART(MONTH,GETDATE())
+SELECT DATEPART(DAY,GETDATE())
+```
