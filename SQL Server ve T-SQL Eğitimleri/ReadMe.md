@@ -308,4 +308,32 @@ SELECT * FROM Personeller WHERE Adi LIKE '[_]%'
 SELECT * FROM Personeller WHERE Adi LIKE '?_%' ESCAPE '?'
 ```
 
+# 10-) T-SQL Aggregate Fonksiyonları
+## AGGREGATE FONKSİYONLAR
+- Tüm veriler tüm satırlar üzerinde işlem yapmamızı sağlayan fonksiyonlardır.
 
+- AVG : Ortalama alır.
+```SQL
+SELECT AVG(PersonelID) FROM Personeller
+```
+
+- MAX : En büyük değeri bulur.
+```SQL
+SELECT MAX(PersonelID) FROM Personeller
+```
+
+- MIN : En küçük değeri bulur.
+```SQL
+SELECT MIN(PersonelID) FROM Personeller
+```
+
+- COUNT : Toplam sayısını verir.
+```SQL
+SELECT COUNT(*) FROM Personeller
+SELECT COUNT(Adi) FROM Personeller
+```
+
+- SUM : Toplamını verir.
+```SQL
+SELECT SUM(NakliyeUcreti) FROM Satislar
+```
