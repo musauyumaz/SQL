@@ -188,3 +188,13 @@ SELECT Adi FROM Personeller WHERE Sehir ='London' OR Sehir = 'Tacoma' OR Sehir =
 ```SQL
 SELECT * FROM Personeller WHERE YEAR(DogumTarihi) BETWEEN 1950 AND 1965
 ```
+
+***
+# 7-) T-SQL Where Komutunda In Komutunun Kullanımı
+## IN Komutu
+- Bir kolonda OR komutunu kullanarak yaptığımız şartları IN komutu ile daha pratik bir şekilde yapabilmekteyiz.
+
+- Yaşadığı şehrin London Tacoma ve Kirkland olan personellerin adlarını listeleyelim.
+```SQL
+SELECT Adi FROM Personeller WHERE Sehir IN('London','Tacoma','Kirkland')
+```
