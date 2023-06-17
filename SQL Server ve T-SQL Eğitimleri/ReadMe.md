@@ -481,3 +481,11 @@ SELECT DATEPART(DW,GETDATE())
 SELECT DATEPART(MONTH,GETDATE())
 SELECT DATEPART(DAY,GETDATE())
 ```
+
+***
+# 14-) T-SQL Top Komutu 
+## TOP Komutu
+- SELECT sorgusu neticesinde elde ettiğimiz tablodan ilk kaç kaydın gösterileceğini belirlememizi sağlar.
+```SQL
+SELECT TOP 3 * FROM Personeller
+```
