@@ -337,3 +337,75 @@ SELECT COUNT(Adi) FROM Personeller
 ```SQL
 SELECT SUM(NakliyeUcreti) FROM Satislar
 ```
+
+# 11-) T-SQL String Fonksiyonları
+## STRING FONKSIYONLAR
+- Metinsel değerler üzerinde işlem yapmamızı sağlayan fonksiyonlardır.
+
+- LEFT : Soldan(baştan) belirtilen sayıda karakteri getirir.
+```SQL
+SELECT LEFT(Adi,2) FROM Personeller
+```
+
+- RIGHT : Sağdan(sondan) belirtilen sayıda karakteri getirir.
+```SQL
+SELECT RIGHT(Adi,3) FROM Personeller
+```
+
+- UPPER : Büyük harfe çevirir.
+```SQL
+SELECT UPPER(Adi) FROM Personeller
+```
+
+- LOWER : Küçük harfe çevirir.
+```SQL
+SELECT LOWER(Adi) FROM Personeller
+```
+
+- SUBSTRING : Belirtilen index'ten itibaren belirtilen sayıda karakter getirir
+```SQL
+SELECT SUBSTRING(SoyAdi,3,2) FROM Personeller
+```
+
+- LTRIM : Soldan boşlukları keser.
+```SQL
+SELECT '              MUSA'
+SELECT LTRIM('              MUSA')
+```
+- RTRIM : Sağdan boşlukları keser.
+```SQL
+SELECT 'UYUMAZ              '
+SELECT RTRIM('UYUMAZ              ')
+```
+
+- REVERSE : Tersine çevirir.
+```SQL
+SELECT REVERSE(Adi) FROM Personeller
+```
+
+- REPLACE : Belirtilen ifadeyi belirtilen ifade ile değiştirir.
+```SQL
+SELECT REPLACE('Benim Adım MUSA', 'MUSA','SERHAT')
+```
+
+- CHARINDEX : Belirtilen karakterin veri içinde sıra numarasını verir.
+- Index numarasını değil sıra numarasını verir!!!
+```SQL
+SELECT Adi,CHARINDEX('r',Adi) FROM Personeller
+SELECT MusteriAdi, CHARINDEX(' ',MusteriAdi) FROM Musteriler
+```
+
+
+- CHARINDEX Örnek
+- Müşteriler tablosunun MusteriAdi kolonundan sadece adları çekelim.
+```SQL
+SELECT MusteriAdi FROM Musteriler
+SELECT MusteriAdi,LEFT(MusteriAdi,CHARINDEX(' ',MusteriAdi)) FROM Musteriler
+SELECT SUBSTRING(MusteriAdi,0, CHARINDEX(' ',MusteriAdi)) FROM Musteriler
+```
+
+
+- Müşteriler tablosunun MusteriAdi kolonundan sadece soyadları çekelim.
+```SQL
+SELECT SUBSTRING(MusteriAdi, CHARINDEX(' ', MusteriAdi),LEN(MusteriAdi) - (CHARINDEX(' ', MusteriAdi) - 1)) FROM Musteriler
+```
