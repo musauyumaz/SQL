@@ -695,3 +695,17 @@ SELECT * FROM OYUNCULAR O FULL OUTER JOIN FİLMLER F ON F.FILMID = O.FILMID
 ```SQL
 SELECT * FROM OYUNCULAR O FULL JOIN FİLMLER F ON F.FILMID = O.FILMID
 ```
+
+***
+# 25-) T-SQL Cross Join İle Tablo Birleştirme
+## CROSS JOIN 
+- İki tablo arasında kartezyen çarpımı yapar. Kartezyen çarpımıyla birleştirir. İki küme arasında elemanları tek tek birbirleriyle eşleştirme işlemine kartezyen işlemi deriz.
+- CROSS JOIN kullanarak iki tabloyu birleştirirsek eğer elde edilen sonuç iki tablonun eleman sayılarının çarpımları kadardır.
+- WHERE ile şart uygulayamayız.
+
+```SQL
+SELECT COUNT(*) FROM Personeller
+SELECT COUNT(*) FROM Bolge
+
+SELECT P.Adi,B.BolgeID FROM Personeller P CROSS JOIN BOLGE B
+```
