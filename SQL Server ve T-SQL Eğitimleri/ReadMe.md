@@ -658,3 +658,40 @@ INNER JOIN [Satis Detaylari] SD ON SD.SatisID = S.SatisID
 WHERE P.Adi LIKE '%a%' AND S.SatisID > 10500
 GROUP BY S.SatisTarihi
 ```
+
+***
+# 24-) T-SQL Outer Join(Left, Right, Full) İle Tabloları Birleştirme
+## OUTER JOIN
+- INNER JOIN'de eşleşen kayıtlar getiriliyordu. OUTER JOIN'de ise eşleşmeyen kayıtlarda getirilmektedir.
+
+## LEFT JOIN
+- JOIN ifadesinin solundaki tablodan tüm kayıtları getirir. Sağındaki tablodan eşleşenleri yan yana eşleşmeyenleri null olarak getirir.
+```SQL
+SELECT * FROM OYUNCULAR O LEFT OUTER JOIN FİLMLER F ON F.FILMID = O.FILMID
+SELECT * FROM FİLMLER O LEFT OUTER JOIN OYUNCULAR F ON F.FILMID = O.FILMID
+```
+-VEYA
+```SQL
+SELECT * FROM OYUNCULAR O LEFT JOIN FİLMLER F ON F.FILMID = O.FILMID
+SELECT * FROM FİLMLER O LEFT JOIN OYUNCULAR F ON F.FILMID = O.FILMID
+```
+## RIGHT JOIN
+- JOIN'in sağındaki tablonun tamamını getirecek, Solundakinden eşleşenleri aynı satırda eşleşmeyenleri de null olarak getirecek
+```SQL
+SELECT * FROM OYUNCULAR O RIGHT OUTER JOIN FİLMLER F ON F.FILMID = O.FILMID
+SELECT * FROM FİLMLER O RIGHT OUTER JOIN OYUNCULAR F ON F.FILMID = O.FILMID
+```
+-- VEYA
+```SQL
+SELECT * FROM OYUNCULAR O RIGHT JOIN FİLMLER F ON F.FILMID = O.FILMID
+```
+
+## FULL JOIN
+-  Joinin iki tarafındaki tablolardan eşleşen eşleşmeyen hepsini getirir.
+```SQL
+SELECT * FROM OYUNCULAR O FULL OUTER JOIN FİLMLER F ON F.FILMID = O.FILMID
+```
+- VEYA
+```SQL
+SELECT * FROM OYUNCULAR O FULL JOIN FİLMLER F ON F.FILMID = O.FILMID
+```
