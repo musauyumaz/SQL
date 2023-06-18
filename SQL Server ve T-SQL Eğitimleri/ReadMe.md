@@ -762,3 +762,18 @@ INSERT Musteriler(MusteriAdi,Adres) VALUES('HİLMİ','ÇORUM'),
 										                      ('HİLMİ','ÇORUM'),
 										                      ('HİLMİ','ÇORUM')
 ```
+
+***
+# 28-) T-SQL DML Insert Komutu 2
+## [INSERT Komutu İle SELECT Sorgusu Sonucu Gelen Verileri Farklı Tabloya Kaydetme]
+```SQL
+INSERT ORNEKPERSONELLER SELECT Adi,SoyAdi FROM Personeller
+```
+- Burada dikkat etmeniz gereken nokta; SELECT sorgusunda dönen kolon sayısı ile INSERT işlemi yapılacak tablonun kolon sayısı birbirne eşit olması gerekmektedir. Aynı zamanda kolon özelliklerine de dikkat edilmelidir.
+
+## [SELECT Sorgusu Sonucu Gelen Verileri Farklı Bir Tablo Oluşturarak Kaydetme]
+```SQL
+SELECT Adi, SoyAdi, Ulke INTO ORNEKPERSONELLER2 FROM Personeller
+```
+- Bu yöntemle primary key ve foreign keyler oluşturulamazlar.
+
