@@ -723,3 +723,42 @@ SELECT P.Adi,B.BolgeID FROM Personeller P CROSS JOIN BOLGE B
 ```SQL
 SELECT * FROM Personeller
 ```
+
+***
+# 27-) T-SQL DML Insert Komutu 1
+## INSERT 
+- `INSERT [TABLO ADI](KOLONLAR) VALUES(DEĞERLER)`
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+INSERT PERSONELLER VALUES('UYUMAZ','MUSA','YAZILIM VE VERİTABANI UZMANI','YM', '14.02.1999',GETDATE(),'ESKİŞEHİR','İÇ ANADOLU','26600','TÜRKİYE','02221111111',NULL,NULL,NULL,NULL,NULL)
+```
+
+## [Dikkat Edilmesi Gerekenler!!!]
+- INTO Komutu İle Yazılabilir
+```SQL
+INSERT INTO Personeller(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+```
+
+- Kolonun kabul ettiği veri tipi ve karakter uzunluğunda kayıt yapılmalıdır.
+- NOT NULL olan kolonlar boş bırakılmayacaklarından dolayı mutlaka değer gönderilmelidir.
+```SQL
+INSERT Personeller(Unvan,UnvanEki) VALUES ('a','b')
+```
+
+- Otomatik artan(identity) kolonlara değer gönderilmez.
+- Tablodaki seçilen yahut bütün kolonlara değer gönderileceği belirtilip, gönderilmezse hata verecektir
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES ('MUSA')
+INSERT Personeller VALUES ('MUSA','UYUMAZ')
+```
+
+## [Pratik Kullanım]
+```SQL
+INSERT Musteriler(MusteriAdi,Adres) VALUES('HİLMİ','ÇORUM')
+INSERT Musteriler(MusteriAdi,Adres) VALUES('NECATİ','ÇANKIRI')
+INSERT Musteriler(MusteriAdi,Adres) VALUES('RIFKI','YOZGAT')
+
+INSERT Musteriler(MusteriAdi,Adres) VALUES('HİLMİ','ÇORUM'),
+										                      ('HİLMİ','ÇORUM'),
+										                      ('HİLMİ','ÇORUM')
+```
