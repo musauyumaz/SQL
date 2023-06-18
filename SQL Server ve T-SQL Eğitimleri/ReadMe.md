@@ -806,3 +806,19 @@ UPDATE Urunler SET UrunAdi = (SELECT UrunAdi FROM Personeller WHERE PersonelID =
 UPDATE TOP(30) Urunler SET UrunAdi = 'x'
 ```
 
+***
+# 30-) T-SQL DML Delete Komutu
+## DELETE
+- DELETE FROM [TABLO ADI]
+```SQL
+DELETE FROM Urunler
+```
+
+- [DELETE Sorgusuna WHERE Şartı Yazmak]
+```SQL
+DELETE FROM Urunler WHERE KategoriID < 3
+```
+
+## [Dikkat Edilmesi Gerekenler!!!]
+- DELETE sorgusuyla tablo içerisindeki verileri silmeniz identity kolonunu sıfırlamayacaktır. Silme işleminden sonra ilk eklenen veride kalınığı yerden id değeri verilecektir.
+- Hem identity değerini sıfırlamak hem de verileri temizlemek istiyorsak eğer TRUNCATE komutunu kullanırız
