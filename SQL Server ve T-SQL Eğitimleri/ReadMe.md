@@ -514,3 +514,18 @@ GROUP BY PersonelID
 SELECT PersonelID,SUM(NakliyeUcreti) FROM Satislar
 GROUP BY PersonelID
 ```
+
+***
+# 17-) T-SQL Group By İşleminde Where Şartı Yazma
+## GROUP BY İşleminde WHERE Şartı Kullanma
+- Grammer'de WHERE şartı GROUP BY'dan önce yazılmalıdır.
+
+```SQL
+SELECT * FROM Urunler
+
+SELECT KategoriID,COUNT(*) FROM Urunler WHERE KategoriID > 5 GROUP BY KategoriID
+
+SELECT PersonelID,COUNT(*) FROM Satislar WHERE PersonelID < 4 GROUP BY PersonelID
+
+SELECT PersonelID,SUM(NakliyeUcreti) FROM Satislar GROUP BY PersonelID
+```
