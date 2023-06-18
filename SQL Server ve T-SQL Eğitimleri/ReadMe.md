@@ -496,3 +496,329 @@ SELECT TOP 3 * FROM Personeller
 ```SQL
 SELECT DISTINCT Sehir FROM Personeller
 ```
+
+***
+# 16-) T-SQL Group By İşlemi
+## GROUP BY
+- Eğer ki SELECT sorgusunda bir normal kolon bir de ayriyetten aggregate fonksiyonu çağırılıyorsa normal olan kolonu gruplamanız gerekecektir.
+
+```SQL
+SELECT KategoriID,COUNT(*) FROM Urunler
+GROUP BY KategoriID
+
+SELECT PersonelID,COUNT(*) FROM Satislar
+GROUP BY PersonelID
+
+SELECT PersonelID,SUM(NakliyeUcreti) FROM Satislar
+GROUP BY PersonelID
+```
+
+***
+# 17-) T-SQL Group By İşleminde Where Şartı Yazma
+## GROUP BY İşleminde WHERE Şartı Kullanma
+- Grammer'de WHERE şartı GROUP BY'dan önce yazılmalıdır.
+
+```SQL
+SELECT KategoriID,COUNT(*) FROM Urunler WHERE KategoriID > 5 GROUP BY KategoriID
+
+SELECT PersonelID,COUNT(*) FROM Satislar WHERE PersonelID < 4 GROUP BY PersonelID
+```
+
+***
+# 18-) T-SQL Having Komutu
+## GROUP BY İşleminde HAVING Komutunu Kullanarak Şart Oluşturma
+- WHERE normal kolonlar üzerinde şart uygulayacağımız zaman kullandığımız bir komuttur. Lakin HAVING aggregate fonksiyonu üzerinde şart uygulayacaksak kullandığımız bir komuttur.
+
+- HAVING komutu GROUP BY'dan sonra yazılır.
+
+```SQL
+SELECT KategoriID,COUNT(*) FROM Urunler WHERE KategoriID > 5 GROUP BY KategoriID HAVING COUNT(*) > 6
+```
+
+***
+# 19-) T-SQL Tabloları Yan Yana Birleştirme
+## Tabloları Yan Yana Birleştirme
+- Her bir satıra eş değer farklı bir satır türetiyor türetemediklerine de null değer atıyor.
+
+```SQL
+SELECT * FROM Personeller
+SELECT * FROM Satislar
+
+SELECT * FROM Personeller P,Satislar S WHERE P.PersonelID = s.PersonelID
+```
+
+***
+# 20-) T-SQL Inner Join'de İki Tabloyu Birleştirme
+## INNER JOIN
+- Birden fazla tabloyu ilişkisel kolonlar aracılığıyla birleştirip tek bir tablo haline getiren bir yapıdır.
+
+## Genel Mantık
+- SELECT * FROM Tablo1 INNER JOIN TABLO2 ON Tablo1.IlişkiliKolon = Tablo2.IlişkiliKolon
+
+- Tablolara alias tanımlanabilir.
+- SELECT * FROM Tablo1 T1 INNER JOIN TABLO2 T2 ON T1.IlişkiliKolon = T2.IlişkiliKolon
+
+## İki Tabloyu İlişkisel Birleştirme
+- Hangi personel hangi satışları yapmıştır. (Personeller, Satışlar)
+```SQL
+SELECT * FROM Personeller P INNER JOIN Satislar S ON P.PersonelID = S.PersonelID
+```
+
+- Hangi ürün hangi kategoride. (Urunler, Kategoriler)
+```SQL
+SELECT U.UrunAdi,K.KategoriAdi FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID
+```
+
+## WHERE Komutunun Kullanımı
+- Beverages Kategorisindeki ürünlerim. (Urunler, Kategoriler)
+```SQL
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID WHERE K.KategoriAdi = 'Beverages'
+```
+
+- Beverages kategorisindeki ürünlerimin sayısı kaçtır. (Urunler, Kategoriler)
+```SQL
+SELECT COUNT(U.UrunAdi) FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID WHERE K.KategoriAdi = 'Beverages'
+```
+
+- Seafood kategorisindeki ürünlerin listesi (Urunler, Kategoriler)
+```SQL
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID WHERE K.KategoriAdi = 'Seafood'
+```
+
+- Hangi Satışı hangi çalışanım yapmış? (Satışlar, Personeller)
+```SQL
+SELECT S.SatisID, P.Adi + ' ' +P.SoyAdi FROM Satislar S INNER JOIN Personeller P ON P.PersonelID = S.PersonelID
+```
+
+- Faks numarası 'NULL' olmayan tedarikçilerinden alınmış ürünler nelerdir? (Urunler, Tedarikçiler)
+```SQL
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE T.Faks <> 'NULL'
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE T.Faks IS NOT NULL
+```
+
+***
+# 21-) T-SQL Inner Join'de İkiden Fazla Tabloyu Birleştirme
+## INNER JOIN
+## İkiden Fazla Tabloyu İlişkisel Birleştirme
+- İkiden fazla tabloyu ilişkisel bir şekilde birleştirme yöntemine giderken dikkat etmemiz gereken nokta birleştirme esnasında birleştirdiğimiz tablonun diğer tabloyla ortak olan bir ilişkisel kolona ait olması gerekmektedir.
+
+- 1997 yılından sonra Nancy'nin satış yaptığı firmaların isimleri : (1997 dahil) (Musteriler, Satislar, Personeller)
+```SQL
+SELECT M.SirketAdi FROM Musteriler M INNER JOIN Satislar S ON M.MusteriID = S.MusteriID INNER JOIN Personeller P ON P.PersonelID = S.PersonelID WHERE P.Adi = 'Nancy' AND YEAR(S.SatisTarihi) >= 1997
+```
+
+- Limited olan tedarikçilerden alınmış Seafood kategorisindeki ürünlerimin toplam satış tutarı. (Urunler, Kategoriler, Tedarikçiler)
+```SQL
+SELECT SUM(U.BirimFiyati * U.HedefStokDuzeyi) FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE K.KategoriAdi = 'Seafood' AND T.SirketAdi LIKE '%Ltd.%'
+```
+
+***
+# 22-) T-SQL Inner Join'de Aynı Tabloyu İlişkisel Olarak Birleştirme
+## Inner Join
+## Aynı Tabloyu İlişkisel Olarak Birleştirme
+- Personellerimin bağlı olarak çalıştığı kişileri listele? (Personeller, Personeller)
+```SQL
+SELECT P1.Adi, P2.Adi FROM Personeller P1 INNER JOIN Personeller P2 ON P1.BagliCalistigiKisi = P2.PersonelID
+```
+
+***
+# 23-) T-SQL Inner Join'de Group By İşlemi
+## INNER JOIN
+## INNER JOIN'DE GROUP BY
+- Hangi personelim(adı ve soyadı ile birlikte) toplam kaç adetlik satış yapmış. Satış adedi 100'den fazla olanlar ve personelin adının baş harfi M olan kayıtlar gelsin. (Personeller, Satışlar)
+```SQL,
+SELECT P.Adi + ' ' + P.SoyAdi ,COUNT(S.SatisID) FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID WHERE P.Adi LIKE 'M%'
+GROUP BY P.Adi + ' ' + P.SoyAdi 
+HAVING COUNT(*) > 100
+```
+
+- Seafood kategorisindeki ürünlerin sayısı (Urunler, Kategoriler)
+```SQL
+SELECT COUNT(*) FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID 
+WHERE K.KategoriAdi = 'Seafood'
+```
+
+- Hangi personelim toplam kaç adet satış yapmış (Personeller, Satışlar)
+```SQL
+SELECT P.Adi,COUNT(S.SatisID) FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID
+GROUP BY P.Adi
+```
+
+- En çok satış yapan personelim (Personeller, Satışlar)
+```SQL
+SELECT TOP 1 P.Adi,COUNT(S.SatisID) FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID
+GROUP BY P.Adi
+ORDER BY COUNT(S.SatisID) DESC
+```
+
+- Adında 'a' harfi olan personellerin satış id'si 10500'den büyük olan satışlarının toplam tutarını(miktar * birim fiyat) ve bu satışların hangi tarihte gerçekleştiğini listele. (Personeller, Satışlar, Satış Detayları)
+```SQL
+SELECT S.SatisTarihi,SUM(SD.Miktar * SD.BirimFiyati) TOPLAMTUTAR FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID 
+INNER JOIN [Satis Detaylari] SD ON SD.SatisID = S.SatisID
+WHERE P.Adi LIKE '%a%' AND S.SatisID > 10500
+GROUP BY S.SatisTarihi
+```
+
+***
+# 24-) T-SQL Outer Join(Left, Right, Full) İle Tabloları Birleştirme
+## OUTER JOIN
+- INNER JOIN'de eşleşen kayıtlar getiriliyordu. OUTER JOIN'de ise eşleşmeyen kayıtlarda getirilmektedir.
+
+## LEFT JOIN
+- JOIN ifadesinin solundaki tablodan tüm kayıtları getirir. Sağındaki tablodan eşleşenleri yan yana eşleşmeyenleri null olarak getirir.
+```SQL
+SELECT * FROM OYUNCULAR O LEFT OUTER JOIN FİLMLER F ON F.FILMID = O.FILMID
+SELECT * FROM FİLMLER O LEFT OUTER JOIN OYUNCULAR F ON F.FILMID = O.FILMID
+```
+-VEYA
+```SQL
+SELECT * FROM OYUNCULAR O LEFT JOIN FİLMLER F ON F.FILMID = O.FILMID
+SELECT * FROM FİLMLER O LEFT JOIN OYUNCULAR F ON F.FILMID = O.FILMID
+```
+## RIGHT JOIN
+- JOIN'in sağındaki tablonun tamamını getirecek, Solundakinden eşleşenleri aynı satırda eşleşmeyenleri de null olarak getirecek
+```SQL
+SELECT * FROM OYUNCULAR O RIGHT OUTER JOIN FİLMLER F ON F.FILMID = O.FILMID
+SELECT * FROM FİLMLER O RIGHT OUTER JOIN OYUNCULAR F ON F.FILMID = O.FILMID
+```
+-- VEYA
+```SQL
+SELECT * FROM OYUNCULAR O RIGHT JOIN FİLMLER F ON F.FILMID = O.FILMID
+```
+
+## FULL JOIN
+-  Joinin iki tarafındaki tablolardan eşleşen eşleşmeyen hepsini getirir.
+```SQL
+SELECT * FROM OYUNCULAR O FULL OUTER JOIN FİLMLER F ON F.FILMID = O.FILMID
+```
+- VEYA
+```SQL
+SELECT * FROM OYUNCULAR O FULL JOIN FİLMLER F ON F.FILMID = O.FILMID
+```
+
+***
+# 25-) T-SQL Cross Join İle Tablo Birleştirme
+## CROSS JOIN 
+- İki tablo arasında kartezyen çarpımı yapar. Kartezyen çarpımıyla birleştirir. İki küme arasında elemanları tek tek birbirleriyle eşleştirme işlemine kartezyen işlemi deriz.
+- CROSS JOIN kullanarak iki tabloyu birleştirirsek eğer elde edilen sonuç iki tablonun eleman sayılarının çarpımları kadardır.
+- WHERE ile şart uygulayamayız.
+
+```SQL
+SELECT COUNT(*) FROM Personeller
+SELECT COUNT(*) FROM Bolge
+
+SELECT P.Adi,B.BolgeID FROM Personeller P CROSS JOIN BOLGE B
+```
+
+***
+# 26-) T-SQL DML Giriş
+## DML (Data Manipulation Language)
+## SELECT, INSERT, UPDATE, DELETE
+- SELECT ... -> Veritabanımızdaki tabloları elde etmemizi sağlayan komuttur.
+- INSERT ... -> Veritabanımızdaki herhangi bir tabloya veri eklememizi sağlayan komuttur.
+- UPDATE ... -> Veritabanımızdaki herhangi bir tablomuzda bulunan herhangi bir veriyi güncellememizi sağlayan komuttur.
+- DELETE ... -> Veritabanımızdaki herhangi bir tablomuzda bulunan veriyi silmemizi sağlayan komuttur.
+
+## SELECT : Tablomuzdan veri elde etmemizi sağlayan bir komuttur.
+```SQL
+SELECT * FROM Personeller
+```
+
+***
+# 27-) T-SQL DML Insert Komutu 1
+## INSERT 
+- `INSERT [TABLO ADI](KOLONLAR) VALUES(DEĞERLER)`
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+INSERT PERSONELLER VALUES('UYUMAZ','MUSA','YAZILIM VE VERİTABANI UZMANI','YM', '14.02.1999',GETDATE(),'ESKİŞEHİR','İÇ ANADOLU','26600','TÜRKİYE','02221111111',NULL,NULL,NULL,NULL,NULL)
+```
+
+## [Dikkat Edilmesi Gerekenler!!!]
+- INTO Komutu İle Yazılabilir
+```SQL
+INSERT INTO Personeller(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+```
+
+- Kolonun kabul ettiği veri tipi ve karakter uzunluğunda kayıt yapılmalıdır.
+- NOT NULL olan kolonlar boş bırakılmayacaklarından dolayı mutlaka değer gönderilmelidir.
+```SQL
+INSERT Personeller(Unvan,UnvanEki) VALUES ('a','b')
+```
+
+- Otomatik artan(identity) kolonlara değer gönderilmez.
+- Tablodaki seçilen yahut bütün kolonlara değer gönderileceği belirtilip, gönderilmezse hata verecektir
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES ('MUSA')
+INSERT Personeller VALUES ('MUSA','UYUMAZ')
+```
+
+## [Pratik Kullanım]
+```SQL
+INSERT Musteriler(MusteriAdi,Adres) VALUES('HİLMİ','ÇORUM')
+INSERT Musteriler(MusteriAdi,Adres) VALUES('NECATİ','ÇANKIRI')
+INSERT Musteriler(MusteriAdi,Adres) VALUES('RIFKI','YOZGAT')
+
+INSERT Musteriler(MusteriAdi,Adres) VALUES('HİLMİ','ÇORUM'),
+										                      ('HİLMİ','ÇORUM'),
+										                      ('HİLMİ','ÇORUM')
+```
+
+***
+# 28-) T-SQL DML Insert Komutu 2
+## [INSERT Komutu İle SELECT Sorgusu Sonucu Gelen Verileri Farklı Tabloya Kaydetme]
+```SQL
+INSERT ORNEKPERSONELLER SELECT Adi,SoyAdi FROM Personeller
+```
+- Burada dikkat etmeniz gereken nokta; SELECT sorgusunda dönen kolon sayısı ile INSERT işlemi yapılacak tablonun kolon sayısı birbirne eşit olması gerekmektedir. Aynı zamanda kolon özelliklerine de dikkat edilmelidir.
+
+## [SELECT Sorgusu Sonucu Gelen Verileri Farklı Bir Tablo Oluşturarak Kaydetme]
+```SQL
+SELECT Adi, SoyAdi, Ulke INTO ORNEKPERSONELLER2 FROM Personeller
+```
+- Bu yöntemle primary key ve foreign keyler oluşturulamazlar.
+
+***
+# 29-) T-SQL DML Update Komutu
+## UPDATE
+- UPDATE [TABLO ADI] SET [KOLON ADI] = DEĞER
+```SQL
+UPDATE ORNEKPERSONELLER SET ADI = 'MEHMET'
+```
+
+## [UPDATE Sorgusuna WHERE Şartı Yazmak]
+```SQL
+UPDATE ORNEKPERSONELLER SET ADI = 'MEHMET' WHERE ADI= 'NANCY'
+UPDATE ORNEKPERSONELLER SET ADI = 'AYŞE' WHERE SOYADI = 'Davolio'
+```
+
+## [UPDATE Sorgusunda Join Yapılarını Kullanarak Birden Fazla Tabloda Güncelleme Yapmak]
+```SQL
+UPDATE Urunler SET UrunAdi = K.KategoriAdi FROM Urunler U INNER JOIN Kategoriler K ON U.KategoriID = K.KategoriID
+```
+
+## [UPDATE Sorgusunda Subquery İle Güncelleme Yapmak]
+```SQL
+UPDATE Urunler SET UrunAdi = (SELECT UrunAdi FROM Personeller WHERE PersonelID = 3)
+```
+
+## [UPDATE Sorgusunda TOP Keywordü İle Güncelleme Yapmak]
+```SQL
+UPDATE TOP(30) Urunler SET UrunAdi = 'x'
+```
+
+***
+# 30-) T-SQL DML Delete Komutu
+## DELETE
+- DELETE FROM [TABLO ADI]
+```SQL
+DELETE FROM Urunler
+```
+
+- [DELETE Sorgusuna WHERE Şartı Yazmak]
+```SQL
+DELETE FROM Urunler WHERE KategoriID < 3
+```
+
+## [Dikkat Edilmesi Gerekenler!!!]
+- DELETE sorgusuyla tablo içerisindeki verileri silmeniz identity kolonunu sıfırlamayacaktır. Silme işleminden sonra ilk eklenen veride kalınığı yerden id değeri verilecektir.
+- Hem identity değerini sıfırlamak hem de verileri temizlemek istiyorsak eğer TRUNCATE komutunu kullanırız
