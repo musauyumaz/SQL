@@ -777,3 +777,32 @@ SELECT Adi, SoyAdi, Ulke INTO ORNEKPERSONELLER2 FROM Personeller
 ```
 - Bu yöntemle primary key ve foreign keyler oluşturulamazlar.
 
+***
+# 29-) T-SQL DML Update Komutu
+## UPDATE
+- UPDATE [TABLO ADI] SET [KOLON ADI] = DEĞER
+```SQL
+UPDATE ORNEKPERSONELLER SET ADI = 'MEHMET'
+```
+
+## [UPDATE Sorgusuna WHERE Şartı Yazmak]
+```SQL
+UPDATE ORNEKPERSONELLER SET ADI = 'MEHMET' WHERE ADI= 'NANCY'
+UPDATE ORNEKPERSONELLER SET ADI = 'AYŞE' WHERE SOYADI = 'Davolio'
+```
+
+## [UPDATE Sorgusunda Join Yapılarını Kullanarak Birden Fazla Tabloda Güncelleme Yapmak]
+```SQL
+UPDATE Urunler SET UrunAdi = K.KategoriAdi FROM Urunler U INNER JOIN Kategoriler K ON U.KategoriID = K.KategoriID
+```
+
+## [UPDATE Sorgusunda Subquery İle Güncelleme Yapmak]
+```SQL
+UPDATE Urunler SET UrunAdi = (SELECT UrunAdi FROM Personeller WHERE PersonelID = 3)
+```
+
+## [UPDATE Sorgusunda TOP Keywordü İle Güncelleme Yapmak]
+```SQL
+UPDATE TOP(30) Urunler SET UrunAdi = 'x'
+```
+
