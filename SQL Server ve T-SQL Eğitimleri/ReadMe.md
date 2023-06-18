@@ -595,3 +595,19 @@ SELECT S.SatisID, P.Adi + ' ' +P.SoyAdi FROM Satislar S INNER JOIN Personeller P
 SELECT U.UrunAdi FROM Urunler U INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE T.Faks <> 'NULL'
 SELECT U.UrunAdi FROM Urunler U INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE T.Faks IS NOT NULL
 ```
+
+***
+# 21-) T-SQL Inner Join'de İkiden Fazla Tabloyu Birleştirme
+## INNER JOIN
+## İkiden Fazla Tabloyu İlişkisel Birleştirme
+- İkiden fazla tabloyu ilişkisel bir şekilde birleştirme yöntemine giderken dikkat etmemiz gereken nokta birleştirme esnasında birleştirdiğimiz tablonun diğer tabloyla ortak olan bir ilişkisel kolona ait olması gerekmektedir.
+
+- 1997 yılından sonra Nancy'nin satış yaptığı firmaların isimleri : (1997 dahil) (Musteriler, Satislar, Personeller)
+```SQL
+SELECT M.SirketAdi FROM Musteriler M INNER JOIN Satislar S ON M.MusteriID = S.MusteriID INNER JOIN Personeller P ON P.PersonelID = S.PersonelID WHERE P.Adi = 'Nancy' AND YEAR(S.SatisTarihi) >= 1997
+```
+
+- Limited olan tedarikçilerden alınmış Seafood kategorisindeki ürünlerimin toplam satış tutarı. (Urunler, Kategoriler, Tedarikçiler)
+```SQL
+SELECT SUM(U.BirimFiyati * U.HedefStokDuzeyi) FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE K.KategoriAdi = 'Seafood' AND T.SirketAdi LIKE '%Ltd.%'
+```
