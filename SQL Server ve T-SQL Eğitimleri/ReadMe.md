@@ -546,3 +546,52 @@ SELECT * FROM Satislar
 
 SELECT * FROM Personeller P,Satislar S WHERE P.PersonelID = s.PersonelID
 ```
+
+***
+# 20-) T-SQL Inner Join'de İki Tabloyu Birleştirme
+## INNER JOIN
+- Birden fazla tabloyu ilişkisel kolonlar aracılığıyla birleştirip tek bir tablo haline getiren bir yapıdır.
+
+## Genel Mantık
+- SELECT * FROM Tablo1 INNER JOIN TABLO2 ON Tablo1.IlişkiliKolon = Tablo2.IlişkiliKolon
+
+- Tablolara alias tanımlanabilir.
+- SELECT * FROM Tablo1 T1 INNER JOIN TABLO2 T2 ON T1.IlişkiliKolon = T2.IlişkiliKolon
+
+## İki Tabloyu İlişkisel Birleştirme
+- Hangi personel hangi satışları yapmıştır. (Personeller, Satışlar)
+```SQL
+SELECT * FROM Personeller P INNER JOIN Satislar S ON P.PersonelID = S.PersonelID
+```
+
+- Hangi ürün hangi kategoride. (Urunler, Kategoriler)
+```SQL
+SELECT U.UrunAdi,K.KategoriAdi FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID
+```
+
+## WHERE Komutunun Kullanımı
+- Beverages Kategorisindeki ürünlerim. (Urunler, Kategoriler)
+```SQL
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID WHERE K.KategoriAdi = 'Beverages'
+```
+
+- Beverages kategorisindeki ürünlerimin sayısı kaçtır. (Urunler, Kategoriler)
+```SQL
+SELECT COUNT(U.UrunAdi) FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID WHERE K.KategoriAdi = 'Beverages'
+```
+
+- Seafood kategorisindeki ürünlerin listesi (Urunler, Kategoriler)
+```SQL
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID WHERE K.KategoriAdi = 'Seafood'
+```
+
+- Hangi Satışı hangi çalışanım yapmış? (Satışlar, Personeller)
+```SQL
+SELECT S.SatisID, P.Adi + ' ' +P.SoyAdi FROM Satislar S INNER JOIN Personeller P ON P.PersonelID = S.PersonelID
+```
+
+- Faks numarası 'NULL' olmayan tedarikçilerinden alınmış ürünler nelerdir? (Urunler, Tedarikçiler)
+```SQL
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE T.Faks <> 'NULL'
+SELECT U.UrunAdi FROM Urunler U INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE T.Faks IS NOT NULL
+```
