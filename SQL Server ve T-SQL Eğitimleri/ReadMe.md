@@ -503,8 +503,6 @@ SELECT DISTINCT Sehir FROM Personeller
 - Eğer ki SELECT sorgusunda bir normal kolon bir de ayriyetten aggregate fonksiyonu çağırılıyorsa normal olan kolonu gruplamanız gerekecektir.
 
 ```SQL
-SELECT * FROM Urunler
-
 SELECT KategoriID,COUNT(*) FROM Urunler
 GROUP BY KategoriID
 
@@ -521,11 +519,18 @@ GROUP BY PersonelID
 - Grammer'de WHERE şartı GROUP BY'dan önce yazılmalıdır.
 
 ```SQL
-SELECT * FROM Urunler
-
 SELECT KategoriID,COUNT(*) FROM Urunler WHERE KategoriID > 5 GROUP BY KategoriID
 
 SELECT PersonelID,COUNT(*) FROM Satislar WHERE PersonelID < 4 GROUP BY PersonelID
+```
 
-SELECT PersonelID,SUM(NakliyeUcreti) FROM Satislar GROUP BY PersonelID
+***
+# 18-) T-SQL Having Komutu
+## GROUP BY İşleminde HAVING Komutunu Kullanarak Şart Oluşturma
+- WHERE normal kolonlar üzerinde şart uygulayacağımız zaman kullandığımız bir komuttur. Lakin HAVING aggregate fonksiyonu üzerinde şart uygulayacaksak kullandığımız bir komuttur.
+
+- HAVING komutu GROUP BY'dan sonra yazılır.
+
+```SQL
+SELECT KategoriID,COUNT(*) FROM Urunler WHERE KategoriID > 5 GROUP BY KategoriID HAVING COUNT(*) > 6
 ```
