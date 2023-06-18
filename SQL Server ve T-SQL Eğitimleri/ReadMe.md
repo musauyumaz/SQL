@@ -620,3 +620,41 @@ SELECT SUM(U.BirimFiyati * U.HedefStokDuzeyi) FROM Urunler U INNER JOIN Kategori
 ```SQL
 SELECT P1.Adi, P2.Adi FROM Personeller P1 INNER JOIN Personeller P2 ON P1.BagliCalistigiKisi = P2.PersonelID
 ```
+
+***
+# 23-) T-SQL Inner Join'de Group By İşlemi
+## INNER JOIN
+## INNER JOIN'DE GROUP BY
+- Hangi personelim(adı ve soyadı ile birlikte) toplam kaç adetlik satış yapmış. Satış adedi 100'den fazla olanlar ve personelin adının baş harfi M olan kayıtlar gelsin. (Personeller, Satışlar)
+```SQL,
+SELECT P.Adi + ' ' + P.SoyAdi ,COUNT(S.SatisID) FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID WHERE P.Adi LIKE 'M%'
+GROUP BY P.Adi + ' ' + P.SoyAdi 
+HAVING COUNT(*) > 100
+```
+
+- Seafood kategorisindeki ürünlerin sayısı (Urunler, Kategoriler)
+```SQL
+SELECT COUNT(*) FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID 
+WHERE K.KategoriAdi = 'Seafood'
+```
+
+- Hangi personelim toplam kaç adet satış yapmış (Personeller, Satışlar)
+```SQL
+SELECT P.Adi,COUNT(S.SatisID) FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID
+GROUP BY P.Adi
+```
+
+- En çok satış yapan personelim (Personeller, Satışlar)
+```SQL
+SELECT TOP 1 P.Adi,COUNT(S.SatisID) FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID
+GROUP BY P.Adi
+ORDER BY COUNT(S.SatisID) DESC
+```
+
+- Adında 'a' harfi olan personellerin satış id'si 10500'den büyük olan satışlarının toplam tutarını(miktar * birim fiyat) ve bu satışların hangi tarihte gerçekleştiğini listele. (Personeller, Satışlar, Satış Detayları)
+```SQL
+SELECT S.SatisTarihi,SUM(SD.Miktar * SD.BirimFiyati) TOPLAMTUTAR FROM Personeller P INNER JOIN Satislar S ON S.PersonelID = P.PersonelID 
+INNER JOIN [Satis Detaylari] SD ON SD.SatisID = S.SatisID
+WHERE P.Adi LIKE '%a%' AND S.SatisID > 10500
+GROUP BY S.SatisTarihi
+```
