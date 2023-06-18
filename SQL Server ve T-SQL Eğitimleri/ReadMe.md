@@ -534,3 +534,15 @@ SELECT PersonelID,COUNT(*) FROM Satislar WHERE PersonelID < 4 GROUP BY PersonelI
 ```SQL
 SELECT KategoriID,COUNT(*) FROM Urunler WHERE KategoriID > 5 GROUP BY KategoriID HAVING COUNT(*) > 6
 ```
+
+***
+# 19-) T-SQL Tabloları Yan Yana Birleştirme
+## Tabloları Yan Yana Birleştirme
+- Her bir satıra eş değer farklı bir satır türetiyor türetemediklerine de null değer atıyor.
+
+```SQL
+SELECT * FROM Personeller
+SELECT * FROM Satislar
+
+SELECT * FROM Personeller P,Satislar S WHERE P.PersonelID = s.PersonelID
+```
