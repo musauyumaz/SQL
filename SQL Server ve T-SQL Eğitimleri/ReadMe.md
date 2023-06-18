@@ -611,3 +611,12 @@ SELECT M.SirketAdi FROM Musteriler M INNER JOIN Satislar S ON M.MusteriID = S.Mu
 ```SQL
 SELECT SUM(U.BirimFiyati * U.HedefStokDuzeyi) FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID INNER JOIN Tedarikciler T ON T.TedarikciID = U.TedarikciID WHERE K.KategoriAdi = 'Seafood' AND T.SirketAdi LIKE '%Ltd.%'
 ```
+
+***
+# 22-) T-SQL Inner Join'de Aynı Tabloyu İlişkisel Olarak Birleştirme
+## Inner Join
+## Aynı Tabloyu İlişkisel Olarak Birleştirme
+- Personellerimin bağlı olarak çalıştığı kişileri listele? (Personeller, Personeller)
+```SQL
+SELECT P1.Adi, P2.Adi FROM Personeller P1 INNER JOIN Personeller P2 ON P1.BagliCalistigiKisi = P2.PersonelID
+```
