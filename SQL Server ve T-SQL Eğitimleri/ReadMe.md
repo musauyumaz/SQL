@@ -496,3 +496,21 @@ SELECT TOP 3 * FROM Personeller
 ```SQL
 SELECT DISTINCT Sehir FROM Personeller
 ```
+
+***
+# 16-) T-SQL Group By İşlemi
+## GROUP BY
+- Eğer ki SELECT sorgusunda bir normal kolon bir de ayriyetten aggregate fonksiyonu çağırılıyorsa normal olan kolonu gruplamanız gerekecektir.
+
+```SQL
+SELECT * FROM Urunler
+
+SELECT KategoriID,COUNT(*) FROM Urunler
+GROUP BY KategoriID
+
+SELECT PersonelID,COUNT(*) FROM Satislar
+GROUP BY PersonelID
+
+SELECT PersonelID,SUM(NakliyeUcreti) FROM Satislar
+GROUP BY PersonelID
+```
