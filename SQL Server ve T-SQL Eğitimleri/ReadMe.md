@@ -1017,3 +1017,18 @@ SELECT * INTO PERSONELLERX FROM PERSONELLER
 DELETE FROM PERSONELLERX
 TRUNCATE TABLE PERSONELLERX
 ```
+
+***
+# 41-) T-SQL @@Identity Komutu
+## @@IDENTITY Komutu
+- İlgili veritabanı içerisinde yapılan en son INSERT işleminin identity değerini bizlere getiren bir komuttur.
+- INSERT işleminden sonra direkt @@IDENTITY komutunu çağırmaktayız.
+
+```SQL
+INSERT Kategoriler(KategoriAdi,Tanimi) VALUES('X','X Kategorisi')
+
+SELECT @@IDENTITY
+
+INSERT PERSONELLERX(Adi,SoyAdi) VALUES('Ela','Elif')
+SELECT @@IDENTITY
+```
