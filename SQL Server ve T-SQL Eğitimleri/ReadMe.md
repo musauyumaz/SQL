@@ -988,3 +988,19 @@ SELECT SatisID,SatisTarihi FROM Satislar WHERE PersonelID = (SELECT PersonelID F
 
 SELECT Adi FROM Personeller WHERE Adi = (SELECT Adi FROM Personeller WHERE UnvanEki = 'Dr.')
 ```
+
+***
+# 39-) T-SQL Bulk Insert
+## BULK INSERT 
+- Önceden fiziksel bir tablonun oluşturulmuş olması gerekmektedir.
+- Harici kaynaktaki kolonlarımızın tipleri ve kaç tane olduğu önemlidir.
+
+```SQL
+BULK INSERT Kisiler
+FROM 'D:\Kisiler.txt'
+WITH
+(
+	FIELDTERMINATOR = '\t',
+	ROWTERMINATOR = '\n'
+)
+```
