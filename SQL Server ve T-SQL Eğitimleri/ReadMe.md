@@ -908,3 +908,36 @@ SELECT KategoriID,UrunID,SUM(TedarikciID) FROM Urunler GROUP BY KategoriID,UrunI
 SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
 GROUP BY SatisID,UrunID WITH CUBE HAVING SUM(Miktar) > 100
 ```
+
+***
+# 35-) T-SQL Case When Then Else End Kalıbı
+## CASE - WHEN - ELSE - END
+- Sorgularda şart kalıbı olarak kullanırız.
+
+- Personellerimizin isim ve soyisimlerinin yanında; UnvanEki 'Mr.' ise 'Erkek', 'Ms.' ise 'Kadın' yazsın.
+```SQL
+SELECT Adi,SoyAdi,UnvanEki FROM Personeller
+
+SELECT Adi,SoyAdi,
+CASE 
+WHEN UnvanEki = 'Mrs.' OR UnvanEki = 'Ms.' THEN 'KADIN'
+WHEN UnvanEki = 'Mr.' THEN 'ERKEK'
+ELSE UnvanEki
+END
+FROM Personeller
+```
+
+- Eğer ürünün birim fiyatı 0 - 50 arası ise 'Çin Malı' 50 - 100 arası ise 'Ucuz', 100 - 200 arası ise 'Normal' ve 200'den fazla ise 'Pahalı' yazsın.
+```SQL
+SELECT UrunID,BirimFiyati FROM Urunler
+
+SELECT UrunID,
+CASE
+WHEN BirimFiyati BETWEEN 0 AND 50 THEN 'Çin Malı'
+WHEN BirimFiyati BETWEEN 50 AND 100 THEN 'Ucuz'
+WHEN BirimFiyati BETWEEN 100 AND 200 THEN 'Normal'
+WHEN BirimFiyati> 200 THEN 'Pahalı'
+ELSE 'BELİRSİZ'
+END
+FROM Urunler
+```
