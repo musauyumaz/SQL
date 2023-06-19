@@ -873,3 +873,20 @@ UNION ALL
 SELECT Adi,SoyAdi FROM Personeller 
 ```
 
+***
+# 33-) T-SQL With Rollup Komutu
+## WITH ROLLUP
+- GROUP BY ile gruplanmış veri kümesinde ara toplam alınmasını sağlar.
+
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH ROLLUP
+
+SELECT KategoriID,UrunID,SUM(TedarikciID) FROM Urunler GROUP BY KategoriID,UrunID WITH ROLLUP
+```
+
+- [Having Şartıyla Beraber WITH ROLLUP]
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH ROLLUP HAVING SUM(Miktar) > 100
+```
