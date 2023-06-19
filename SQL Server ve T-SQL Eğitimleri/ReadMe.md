@@ -1077,3 +1077,12 @@ CASE
 END
 FROM Musteriler
 ```
+
+***
+# 45-) T-SQL Coalesce Fonksiyonu İle Null Değer Kontrolü
+## COALESCE Fonksiyonu İle NULL Kontrolü
+- Verdiğimiz kolondaki NULL değerlere verdiğimiz ikinci parametredeki değere göre değiştirecektir. 
+
+```SQL
+SELECT MusteriAdi, COALESCE(Bolge,'BÖLGE BİLİNMİYOR') FROM Musteriler
+```
