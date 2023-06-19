@@ -956,3 +956,21 @@ SELECT * FROM [Satis Detaylari]
 
 SELECT TOP 6 WITH TIES * FROM [Satis Detaylari] ORDER BY SatisID
 ```
+
+***
+# 37-) T-SQL With Yapısı
+## WITH Komutu
+- Herhangi bir sorguda parametrik özellik kazandırmamızı sağlayan bir komuttur.
+
+- İleride göreceğimiz Stored Procedure, View gibi yapıların kaydedilebilir olması iken WITH Komutu kaydedilemeyen keza biz direkt fiziksel olarak kaydetmediğimiz sürece çalıştırdığımızda herhangi bir veritabanının yapısına kaydedilmeyen yapıdadır. Yani anlık olarak kullanıp işimizi gören bir komuttur.
+
+- Kompleks sorguların yazılma sürecinde daha da  komplekse gidiyorsa eğer WITH komutuyla biz mevcut sorguyu parametrik hale getirip daha okunabilir ve daha da işimizi kolaylaştırabilir bir yapı kazandırmayı hedefliyoruz.
+
+```SQL
+WITH PERSONELSATIS(ID,ADI,SOYADI,SATISID)
+AS
+(
+SELECT P.PersonelID,P.Adi,P.SoyAdi,S.SatisID FROM Personeller P INNER JOIN Satislar S ON P.PersonelID = S.PersonelID
+)
+SELECT * FROM PERSONELSATIS PS INNER JOIN [Satis Detaylari] SD ON SD.SatisID = PS.SATISID
+```
