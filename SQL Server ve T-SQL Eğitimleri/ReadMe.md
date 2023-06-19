@@ -1004,3 +1004,16 @@ WITH
 	ROWTERMINATOR = '\n'
 )
 ```
+
+***
+# 40-) T-SQL Truncate Table Komutu
+## TRUNCATE Komutu
+- Veritabanındaki herhangi bir tablomuzun tüm verilerini silmemizi sağlayan ve bu işlemi yaparkende IDENTITY kolonunu sıfırlamamızı sağlayan bir komuttur.
+- DELETE ile de tablodaki tüm verileri silebiliyoruz ama TRUNCATE'ten tek farkı ilgili IDENTITY kolonunu sıfırlamamakta sadece verileri silip IDENTITY kolonunu kaldığı yerde bırakmaktadır. Haliyle herhangi bir veri eklendiği vakit IDENTITY nerede kaldıysa oradan devam etmektedir.
+
+```SQL
+SELECT * INTO PERSONELLERX FROM PERSONELLER
+
+DELETE FROM PERSONELLERX
+TRUNCATE TABLE PERSONELLERX
+```
