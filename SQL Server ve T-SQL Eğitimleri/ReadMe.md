@@ -974,3 +974,17 @@ SELECT P.PersonelID,P.Adi,P.SoyAdi,S.SatisID FROM Personeller P INNER JOIN Satis
 )
 SELECT * FROM PERSONELSATIS PS INNER JOIN [Satis Detaylari] SD ON SD.SatisID = PS.SATISID
 ```
+
+***
+# 38-) T-SQL Subquery
+## SUBQUERY (İç İçe Sorgular)
+- Herhangi bir sorgunun çıktısı başka bir sorgunun girdisi olabilir.
+- Herhangi bir sorgudan elde ettiğimiz veriyi biz başka bir sorguda kullanabilmekteyiz. 
+
+```SQL
+SELECT * FROM Personeller P INNER JOIN Satislar S ON P.PersonelID = S.PersonelID WHERE Adi = 'NANCY'
+
+SELECT SatisID,SatisTarihi FROM Satislar WHERE PersonelID = (SELECT PersonelID FROM Personeller WHERE Adi = 'NANCY')
+
+SELECT Adi FROM Personeller WHERE Adi = (SELECT Adi FROM Personeller WHERE UnvanEki = 'Dr.')
+```
