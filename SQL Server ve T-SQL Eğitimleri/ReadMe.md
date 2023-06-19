@@ -890,3 +890,21 @@ SELECT KategoriID,UrunID,SUM(TedarikciID) FROM Urunler GROUP BY KategoriID,UrunI
 SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
 GROUP BY SatisID,UrunID WITH ROLLUP HAVING SUM(Miktar) > 100
 ```
+
+***
+# 34-) T-SQL With Cube Komutu
+## WITH CUBE
+- GROUP BY ile gruplanmış veri kümesinde teker teker toplam alınmasını sağlar.
+
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH CUBE
+
+SELECT KategoriID,UrunID,SUM(TedarikciID) FROM Urunler GROUP BY KategoriID,UrunID WITH CUBE
+```
+
+- [Having Şartıyla Beraber WITH ROLLUP]
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH CUBE HAVING SUM(Miktar) > 100
+```
