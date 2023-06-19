@@ -941,3 +941,18 @@ ELSE 'BELİRSİZ'
 END
 FROM Urunler
 ```
+
+***
+# 36-) T-SQL With Ties Komutu
+## WITH TIES Komutu
+- TOP komutunu kullanırken kullanıdığımız bir komuttur. 
+
+- Bağıl değerlendirme yapmamızı sağlar. Yani bir yarışma düşünün ilk 3'e ödül vereceksiniz ama 3.y'le aynı puan alan diğer yarışmacıları da istiyorsanız eğer bu komutu kullanabilirsiniz.
+
+- WITH TIES hangi kolona uygun bir şekilde işlem yapacaktır. Hangisinde devamlılık söz konusuysa o kolonu belirtmemiz gerekmektedir. Bunu da ORDER BY ile yaparız.
+
+```SQL
+SELECT * FROM [Satis Detaylari]
+
+SELECT TOP 6 WITH TIES * FROM [Satis Detaylari] ORDER BY SatisID
+```
