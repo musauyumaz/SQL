@@ -1060,3 +1060,20 @@ SELECT @@ROWCOUNT
 ```SQL
 DBCC Checkident(PERSONELLERX,reseed,27)
 ```
+
+***
+# 44-) T-SQL Null Değer Kontrolü
+## NULL Kontrol Mekanizmaları
+- NULL dediğimiz değerler değersiz anlamına gelen değerlerdir. Yani bir değerin olmadığını ifade ederler.
+
+## CASE-WHEN-THEN-ELSE-END Kalıbı İle NULL Kontrolü
+```SQL
+SELECT MusteriAdi,Bolge FROM Musteriler
+
+SELECT MusteriAdi,
+CASE 
+	WHEN BOLGE IS NULL THEN 'BÖLGE BİLİNMİYOR'
+	ELSE BOLGE
+END
+FROM Musteriler
+```
