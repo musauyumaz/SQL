@@ -822,3 +822,43 @@ DELETE FROM Urunler WHERE KategoriID < 3
 ## [Dikkat Edilmesi Gerekenler!!!]
 - DELETE sorgusuyla tablo içerisindeki verileri silmeniz identity kolonunu sıfırlamayacaktır. Silme işleminden sonra ilk eklenen veride kalınığı yerden id değeri verilecektir.
 - Hem identity değerini sıfırlamak hem de verileri temizlemek istiyorsak eğer TRUNCATE komutunu kullanırız
+
+***
+# 31-) T-SQL Union Komutu 
+## UNION | UNION ALL
+
+## UNION
+- Birden fazla SELECT sorgusu sonucunu tek seferde alt alta göstermemizi sağlar.
+
+```SQL
+SELECT Adi,SoyAdi FROM Personeller
+SELECT MusteriAdi,MusteriUnvani FROM Musteriler
+
+SELECT Adi,SoyAdi FROM Personeller
+UNION
+SELECT MusteriAdi,MusteriUnvani FROM Musteriler
+```
+
+- 2'den Fazla
+```SQL
+SELECT Adi,SoyAdi FROM Personeller
+UNION
+SELECT MusteriAdi,MusteriUnvani FROM Musteriler
+UNION
+SELECT SevkAdi,SevkAdresi FROM Satislar
+```
+
+- JOIN'ler yan yana, UNION alt alta tabloları birleştirir. JOIN'lerde belirli(ilişkisel) bir kolon üzerinden birleştirme yapılırken, UNION'da böyle bir durum yoktur.
+
+- Dikkat etmemiz gereken koşullar;
+	* UNION sorgusunun sonucunda oluşan tablonun kolon isimleri, üstteki sorgunun kolon isimlerinden oluşturulur.
+	* Üstteki sorgudan kaç kolon çekilmişse alttaki sorgudan da o kadar çekilmek zorundadır.
+	* Üsteki sorgudan çekilen kolonların tipleriyle, alttaki sorgudan çekilen kolonların tipleri uyumlu olmalıdır.
+	* UNION tekrarlı kayıtları getirmez.
+
+- UNION'da kullanılan tablolara kolon eklenebilir. Dikkat etmemiz gereken nokta, yukarıdaki kurallar çerçevesinde aşağıyada yukarıyada aynı sayıda kolonların eklenmesi gerekmektedir.
+```SQL
+SELECT Adi,SoyAdi, 'Personel' FROM Personeller
+UNION
+SELECT MusteriAdi,MusteriUnvani, 'Müşteri' FROM Musteriler
+```
