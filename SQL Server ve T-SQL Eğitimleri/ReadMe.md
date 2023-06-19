@@ -1050,3 +1050,13 @@ INSERT PERSONELLERX(Adi,SoyAdi) VALUES('Gençay','Yıldız'),
 									  ('Aslı','Güngör')
 SELECT @@ROWCOUNT
 ```
+
+***
+# 43-) T-SQL DBCC Checkident Fonksiyonu İle Identity Kolonuna Müdahale Etme
+## IDENTITY Kolonuna Müdahale Etme
+- Bir tabloda bulunan identity değerinin nereden devam edeceğini ayarlayabiliyoruz.
+- Burada ilgili tabloda bulundan identity değerlerinden büyük bir değer girmeliyiz.
+
+```SQL
+DBCC Checkident(PERSONELLERX,reseed,27)
+```
