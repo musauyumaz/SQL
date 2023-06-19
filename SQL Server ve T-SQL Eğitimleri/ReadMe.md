@@ -822,3 +822,267 @@ DELETE FROM Urunler WHERE KategoriID < 3
 ## [Dikkat Edilmesi Gerekenler!!!]
 - DELETE sorgusuyla tablo içerisindeki verileri silmeniz identity kolonunu sıfırlamayacaktır. Silme işleminden sonra ilk eklenen veride kalınığı yerden id değeri verilecektir.
 - Hem identity değerini sıfırlamak hem de verileri temizlemek istiyorsak eğer TRUNCATE komutunu kullanırız
+
+***
+# 31-) T-SQL Union Komutu 
+## UNION | UNION ALL
+
+## UNION
+- Birden fazla SELECT sorgusu sonucunu tek seferde alt alta göstermemizi sağlar.
+
+```SQL
+SELECT Adi,SoyAdi FROM Personeller
+SELECT MusteriAdi,MusteriUnvani FROM Musteriler
+
+SELECT Adi,SoyAdi FROM Personeller
+UNION
+SELECT MusteriAdi,MusteriUnvani FROM Musteriler
+```
+
+- 2'den Fazla
+```SQL
+SELECT Adi,SoyAdi FROM Personeller
+UNION
+SELECT MusteriAdi,MusteriUnvani FROM Musteriler
+UNION
+SELECT SevkAdi,SevkAdresi FROM Satislar
+```
+
+- JOIN'ler yan yana, UNION alt alta tabloları birleştirir. JOIN'lerde belirli(ilişkisel) bir kolon üzerinden birleştirme yapılırken, UNION'da böyle bir durum yoktur.
+
+- Dikkat etmemiz gereken koşullar;
+	* UNION sorgusunun sonucunda oluşan tablonun kolon isimleri, üstteki sorgunun kolon isimlerinden oluşturulur.
+	* Üstteki sorgudan kaç kolon çekilmişse alttaki sorgudan da o kadar çekilmek zorundadır.
+	* Üsteki sorgudan çekilen kolonların tipleriyle, alttaki sorgudan çekilen kolonların tipleri uyumlu olmalıdır.
+	* UNION tekrarlı kayıtları getirmez.
+
+- UNION'da kullanılan tablolara kolon eklenebilir. Dikkat etmemiz gereken nokta, yukarıdaki kurallar çerçevesinde aşağıyada yukarıyada aynı sayıda kolonların eklenmesi gerekmektedir.
+```SQL
+SELECT Adi,SoyAdi, 'Personel' FROM Personeller
+UNION
+SELECT MusteriAdi,MusteriUnvani, 'Müşteri' FROM Musteriler
+```
+
+***
+# 32-) T-SQL Union All Komutu
+## UNION ALL
+- UNION tekrarlı kayıtları getirmez. Tekrarlı kayıtları getirmek için UNION ALL komutu kullanılmalıdır.
+```SQL
+SELECT Adi,SoyAdi FROM Personeller 
+UNION ALL
+SELECT Adi,SoyAdi FROM Personeller 
+```
+
+***
+# 33-) T-SQL With Rollup Komutu
+## WITH ROLLUP
+- GROUP BY ile gruplanmış veri kümesinde ara toplam alınmasını sağlar.
+
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH ROLLUP
+
+SELECT KategoriID,UrunID,SUM(TedarikciID) FROM Urunler GROUP BY KategoriID,UrunID WITH ROLLUP
+```
+
+- [Having Şartıyla Beraber WITH ROLLUP]
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH ROLLUP HAVING SUM(Miktar) > 100
+```
+
+***
+# 34-) T-SQL With Cube Komutu
+## WITH CUBE
+- GROUP BY ile gruplanmış veri kümesinde teker teker toplam alınmasını sağlar.
+
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH CUBE
+
+SELECT KategoriID,UrunID,SUM(TedarikciID) FROM Urunler GROUP BY KategoriID,UrunID WITH CUBE
+```
+
+- [Having Şartıyla Beraber WITH ROLLUP]
+```SQL
+SELECT SatisID,UrunID,SUM(Miktar) FROM [Satis Detaylari]
+GROUP BY SatisID,UrunID WITH CUBE HAVING SUM(Miktar) > 100
+```
+
+***
+# 35-) T-SQL Case When Then Else End Kalıbı
+## CASE - WHEN - ELSE - END
+- Sorgularda şart kalıbı olarak kullanırız.
+
+- Personellerimizin isim ve soyisimlerinin yanında; UnvanEki 'Mr.' ise 'Erkek', 'Ms.' ise 'Kadın' yazsın.
+```SQL
+SELECT Adi,SoyAdi,UnvanEki FROM Personeller
+
+SELECT Adi,SoyAdi,
+CASE 
+WHEN UnvanEki = 'Mrs.' OR UnvanEki = 'Ms.' THEN 'KADIN'
+WHEN UnvanEki = 'Mr.' THEN 'ERKEK'
+ELSE UnvanEki
+END
+FROM Personeller
+```
+
+- Eğer ürünün birim fiyatı 0 - 50 arası ise 'Çin Malı' 50 - 100 arası ise 'Ucuz', 100 - 200 arası ise 'Normal' ve 200'den fazla ise 'Pahalı' yazsın.
+```SQL
+SELECT UrunID,BirimFiyati FROM Urunler
+
+SELECT UrunID,
+CASE
+WHEN BirimFiyati BETWEEN 0 AND 50 THEN 'Çin Malı'
+WHEN BirimFiyati BETWEEN 50 AND 100 THEN 'Ucuz'
+WHEN BirimFiyati BETWEEN 100 AND 200 THEN 'Normal'
+WHEN BirimFiyati> 200 THEN 'Pahalı'
+ELSE 'BELİRSİZ'
+END
+FROM Urunler
+```
+
+***
+# 36-) T-SQL With Ties Komutu
+## WITH TIES Komutu
+- TOP komutunu kullanırken kullanıdığımız bir komuttur. 
+
+- Bağıl değerlendirme yapmamızı sağlar. Yani bir yarışma düşünün ilk 3'e ödül vereceksiniz ama 3.y'le aynı puan alan diğer yarışmacıları da istiyorsanız eğer bu komutu kullanabilirsiniz.
+
+- WITH TIES hangi kolona uygun bir şekilde işlem yapacaktır. Hangisinde devamlılık söz konusuysa o kolonu belirtmemiz gerekmektedir. Bunu da ORDER BY ile yaparız.
+
+```SQL
+SELECT * FROM [Satis Detaylari]
+
+SELECT TOP 6 WITH TIES * FROM [Satis Detaylari] ORDER BY SatisID
+```
+
+***
+# 37-) T-SQL With Yapısı
+## WITH Komutu
+- Herhangi bir sorguda parametrik özellik kazandırmamızı sağlayan bir komuttur.
+
+- İleride göreceğimiz Stored Procedure, View gibi yapıların kaydedilebilir olması iken WITH Komutu kaydedilemeyen keza biz direkt fiziksel olarak kaydetmediğimiz sürece çalıştırdığımızda herhangi bir veritabanının yapısına kaydedilmeyen yapıdadır. Yani anlık olarak kullanıp işimizi gören bir komuttur.
+
+- Kompleks sorguların yazılma sürecinde daha da  komplekse gidiyorsa eğer WITH komutuyla biz mevcut sorguyu parametrik hale getirip daha okunabilir ve daha da işimizi kolaylaştırabilir bir yapı kazandırmayı hedefliyoruz.
+
+```SQL
+WITH PERSONELSATIS(ID,ADI,SOYADI,SATISID)
+AS
+(
+SELECT P.PersonelID,P.Adi,P.SoyAdi,S.SatisID FROM Personeller P INNER JOIN Satislar S ON P.PersonelID = S.PersonelID
+)
+SELECT * FROM PERSONELSATIS PS INNER JOIN [Satis Detaylari] SD ON SD.SatisID = PS.SATISID
+```
+
+***
+# 38-) T-SQL Subquery
+## SUBQUERY (İç İçe Sorgular)
+- Herhangi bir sorgunun çıktısı başka bir sorgunun girdisi olabilir.
+- Herhangi bir sorgudan elde ettiğimiz veriyi biz başka bir sorguda kullanabilmekteyiz. 
+
+```SQL
+SELECT * FROM Personeller P INNER JOIN Satislar S ON P.PersonelID = S.PersonelID WHERE Adi = 'NANCY'
+
+SELECT SatisID,SatisTarihi FROM Satislar WHERE PersonelID = (SELECT PersonelID FROM Personeller WHERE Adi = 'NANCY')
+
+SELECT Adi FROM Personeller WHERE Adi = (SELECT Adi FROM Personeller WHERE UnvanEki = 'Dr.')
+```
+
+***
+# 39-) T-SQL Bulk Insert
+## BULK INSERT 
+- Önceden fiziksel bir tablonun oluşturulmuş olması gerekmektedir.
+- Harici kaynaktaki kolonlarımızın tipleri ve kaç tane olduğu önemlidir.
+
+```SQL
+BULK INSERT Kisiler
+FROM 'D:\Kisiler.txt'
+WITH
+(
+	FIELDTERMINATOR = '\t',
+	ROWTERMINATOR = '\n'
+)
+```
+
+***
+# 40-) T-SQL Truncate Table Komutu
+## TRUNCATE Komutu
+- Veritabanındaki herhangi bir tablomuzun tüm verilerini silmemizi sağlayan ve bu işlemi yaparkende IDENTITY kolonunu sıfırlamamızı sağlayan bir komuttur.
+- DELETE ile de tablodaki tüm verileri silebiliyoruz ama TRUNCATE'ten tek farkı ilgili IDENTITY kolonunu sıfırlamamakta sadece verileri silip IDENTITY kolonunu kaldığı yerde bırakmaktadır. Haliyle herhangi bir veri eklendiği vakit IDENTITY nerede kaldıysa oradan devam etmektedir.
+
+```SQL
+SELECT * INTO PERSONELLERX FROM PERSONELLER
+
+DELETE FROM PERSONELLERX
+TRUNCATE TABLE PERSONELLERX
+```
+
+***
+# 41-) T-SQL @@Identity Komutu
+## @@IDENTITY Komutu
+- İlgili veritabanı içerisinde yapılan en son INSERT işleminin identity değerini bizlere getiren bir komuttur.
+- INSERT işleminden sonra direkt @@IDENTITY komutunu çağırmaktayız.
+
+```SQL
+INSERT Kategoriler(KategoriAdi,Tanimi) VALUES('X','X Kategorisi')
+
+SELECT @@IDENTITY
+
+INSERT PERSONELLERX(Adi,SoyAdi) VALUES('Ela','Elif')
+SELECT @@IDENTITY
+```
+
+***
+# 42-) T-SQL @@Rowcount Komutu
+## @@ROWCOUNT Komutu
+- Biz yapmış olduğumuz işlem neticesinde kaç tane elemanın etkilendiğini bulabiliyoruz.
+
+```SQL
+DELETE FROM PERSONELLERX WHERE SoyAdi = 'Gençay'
+SELECT @@ROWCOUNT
+
+SELECT * FROM Personeller 
+SELECT @@ROWCOUNT
+
+INSERT PERSONELLERX(Adi,SoyAdi) VALUES('Gençay','Yıldız'),
+									  ('Ahmet','Uslu'),
+									  ('Aslı','Güngör')
+SELECT @@ROWCOUNT
+```
+
+***
+# 43-) T-SQL DBCC Checkident Fonksiyonu İle Identity Kolonuna Müdahale Etme
+## IDENTITY Kolonuna Müdahale Etme
+- Bir tabloda bulunan identity değerinin nereden devam edeceğini ayarlayabiliyoruz.
+- Burada ilgili tabloda bulundan identity değerlerinden büyük bir değer girmeliyiz.
+
+```SQL
+DBCC Checkident(PERSONELLERX,reseed,27)
+```
+
+***
+# 44-) T-SQL Null Değer Kontrolü
+## NULL Kontrol Mekanizmaları
+- NULL dediğimiz değerler değersiz anlamına gelen değerlerdir. Yani bir değerin olmadığını ifade ederler.
+
+## CASE-WHEN-THEN-ELSE-END Kalıbı İle NULL Kontrolü
+```SQL
+SELECT MusteriAdi,Bolge FROM Musteriler
+
+SELECT MusteriAdi,
+CASE 
+	WHEN BOLGE IS NULL THEN 'BÖLGE BİLİNMİYOR'
+	ELSE BOLGE
+END
+FROM Musteriler
+```
+
+***
+# 45-) T-SQL Coalesce Fonksiyonu İle Null Değer Kontrolü
+## COALESCE Fonksiyonu İle NULL Kontrolü
+- Verdiğimiz kolondaki NULL değerlere verdiğimiz ikinci parametredeki değere göre değiştirecektir. 
+
+```SQL
+SELECT MusteriAdi, COALESCE(Bolge,'BÖLGE BİLİNMİYOR') FROM Musteriler
+```
