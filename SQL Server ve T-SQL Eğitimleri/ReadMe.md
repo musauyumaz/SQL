@@ -1032,3 +1032,21 @@ SELECT @@IDENTITY
 INSERT PERSONELLERX(Adi,SoyAdi) VALUES('Ela','Elif')
 SELECT @@IDENTITY
 ```
+
+***
+# 42-) T-SQL @@Rowcount Komutu
+## @@ROWCOUNT Komutu
+- Biz yapmış olduğumuz işlem neticesinde kaç tane elemanın etkilendiğini bulabiliyoruz.
+
+```SQL
+DELETE FROM PERSONELLERX WHERE SoyAdi = 'Gençay'
+SELECT @@ROWCOUNT
+
+SELECT * FROM Personeller 
+SELECT @@ROWCOUNT
+
+INSERT PERSONELLERX(Adi,SoyAdi) VALUES('Gençay','Yıldız'),
+									  ('Ahmet','Uslu'),
+									  ('Aslı','Güngör')
+SELECT @@ROWCOUNT
+```
