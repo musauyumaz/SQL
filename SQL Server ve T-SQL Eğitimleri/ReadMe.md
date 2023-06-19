@@ -862,3 +862,14 @@ SELECT Adi,SoyAdi, 'Personel' FROM Personeller
 UNION
 SELECT MusteriAdi,MusteriUnvani, 'Müşteri' FROM Musteriler
 ```
+
+***
+# 32-) T-SQL Union All Komutu
+## UNION ALL
+- UNION tekrarlı kayıtları getirmez. Tekrarlı kayıtları getirmek için UNION ALL komutu kullanılmalıdır.
+```SQL
+SELECT Adi,SoyAdi FROM Personeller 
+UNION ALL
+SELECT Adi,SoyAdi FROM Personeller 
+```
+
