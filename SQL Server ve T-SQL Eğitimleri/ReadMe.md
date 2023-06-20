@@ -1235,3 +1235,12 @@ CREATE TABLE ORNEKTABLO3
 	[KOLON 3] MONEY
 )
 ```
+
+***
+# 56-) T-SQL DDL Alter Komutu
+## ALTER
+- CREATE ile yaratılan veritabanı nesnelerinde değişiklik yahut güncelleme işlemi yapmamızı sağlar.
+
+- Prototip
+- ALTER [NESNE] [NESNENİN ADI] 
+- (Yapıya Göre İşlemler)
