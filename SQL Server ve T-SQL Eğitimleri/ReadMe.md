@@ -1157,3 +1157,25 @@ SELECT OBJECTPROPERTY(OBJECT_ID('PERSONELLER'),'TABLEHASPRIMARYKEY')
 - Prototipi
 - CREATE [NESNE] [NESNENİN ADI]
 
+***
+# 52-) T-SQL DDL Create Komutu İle Database Oluşturma
+## CREATE İle Database Oluşturma
+```SQL
+CREATE DATABASE OrnekVeritabani
+```
+- Bu şekilde bir kullanım varsayılan ayarlarda veritabanı oluşturacaktır.
+
+```SQL
+CREATE DATABASE OrnekVeritabani
+ON 
+(
+	NAME = 'GG',
+	FILENAME = 'D:\GG.mdf',
+	SIZE = 5,
+	FILEGROWTH = 3
+)
+```
+- NAME : Oluşturulacak veritabanının fiziksel ismini belirtiyoruz.
+- FILENAME : Oluşturulacak veritabanının dosyasının fiziksel dizinini belirtiyoruz.
+- SIZE : Veritabanının başlangıç boyutunu MB cinsinden ayarlıyoruz.
+- FILEGROWTH : Veritabanın boyutu, başlangıç boyutunu geçtiği durumda boyutun ne kadar artması gerektiğini MB cinsinden belirtiyoruz.
