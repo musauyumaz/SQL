@@ -1120,3 +1120,15 @@ SELECT AVG(HedefStokDuzeyi) FROM Urunler WHERE HedefStokDuzeyi <> 0
  
 SELECT AVG(NULLIF(HedefStokDuzeyi,0)) FROM Urunler
 ```
+
+# 48-) T-SQL İle Veritabanındaki Tabloları Listeleme
+## T-SQL İle Veritabanındaki Tabloları Listeleme
+- Çalıştığınız veritabanının içindeki tablolara erişmek istiyorsanız aşağıdaki sorguları kullanabilirsiniz.
+
+```SQL
+SELECT * FROM SYS.TABLES
+```
+- ya da
+```SQL
+SELECT * FROM SYSOBJECTS WHERE XTYPE='U'
+```
