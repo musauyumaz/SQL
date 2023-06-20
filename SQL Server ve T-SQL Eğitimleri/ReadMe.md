@@ -1244,3 +1244,15 @@ CREATE TABLE ORNEKTABLO3
 - Prototip
 - ALTER [NESNE] [NESNENİN ADI] 
 - (Yapıya Göre İşlemler)
+
+***
+# 57-) T-SQL DDL Alter Komutu İle Database Güncelleme
+## ALTER İle Database Güncelleme
+```SQL
+ALTER DATABASE ORNEKVERITABANI
+MODIFY FILE 
+(
+	NAME = 'ORNEKVERITABANI',
+	SIZE = 20
+)
+```
