@@ -1141,3 +1141,10 @@ SELECT * FROM SYSOBJECTS WHERE XTYPE='U'
 ```SQL
 SELECT OBJECTPROPERTY(OBJECT_ID('PERSONELLER'),'TABLEHASPRIMARYKEY')
 ```
+
+***
+# 50-) T-SQL DDL Giriş
+## DDL (Data Definition Language)
+- T-SQL'de veritabanı nesneleri yaratmamızı sağlayan ve bu nesneler üzerinde değişiklikler yapmamızı ve silmemizi sağlayan yapılar bu başlık altında simgelenmektedir.
+
+## CREATE ALTER DROP
