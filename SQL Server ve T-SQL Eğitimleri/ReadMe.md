@@ -1132,3 +1132,12 @@ SELECT * FROM SYS.TABLES
 ```SQL
 SELECT * FROM SYSOBJECTS WHERE XTYPE='U'
 ```
+
+***
+# 49-) T-SQL Bir Tablonun Primary Key Olup Olmadığını Kontrol Etme
+## Bir Tablonun Primary Key Olup Olmadığını Kontrol Etme
+- Eğer ki 1 değerini döndürüyorsa ilgili tablo içinde primary key var olduğunu göstermektedir. Yok eğer 0 gösteriyorsa demek ki ilgili tablo içinde herhangi bir primary key yok demektir.
+
+```SQL
+SELECT OBJECTPROPERTY(OBJECT_ID('PERSONELLER'),'TABLEHASPRIMARYKEY')
+```
