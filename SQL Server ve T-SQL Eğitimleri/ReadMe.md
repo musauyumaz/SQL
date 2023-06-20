@@ -1264,3 +1264,11 @@ MODIFY FILE
 ALTER TABLE ORNEKTABLO
 ADD KOLON4 NVARCHAR(MAX)
 ```
+
+***
+# 59-) T-SQL DDL Alter Komutu İle Tablodaki Kolonu Güncelleme
+## ALTER İle Tablodaki Kolonu Güncelleme
+```SQL
+ALTER TABLE ORNEKTABLO
+ALTER COLUMN KOLON4 INT
+```
