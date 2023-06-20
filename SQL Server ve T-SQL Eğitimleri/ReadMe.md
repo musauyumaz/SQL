@@ -1086,3 +1086,12 @@ FROM Musteriler
 ```SQL
 SELECT MusteriAdi, COALESCE(Bolge,'BÖLGE BİLİNMİYOR') FROM Musteriler
 ```
+
+***
+# 46-) T-SQL IsNull Fonksiyonu İle Null Değer Kontrolü
+## ISNULL Fonksiyonu İle NULL Kontrolü
+- COALESCE Fonksiyonunda olduğu gibi eğer ki null olmayan değerler varsa onları aynı şekil bırakıyor. NULL değerlerin yerine de parametrede belirtilen değeri veriyor.
+
+```SQL
+SELECT MusteriAdi,ISNULL(Bolge,'Bölge Bilinmiyor') FROM Musteriler
+```
