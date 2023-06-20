@@ -1224,3 +1224,14 @@ CREATE TABLE ORNEKTABLO2
 	[KOLON 3] MONEY
 )
 ```
+
+# 55-) T-SQL DDL Create Komutu İle Tablonun Kolonuna Primary Key ve Identity Özellikleri Verme
+## Kolona Primary Key ve Identity Özelliği Kazandırmak
+```SQL
+CREATE TABLE ORNEKTABLO3
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	[KOLON 2] NVARCHAR(MAX),
+	[KOLON 3] MONEY
+)
+```
