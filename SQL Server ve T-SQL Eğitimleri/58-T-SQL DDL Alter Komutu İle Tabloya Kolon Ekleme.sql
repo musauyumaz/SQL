@@ -1,0 +1,3 @@
+-- ALTER Ýle Olan Bir Tabloya Kolon Ekleme
+ALTER TABLE ORNEKTABLO
+ADD KOLON4 NVARCHAR(MAX)

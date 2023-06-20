@@ -1256,3 +1256,11 @@ MODIFY FILE
 	SIZE = 20
 )
 ```
+
+***
+# 58-) T-SQL DDL Alter Komutu İle Tabloya Kolon Ekleme
+## ALTER İle Olan Bir Tabloya Kolon Ekleme
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD KOLON4 NVARCHAR(MAX)
+```
