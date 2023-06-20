@@ -1179,3 +1179,25 @@ ON
 - FILENAME : Oluşturulacak veritabanının dosyasının fiziksel dizinini belirtiyoruz.
 - SIZE : Veritabanının başlangıç boyutunu MB cinsinden ayarlıyoruz.
 - FILEGROWTH : Veritabanın boyutu, başlangıç boyutunu geçtiği durumda boyutun ne kadar artması gerektiğini MB cinsinden belirtiyoruz.
+
+***
+# 53-) T-SQL DDL Create Komutu İle Database Log Dosyası Oluşturma
+## CREATE İle Log Dosyasıyla Birlikte Database Oluşturma
+```SQL
+CREATE DATABASE OrnekVeritabani
+ON 
+(
+	NAME = 'GG',
+	FILENAME = 'D:\GG.mdf',
+	SIZE = 5,
+	FILEGROWTH = 3
+)
+LOG 
+ON 
+(
+	NAME = 'GG_LOG',
+	FILENAME = 'D:\GG.ldf',
+	SIZE = 5,
+	FILEGROWTH = 3
+)
+```
