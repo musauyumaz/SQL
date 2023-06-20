@@ -1,0 +1,3 @@
+-- ALTER Ýle Tablodaki Kolonu Silme
+ALTER TABLE ORNEKTABLO
+DROP COLUMN KOLON4
