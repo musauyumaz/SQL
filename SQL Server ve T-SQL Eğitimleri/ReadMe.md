@@ -1148,3 +1148,12 @@ SELECT OBJECTPROPERTY(OBJECT_ID('PERSONELLER'),'TABLEHASPRIMARYKEY')
 - T-SQL'de veritabanı nesneleri yaratmamızı sağlayan ve bu nesneler üzerinde değişiklikler yapmamızı ve silmemizi sağlayan yapılar bu başlık altında simgelenmektedir.
 
 ## CREATE ALTER DROP
+
+***
+# 51-) T-SQL DDL Create Komutu
+## CREATE
+- Veritabanı nesnesi yaratmamızı sağlar (Database, Table, View, Stored Procedure, Trigger, vs.)
+
+- Prototipi
+- CREATE [NESNE] [NESNENİN ADI]
+
