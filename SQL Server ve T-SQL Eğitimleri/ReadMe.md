@@ -1095,3 +1095,28 @@ SELECT MusteriAdi, COALESCE(Bolge,'BÖLGE BİLİNMİYOR') FROM Musteriler
 ```SQL
 SELECT MusteriAdi,ISNULL(Bolge,'Bölge Bilinmiyor') FROM Musteriler
 ```
+
+***
+# 47-) T-SQL NullIf Fonksiyonu İle Null Değer Kontrolü
+## NULLIF Fonksiyonu İle NULL Kontrolü 
+- Fonksiyona verilen kolon,Birinci parametredeki değer eğer ikinci parametrede verilen değere eşit ise o kolonu NULL olarak getirir.
+
+- Eğer ki parametredeki değerler eşit değilse bize birinci parametredeki değeri döndürür.
+
+- NULL değerler raporlamada yani istatistiksel matematiksel işlemlerde sonucu saptırabilmekte ve beklediğimiz sonuçları alamamaktayız. Nihayetinde NULL değerleri ya hükmedebilmeli değiştirmeli ya da NULL değerleri hesaplamadan çıkarmalıyız.
+
+- NULL değerleri serbest bırakmayın kendi amacınız doğrultusunda ister değer atayacaksınız ister farklı bir ayraç atayacaksınız ama NULL olarak bırakmayacaksınız. Raporlamada her zaman NULL değerlere dikkat etmek gerekir.
+```SQL
+SELECT NULLIF(2,2)
+
+SELECT HedefStokDuzeyi FROM Urunler
+
+SELECT AVG(HedefStokDuzeyi) FROM Urunler
+```
+
+- Hedef stok düzeyi 0 olmayan ürünlerin ortalaması nedir?
+```SQL
+SELECT AVG(HedefStokDuzeyi) FROM Urunler WHERE HedefStokDuzeyi <> 0
+ 
+SELECT AVG(NULLIF(HedefStokDuzeyi,0)) FROM Urunler
+```
