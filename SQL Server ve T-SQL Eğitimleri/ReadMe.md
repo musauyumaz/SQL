@@ -1086,3 +1086,197 @@ FROM Musteriler
 ```SQL
 SELECT MusteriAdi, COALESCE(Bolge,'BÖLGE BİLİNMİYOR') FROM Musteriler
 ```
+
+***
+# 46-) T-SQL IsNull Fonksiyonu İle Null Değer Kontrolü
+## ISNULL Fonksiyonu İle NULL Kontrolü
+- COALESCE Fonksiyonunda olduğu gibi eğer ki null olmayan değerler varsa onları aynı şekil bırakıyor. NULL değerlerin yerine de parametrede belirtilen değeri veriyor.
+
+```SQL
+SELECT MusteriAdi,ISNULL(Bolge,'Bölge Bilinmiyor') FROM Musteriler
+```
+
+***
+# 47-) T-SQL NullIf Fonksiyonu İle Null Değer Kontrolü
+## NULLIF Fonksiyonu İle NULL Kontrolü 
+- Fonksiyona verilen kolon,Birinci parametredeki değer eğer ikinci parametrede verilen değere eşit ise o kolonu NULL olarak getirir.
+
+- Eğer ki parametredeki değerler eşit değilse bize birinci parametredeki değeri döndürür.
+
+- NULL değerler raporlamada yani istatistiksel matematiksel işlemlerde sonucu saptırabilmekte ve beklediğimiz sonuçları alamamaktayız. Nihayetinde NULL değerleri ya hükmedebilmeli değiştirmeli ya da NULL değerleri hesaplamadan çıkarmalıyız.
+
+- NULL değerleri serbest bırakmayın kendi amacınız doğrultusunda ister değer atayacaksınız ister farklı bir ayraç atayacaksınız ama NULL olarak bırakmayacaksınız. Raporlamada her zaman NULL değerlere dikkat etmek gerekir.
+```SQL
+SELECT NULLIF(2,2)
+
+SELECT HedefStokDuzeyi FROM Urunler
+
+SELECT AVG(HedefStokDuzeyi) FROM Urunler
+```
+
+- Hedef stok düzeyi 0 olmayan ürünlerin ortalaması nedir?
+```SQL
+SELECT AVG(HedefStokDuzeyi) FROM Urunler WHERE HedefStokDuzeyi <> 0
+ 
+SELECT AVG(NULLIF(HedefStokDuzeyi,0)) FROM Urunler
+```
+
+# 48-) T-SQL İle Veritabanındaki Tabloları Listeleme
+## T-SQL İle Veritabanındaki Tabloları Listeleme
+- Çalıştığınız veritabanının içindeki tablolara erişmek istiyorsanız aşağıdaki sorguları kullanabilirsiniz.
+
+```SQL
+SELECT * FROM SYS.TABLES
+```
+- ya da
+```SQL
+SELECT * FROM SYSOBJECTS WHERE XTYPE='U'
+```
+
+***
+# 49-) T-SQL Bir Tablonun Primary Key Olup Olmadığını Kontrol Etme
+## Bir Tablonun Primary Key Olup Olmadığını Kontrol Etme
+- Eğer ki 1 değerini döndürüyorsa ilgili tablo içinde primary key var olduğunu göstermektedir. Yok eğer 0 gösteriyorsa demek ki ilgili tablo içinde herhangi bir primary key yok demektir.
+
+```SQL
+SELECT OBJECTPROPERTY(OBJECT_ID('PERSONELLER'),'TABLEHASPRIMARYKEY')
+```
+
+***
+# 50-) T-SQL DDL Giriş
+## DDL (Data Definition Language)
+- T-SQL'de veritabanı nesneleri yaratmamızı sağlayan ve bu nesneler üzerinde değişiklikler yapmamızı ve silmemizi sağlayan yapılar bu başlık altında simgelenmektedir.
+
+## CREATE ALTER DROP
+
+***
+# 51-) T-SQL DDL Create Komutu
+## CREATE
+- Veritabanı nesnesi yaratmamızı sağlar (Database, Table, View, Stored Procedure, Trigger, vs.)
+
+- Prototipi
+- CREATE [NESNE] [NESNENİN ADI]
+
+***
+# 52-) T-SQL DDL Create Komutu İle Database Oluşturma
+## CREATE İle Database Oluşturma
+```SQL
+CREATE DATABASE OrnekVeritabani
+```
+- Bu şekilde bir kullanım varsayılan ayarlarda veritabanı oluşturacaktır.
+
+```SQL
+CREATE DATABASE OrnekVeritabani
+ON 
+(
+	NAME = 'GG',
+	FILENAME = 'D:\GG.mdf',
+	SIZE = 5,
+	FILEGROWTH = 3
+)
+```
+- NAME : Oluşturulacak veritabanının fiziksel ismini belirtiyoruz.
+- FILENAME : Oluşturulacak veritabanının dosyasının fiziksel dizinini belirtiyoruz.
+- SIZE : Veritabanının başlangıç boyutunu MB cinsinden ayarlıyoruz.
+- FILEGROWTH : Veritabanın boyutu, başlangıç boyutunu geçtiği durumda boyutun ne kadar artması gerektiğini MB cinsinden belirtiyoruz.
+
+***
+# 53-) T-SQL DDL Create Komutu İle Database Log Dosyası Oluşturma
+## CREATE İle Log Dosyasıyla Birlikte Database Oluşturma
+```SQL
+CREATE DATABASE OrnekVeritabani
+ON 
+(
+	NAME = 'GG',
+	FILENAME = 'D:\GG.mdf',
+	SIZE = 5,
+	FILEGROWTH = 3
+)
+LOG 
+ON 
+(
+	NAME = 'GG_LOG',
+	FILENAME = 'D:\GG.ldf',
+	SIZE = 5,
+	FILEGROWTH = 3
+)
+```
+
+***
+# 54-) T-SQL DDL Create Komutu İle Table Oluşturma
+## CREATE İle Tablo Oluşturma
+```SQL
+USE ORNEKVERITABANI
+CREATE TABLE ORNEKTABLO
+(
+	KOLON1 INT,
+	KOLON2 NVARCHAR(MAX),
+	KOLON3 MONEY
+)
+```
+
+- Eğer kolon adlarında boşluk varsa köşeli parantez([]) ile belirtilmelidir.
+```SQL
+CREATE TABLE ORNEKTABLO2
+(
+	[KOLON 1] INT,
+	[KOLON 2] NVARCHAR(MAX),
+	[KOLON 3] MONEY
+)
+```
+
+# 55-) T-SQL DDL Create Komutu İle Tablonun Kolonuna Primary Key ve Identity Özellikleri Verme
+## Kolona Primary Key ve Identity Özelliği Kazandırmak
+```SQL
+CREATE TABLE ORNEKTABLO3
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	[KOLON 2] NVARCHAR(MAX),
+	[KOLON 3] MONEY
+)
+```
+
+***
+# 56-) T-SQL DDL Alter Komutu
+## ALTER
+- CREATE ile yaratılan veritabanı nesnelerinde değişiklik yahut güncelleme işlemi yapmamızı sağlar.
+
+- Prototip
+- ALTER [NESNE] [NESNENİN ADI] 
+- (Yapıya Göre İşlemler)
+
+***
+# 57-) T-SQL DDL Alter Komutu İle Database Güncelleme
+## ALTER İle Database Güncelleme
+```SQL
+ALTER DATABASE ORNEKVERITABANI
+MODIFY FILE 
+(
+	NAME = 'ORNEKVERITABANI',
+	SIZE = 20
+)
+```
+
+***
+# 58-) T-SQL DDL Alter Komutu İle Tabloya Kolon Ekleme
+## ALTER İle Olan Bir Tabloya Kolon Ekleme
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD KOLON4 NVARCHAR(MAX)
+```
+
+***
+# 59-) T-SQL DDL Alter Komutu İle Tablodaki Kolonu Güncelleme
+## ALTER İle Tablodaki Kolonu Güncelleme
+```SQL
+ALTER TABLE ORNEKTABLO
+ALTER COLUMN KOLON4 INT
+```
+
+***
+# 60-) T-SQL DDL Alter Komutu İle Tablodaki Kolonu Silme
+## ALTER İle Tablodaki Kolonu Silme
+```SQL
+ALTER TABLE ORNEKTABLO
+DROP COLUMN KOLON4
+```

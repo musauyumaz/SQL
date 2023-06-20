@@ -1,0 +1,3 @@
+-- ALTER Ýle Tablodaki Kolonu Güncelleme
+ALTER TABLE ORNEKTABLO
+ALTER COLUMN KOLON4 INT
