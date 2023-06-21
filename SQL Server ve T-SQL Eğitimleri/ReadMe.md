@@ -1428,3 +1428,37 @@ ADD CONSTRAINT ORNEKTABLOUNIQUE UNIQUE (KOLON2)
 ```
 
 - KOLON2 kolonuna UNIQUE Constraint verilerek tekil hale getirilmiştir. Bundan sonra iki tane aynı veriden kayıt yapılamamaktadır.
+
+***
+# 72-) T-SQL Foreign Key Constraint
+## FOREIGN KEY CONSTRAINT 
+- Tabloların kolonları arasında ilişki kurmamızı sağlar. Bu ilişki neticesinde FOREIGN KEY olan kolondaki karşılığının boşa düşmemesi için PRIMARY KEY kolonu olan tablodan veri silinmesini güncellenmesini engeller
+
+- Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] FOREIGN KEY (KOLON ADI) REFERENCES [2.TABLO ADI](2. TABLODAKİ KOLON ADI)
+
+```SQL
+CREATE TABLE OGRENCILER
+(
+	OGRENCIID INT PRIMARY KEY IDENTITY(1,1),
+	DERSID INT,
+	ADI NVARCHAR(MAX),
+	SOYADI NVARCHAR(MAX)
+)
+
+CREATE TABLE DERSLER
+(
+	DERSID INT PRIMARY KEY IDENTITY(1,1),
+	DERSADI NVARCHAR(MAX)
+)
+
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT FOREIGKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERSID)
+```
+
+- Şu durumda DELETE UPDATE işlemlerinden ilişkili kolondaki veriler etkilenmez.
+
+- Davranışı değiştirmek için aşağıdaki komutlar kullanılır.
+	* CASCADE
+	* SET NULL
+	* SET DEFAULT
