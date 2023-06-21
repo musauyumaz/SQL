@@ -1380,3 +1380,17 @@ ALTER TABLE ORNEKTABLO
 ADD CONSTRAINT KOLON2KONTROL CHECK ((KOLON2 * 5) % 2 = 0)
 ```
 
+***
+# 69-) T-SQL Check Constraint With Nocheck Komutu
+## DİKKAT!!!
+- CHECK constraint oluşturulmadan önce ilgili tabloda şarta aykırı değerler varsa eğer constraint oluşturulmayacaktır! ! !
+
+- Ancak önceki kayıtları görmezden gelip yinede CHECK constrainti uygulamak istiyorsak WITH NOCHECK komutu kullanılmalıdır.
+
+## WITH NOCHECK Komutu
+- Şu ana kadar kayıtları görmezden gelip, CHECK constrainti uygulattırır.
+```SQL
+ALTER TABLE ORNEKTABLO
+WITH NOCHECK ADD CONSTRAINT KOLON2KONTROL CHECK((KOLON2 * 5) % 2 = 0)
+```
+
