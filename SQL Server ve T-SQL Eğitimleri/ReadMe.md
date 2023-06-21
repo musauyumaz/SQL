@@ -1462,3 +1462,14 @@ ADD CONSTRAINT FOREIGKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERS
 	* CASCADE
 	* SET NULL
 	* SET DEFAULT
+
+***
+# 73-) T-SQL Foreign Key Constraint Cascade Komutu
+## CASCADE
+- Ana tablodaki kayıt silindiğinde ya da güncellendiğinde ilişkili kolondaki karşılığıda otomatik olarak silinir ya da güncellenir.
+```SQL
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT FOREIGNKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERSID)
+ON DELETE CASCADE
+ON UPDATE CASCADE
+```
