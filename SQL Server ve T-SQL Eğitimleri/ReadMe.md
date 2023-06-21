@@ -1337,3 +1337,30 @@ DROP DATABASE ORNEKVERITABANI
 	* 3. PRIMARY KEY CONSTRAINT
 	* 4. UNIQUE CONSTRAINT
 	* 5. FOREIGN KEY CONSTRAINT
+
+# 67-) T-SQL Default Constraint
+## DEFAULT CONSTRAINT
+- DEFAULT CONSTRAINT sayesinde kolona bir değer girilmediği taktirde varsayılan olarak ne girilmesi gerektiğini belirtebiliyoruz.
+- Herhangi bir tablo içerisindeki herhangi bir kolonun boş geçilmesi durumunda ilgili kolona girilecek olan varsayılan değerin ne olması gerektiğini DEFAULT CONSTRAINT sayesinde belirtebiliyoruz.
+
+## Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] DEFAULT 'VARSAYILAN DEĞER' FOR [KOLON ADI]
+
+```SQL
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 INT
+)
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT KOLON1CONSTRAINT DEFAULT 'BOŞ' FOR KOLON1
+
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT KOLON2CONSTRAINT DEFAULT -1 FOR KOLON2
+
+INSERT ORNEKTABLO(KOLON2) VALUES(0)
+INSERT ORNEKTABLO(KOLON1) VALUES('ÖRNEK BİR DEĞER')
+
+SELECT * FROM ORNEKTABLO
+```
