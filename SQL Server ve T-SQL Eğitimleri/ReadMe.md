@@ -1310,3 +1310,16 @@ SP_RENAME 'ORNEKTABLO', 'ORNEKTABLOYENI'
 ```SQL
 SP_RENAME 'ORNEKTABLOYENI.KOLON1' ,'KOLON1453','COLUMN'
 ```
+
+***
+# 65-) T-SQL DDL Drop Komutu
+## DROP
+-- CREATE ile oluşturulan veri tabanı nesnelerini silmemize yarar.
+
+## Prototip
+-- DROP [NESNE] [NESNE ADI]
+
+```SQL
+DROP TABLE ORNEKTABLOYENI
+DROP DATABASE ORNEKVERITABANI
+```
