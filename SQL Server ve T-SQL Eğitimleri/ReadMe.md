@@ -1394,3 +1394,20 @@ ALTER TABLE ORNEKTABLO
 WITH NOCHECK ADD CONSTRAINT KOLON2KONTROL CHECK((KOLON2 * 5) % 2 = 0)
 ```
 
+***
+# 70-) T-SQL Primary Key Constraint
+## PRIMARY KEY CONSTRAINT
+- PRIMARY KEY Constraint ile; o kolona eklenen PRIMARY KEY ile, başka tablolarda FOREIGN KEY oluşturarak ilişki kurmamız mümkün olur. Bunun yanında o kolonun taşıdığı verinin tekil olacağı da garanti edilmiş olur. PRIMARY KEY Constraint ile ayrıca CLUSTERED INDEX oluşturulmuş da olur.
+
+- Genel Yapısı
+- ADD CONSTRAINT [CONSTRAINT ADI] PRIMARY KEY [KOLON ADI]
+
+- DİKKAT !!!
+- PRIMARY KEY Constraint kullanılan kolon PRIMARY KEY özelliğine sahip olmamalıdır.
+
+- Kullanacağımız tablonun içerisinde ise başka PRIMARY KEY kolonu olmamalıdır. Çünkü bir tabloda sadece bir tane PRIMARY KEY kolon bulunabilir.
+
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT PRIMARYID PRIMARY KEY (ID)
+```
