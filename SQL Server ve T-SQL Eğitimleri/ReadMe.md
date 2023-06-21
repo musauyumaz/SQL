@@ -1411,3 +1411,20 @@ WITH NOCHECK ADD CONSTRAINT KOLON2KONTROL CHECK((KOLON2 * 5) % 2 = 0)
 ALTER TABLE ORNEKTABLO
 ADD CONSTRAINT PRIMARYID PRIMARY KEY (ID)
 ```
+
+***
+# 71-) T-SQL Unique Constraint
+## UNIQUE CONSTRAINT 
+- UNIQUE CONSTRAINT'in tek amacı, belirttiğimiz kolondaki değerlerin tekil olmasını sağlamaktadır.
+
+- Birden fazla tekrarlı kaydın girmesini engellemektedir.
+
+- Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] UNIQUE (KOLON ADI)
+
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT ORNEKTABLOUNIQUE UNIQUE (KOLON2)
+```
+
+- KOLON2 kolonuna UNIQUE Constraint verilerek tekil hale getirilmiştir. Bundan sonra iki tane aynı veriden kayıt yapılamamaktadır.
