@@ -1323,3 +1323,17 @@ SP_RENAME 'ORNEKTABLOYENI.KOLON1' ,'KOLON1453','COLUMN'
 DROP TABLE ORNEKTABLOYENI
 DROP DATABASE ORNEKVERITABANI
 ```
+
+***
+# 66-) T-SQL Constraintler Giriş
+## CONSTRAINTLER (KISITLAYICILAR)
+- Constraintler sayesinde tablolar üzerinde istediğimiz şartlar ve durumlara göre kısıtlamalar yapabiliyoruz.
+
+- Bir tabloya özel şart durum ya da herhangi bir varsayılan değeri Constraint'imizi oluşturduğumuz zaman bu constraint ilgili tabloya fiziksel olarak oluşturulacaktır.
+
+- CONSTRAINT Türleri;
+	* 1. DEFAULT CONSTRAINT
+	* 2. CHECK CONSTRAINT
+	* 3. PRIMARY KEY CONSTRAINT
+	* 4. UNIQUE CONSTRAINT
+	* 5. FOREIGN KEY CONSTRAINT
