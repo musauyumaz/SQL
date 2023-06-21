@@ -1364,3 +1364,19 @@ INSERT ORNEKTABLO(KOLON1) VALUES('ÖRNEK BİR DEĞER')
 
 SELECT * FROM ORNEKTABLO
 ```
+
+***
+# 68-) T-SQL Check Constraint
+## CHECK CONSTRAINT
+- Bir kolona girilecek olan verinin belirli bir şarta uymasını zorunlu tutar.
+
+- Herhangi bir kolona girilecek olan verinin önceden belirttiğim bir şarta göre CHECK/kontrol edilip CHECK sonucunda olumlu ya da olumsuz olma durumuna göre ilgili kolona ilgili verinin kaydedilmesini inceleyen constraint'tir.
+
+- Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] CHECK (ŞART)
+
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT KOLON2KONTROL CHECK ((KOLON2 * 5) % 2 = 0)
+```
+
