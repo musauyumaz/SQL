@@ -1,0 +1,6 @@
+-- SET NULL
+-- Ana tablodaki kayýt silindiðinde ya da güncellendiðinde iliþkili kolondaki karþýlýðýda NULL deðer basýlýr.
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT FOREIGNKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERSID)
+ON DELETE SET NULL
+ON UPDATE SET NULL

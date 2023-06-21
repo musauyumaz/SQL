@@ -1280,3 +1280,224 @@ ALTER COLUMN KOLON4 INT
 ALTER TABLE ORNEKTABLO
 DROP COLUMN KOLON4
 ```
+
+***
+# 61-) T-SQL DDL Alter Komutu İle Tabloya Constraint Ekleme
+## ALTER İle Tabloya Constraint Ekleme
+```SQL
+ALTER TABLE ORNEKTABLO 
+ADD CONSTRAINT ORNEKCONSTRAINT DEFAULT 'BOŞ' FOR KOLON2
+```
+
+***
+# 62-) T-SQL DDL Alter Komutu İle Tablodaki Constrainti Silme
+## ALTER İle Tabloya Constraint Silme
+```SQL
+ALTER TABLE ORNEKTABLO 
+DROP CONSTRAINT ORNEKCONSTRAINT
+```
+
+***
+# 63-) T-SQL Sp_Rename Komutu İle Tablo Adını Değiştirme
+## SP_RENAME İle Tablo Adı Güncelleme
+```SQL
+SP_RENAME 'ORNEKTABLO', 'ORNEKTABLOYENI'
+```
+
+***
+# 64-) T-SQL Sp_Rename Komutu İle Kolon İsmini Değiştirme
+## SP_RENAME İle Kolon Güncelleme
+```SQL
+SP_RENAME 'ORNEKTABLOYENI.KOLON1' ,'KOLON1453','COLUMN'
+```
+
+***
+# 65-) T-SQL DDL Drop Komutu
+## DROP
+-- CREATE ile oluşturulan veri tabanı nesnelerini silmemize yarar.
+
+## Prototip
+-- DROP [NESNE] [NESNE ADI]
+
+```SQL
+DROP TABLE ORNEKTABLOYENI
+DROP DATABASE ORNEKVERITABANI
+```
+
+***
+# 66-) T-SQL Constraintler Giriş
+## CONSTRAINTLER (KISITLAYICILAR)
+- Constraintler sayesinde tablolar üzerinde istediğimiz şartlar ve durumlara göre kısıtlamalar yapabiliyoruz.
+
+- Bir tabloya özel şart durum ya da herhangi bir varsayılan değeri Constraint'imizi oluşturduğumuz zaman bu constraint ilgili tabloya fiziksel olarak oluşturulacaktır.
+
+- CONSTRAINT Türleri;
+	* 1. DEFAULT CONSTRAINT
+	* 2. CHECK CONSTRAINT
+	* 3. PRIMARY KEY CONSTRAINT
+	* 4. UNIQUE CONSTRAINT
+	* 5. FOREIGN KEY CONSTRAINT
+
+# 67-) T-SQL Default Constraint
+## DEFAULT CONSTRAINT
+- DEFAULT CONSTRAINT sayesinde kolona bir değer girilmediği taktirde varsayılan olarak ne girilmesi gerektiğini belirtebiliyoruz.
+- Herhangi bir tablo içerisindeki herhangi bir kolonun boş geçilmesi durumunda ilgili kolona girilecek olan varsayılan değerin ne olması gerektiğini DEFAULT CONSTRAINT sayesinde belirtebiliyoruz.
+
+## Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] DEFAULT 'VARSAYILAN DEĞER' FOR [KOLON ADI]
+
+```SQL
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 INT
+)
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT KOLON1CONSTRAINT DEFAULT 'BOŞ' FOR KOLON1
+
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT KOLON2CONSTRAINT DEFAULT -1 FOR KOLON2
+
+INSERT ORNEKTABLO(KOLON2) VALUES(0)
+INSERT ORNEKTABLO(KOLON1) VALUES('ÖRNEK BİR DEĞER')
+
+SELECT * FROM ORNEKTABLO
+```
+
+***
+# 68-) T-SQL Check Constraint
+## CHECK CONSTRAINT
+- Bir kolona girilecek olan verinin belirli bir şarta uymasını zorunlu tutar.
+
+- Herhangi bir kolona girilecek olan verinin önceden belirttiğim bir şarta göre CHECK/kontrol edilip CHECK sonucunda olumlu ya da olumsuz olma durumuna göre ilgili kolona ilgili verinin kaydedilmesini inceleyen constraint'tir.
+
+- Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] CHECK (ŞART)
+
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT KOLON2KONTROL CHECK ((KOLON2 * 5) % 2 = 0)
+```
+
+***
+# 69-) T-SQL Check Constraint With Nocheck Komutu
+## DİKKAT!!!
+- CHECK constraint oluşturulmadan önce ilgili tabloda şarta aykırı değerler varsa eğer constraint oluşturulmayacaktır! ! !
+
+- Ancak önceki kayıtları görmezden gelip yinede CHECK constrainti uygulamak istiyorsak WITH NOCHECK komutu kullanılmalıdır.
+
+## WITH NOCHECK Komutu
+- Şu ana kadar kayıtları görmezden gelip, CHECK constrainti uygulattırır.
+```SQL
+ALTER TABLE ORNEKTABLO
+WITH NOCHECK ADD CONSTRAINT KOLON2KONTROL CHECK((KOLON2 * 5) % 2 = 0)
+```
+
+***
+# 70-) T-SQL Primary Key Constraint
+## PRIMARY KEY CONSTRAINT
+- PRIMARY KEY Constraint ile; o kolona eklenen PRIMARY KEY ile, başka tablolarda FOREIGN KEY oluşturarak ilişki kurmamız mümkün olur. Bunun yanında o kolonun taşıdığı verinin tekil olacağı da garanti edilmiş olur. PRIMARY KEY Constraint ile ayrıca CLUSTERED INDEX oluşturulmuş da olur.
+
+- Genel Yapısı
+- ADD CONSTRAINT [CONSTRAINT ADI] PRIMARY KEY [KOLON ADI]
+
+- DİKKAT !!!
+- PRIMARY KEY Constraint kullanılan kolon PRIMARY KEY özelliğine sahip olmamalıdır.
+
+- Kullanacağımız tablonun içerisinde ise başka PRIMARY KEY kolonu olmamalıdır. Çünkü bir tabloda sadece bir tane PRIMARY KEY kolon bulunabilir.
+
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT PRIMARYID PRIMARY KEY (ID)
+```
+
+***
+# 71-) T-SQL Unique Constraint
+## UNIQUE CONSTRAINT 
+- UNIQUE CONSTRAINT'in tek amacı, belirttiğimiz kolondaki değerlerin tekil olmasını sağlamaktadır.
+
+- Birden fazla tekrarlı kaydın girmesini engellemektedir.
+
+- Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] UNIQUE (KOLON ADI)
+
+```SQL
+ALTER TABLE ORNEKTABLO
+ADD CONSTRAINT ORNEKTABLOUNIQUE UNIQUE (KOLON2)
+```
+
+- KOLON2 kolonuna UNIQUE Constraint verilerek tekil hale getirilmiştir. Bundan sonra iki tane aynı veriden kayıt yapılamamaktadır.
+
+***
+# 72-) T-SQL Foreign Key Constraint
+## FOREIGN KEY CONSTRAINT 
+- Tabloların kolonları arasında ilişki kurmamızı sağlar. Bu ilişki neticesinde FOREIGN KEY olan kolondaki karşılığının boşa düşmemesi için PRIMARY KEY kolonu olan tablodan veri silinmesini güncellenmesini engeller
+
+- Genel Yapısı;
+- ADD CONSTRAINT [CONSTRAINT ADI] FOREIGN KEY (KOLON ADI) REFERENCES [2.TABLO ADI](2. TABLODAKİ KOLON ADI)
+
+```SQL
+CREATE TABLE OGRENCILER
+(
+	OGRENCIID INT PRIMARY KEY IDENTITY(1,1),
+	DERSID INT,
+	ADI NVARCHAR(MAX),
+	SOYADI NVARCHAR(MAX)
+)
+
+CREATE TABLE DERSLER
+(
+	DERSID INT PRIMARY KEY IDENTITY(1,1),
+	DERSADI NVARCHAR(MAX)
+)
+
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT FOREIGKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERSID)
+```
+
+- Şu durumda DELETE UPDATE işlemlerinden ilişkili kolondaki veriler etkilenmez.
+
+- Davranışı değiştirmek için aşağıdaki komutlar kullanılır.
+	* CASCADE
+	* SET NULL
+	* SET DEFAULT
+
+***
+# 73-) T-SQL Foreign Key Constraint Cascade Komutu
+## CASCADE
+- Ana tablodaki kayıt silindiğinde ya da güncellendiğinde ilişkili kolondaki karşılığıda otomatik olarak silinir ya da güncellenir.
+```SQL
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT FOREIGNKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERSID)
+ON DELETE CASCADE
+ON UPDATE CASCADE
+```
+
+***
+# 74-) T-SQL Foreign Key Constraint Set Null Komutu
+## SET NULL
+- Ana tablodaki kayıt silindiğinde ya da güncellendiğinde ilişkili kolondaki karşılığıda NULL değer basılır.
+```SQL
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT FOREIGNKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERSID)
+ON DELETE SET NULL
+ON UPDATE SET NULL
+```
+
+***
+# 75-) T-SQL Foreign Key Constraint Set Default Komutu
+## SET DEFAULT
+- Ana tablodaki kayıt silindiğinde ya da güncellendiğinde ilişkili kolondaki karşılığına o kolonun default değeri basılır. Bu default değer dediğimiz default tipte bir constraint'tir. Bunu kendimiz oluşturabiliriz.
+
+```SQL
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT DEFAULTOGRENCILER DEFAULT -1 FOR DERSID
+
+ALTER TABLE OGRENCILER
+ADD CONSTRAINT FOREIGNKEYOGRENCIDERS FOREIGN KEY (DERSID) REFERENCES DERSLER(DERSID)
+ON DELETE SET DEFAULT
+ON UPDATE SET DEFAULT
+```
+
+- Bu ayarlar verilmediği taktirde NO ACTION özelliği geçerlidir.
