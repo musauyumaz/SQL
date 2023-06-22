@@ -1523,3 +1523,24 @@ DECLARE @X INT, @Z NVARCHAR, @Y BIT
 
 DECLARE @YAS INT = 3
 ```
+
+***
+# 77-) T-SQL Tanımlanmış Değişkene Değer Atama
+## Tanımlanmış Değişkenlere Değer Atama
+- Önceden tanımlanmış ya da oluşturulmuş bir değişkenin değerine müdahale etmek istiyorsak SET komutunu kullanmalıyız.
+
+- SET komutu C# programlama dilinde bir property'nin dışarıdan verilen değeri yakaladığı bloktu. TSQL'de de aynı mantık değişkene dışarıdan verilen değer varsa SET ile yakalayacağız.
+
+```SQL
+DECLARE @YAS INT = 3
+
+DECLARE @X INT
+
+-- SET
+
+SET @X = 125
+
+DECLARE @TARIH DATETIME = GETDATE()
+
+SET @TARIH = GETDATE()
+```
