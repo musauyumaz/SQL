@@ -1814,3 +1814,23 @@ UPDATE #GECICIPERSONELLER SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID
 
 - Eğer oturum açan şahıs SQL Server'dan disconnect olursa bu tablo bellekten silinir.
 
+
+***
+# 90-) T-SQL Geçici Tablolar - Bir Tabloyu ## İfadesi İle Belleğe Geçici Olarak Kopyalama
+## #Bir Tabloyu ## İle Belleğe Geçici Kopyalama
+```SQL
+SELECT * INTO ##GECICIPERSONELLER2 FROM Personeller
+
+SELECT * FROM ##GECICIPERSONELLER2
+INSERT ##GECICIPERSONELLER2(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+DELETE FROM ##GECICIPERSONELLER2 WHERE PersonelID = 3
+UPDATE ##GECICIPERSONELLER2 SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID = 5
+```
+
+-`##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
+
+- Bu tabloyu oturum açan şahıs ve onun SQL Server'ına dışarıdan ulaşan 3. şahıslar kullanabilir.
+
+- Eğer oturum açan şahıs SQL Server'dan disconnect olursa bu tablo bellekten silinir.
+
+- Diğer bütün özellikleri `#` ile oluşturulan tablo ile aynıdır
