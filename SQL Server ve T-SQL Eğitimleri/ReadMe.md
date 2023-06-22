@@ -1575,3 +1575,24 @@ SELECT @ADI,@SOYADI
 1. Sorgu sonucu gelen satır sayısı bir adet olmalıdır.
 2. Kolonlardaki verilerin tipleri ne ise o verileri temsil edecek değişkenlerin tipleri de benzer olmalıdır.
 
+***
+# 80-) T-SQL Batch Kavramı - Go Komutu
+## BATCH Kavramı - GO
+- GO komutu, eğer ki bir pencerede birden fazla işlem yapıyorsak ve bu işlemler birbirlerinden bağımsız ise bu yapıların birbirlerinden bağımsız olduğunu derleyiciyi de göstermek istiyorsak bu komutu kullanıyoruz.
+
+- Birbirlerinden bağımsız olan komutları bağımsızlığını derleyiciye GO komutu aracılığıyla göstermiş oluyoruz.
+
+- GO işlemi biten komutları birbirleriden ayırmaktadır.
+
+```SQL
+CREATE DATABASE ORNEKDATABASE
+GO
+USE ORNEKDATABASE
+GO
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX)
+)
+```
