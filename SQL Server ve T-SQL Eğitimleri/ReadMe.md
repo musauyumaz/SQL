@@ -1699,3 +1699,6 @@ IF EXISTS(SELECT * FROM Personeller)
 ELSE
 	PRINT 'BOŞ'
 ```
+
+***
+# 84-) T-SQL While Döngüsü
