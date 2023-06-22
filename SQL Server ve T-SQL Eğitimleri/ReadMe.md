@@ -1501,3 +1501,25 @@ ON UPDATE SET DEFAULT
 ```
 
 - Bu ayarlar verilmediği taktirde NO ACTION özelliği geçerlidir.
+
+***
+# 76-) T-SQL Değişken Tanımlama
+## DEĞİŞKENLER
+- DECLARE Keywordü ile değişken tanımlanır.
+
+- DECLARE Komutu TSQL'de değişken oluşturmamızı sağlayan bir komuttur.
+
+- Prototip;
+- DECLARE @DEGISKENADI DEGISKENTIP
+
+```SQL
+DECLARE @X INT
+
+DECLARE @Y NVARCHAR
+
+DECLARE @Z MONEY
+
+DECLARE @X INT, @Z NVARCHAR, @Y BIT
+
+DECLARE @YAS INT = 3
+```
