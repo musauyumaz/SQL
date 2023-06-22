@@ -1596,3 +1596,73 @@ CREATE TABLE ORNEKTABLO
 	KOLON2 NVARCHAR(MAX)
 )
 ```
+
+***
+# 81-) T-SQL If - Else Yapısı
+## IF Yapısı
+- IF dediğimiz yapıda koşulumuzun sonuç olarak TRUE ya da FALSE yani TSQL'de BIT olarak dönmesi gerekmektedir.
+
+- IF ELSE yapısı içerisinde birden fazla komut kullanacaksak eğer scope anlamına gelen BEGIN END yapısı dediğimiz yapıları kullanırız. 
+
+- `=` : Eşitse C# ==
+- `<>` : Eşit Değilse C# !=
+- `>`: Büyükse
+- `<`: Küçükse
+
+## Tek Satırlık Çalışma
+```SQL
+DECLARE @ISIM NVARCHAR(MAX)
+SET @ISIM = 'MUSA'
+
+IF @ISIM = 'MUSA'
+	PRINT 'EVET'
+ELSE
+	PRINT 'HAYIR'
+```
+
+## BEGIN END Yapısı(Scope)
+```SQL
+DECLARE @SAYI1 INT = 3
+DECLARE @SAYI2 INT = 5
+
+IF @SAYI1 < @SAYI2
+	BEGIN 
+		PRINT 'EVET SAYI1 SAYI2''DEN KÜÇÜKTÜR.'
+		SELECT @SAYI1 [SAYI 1],@SAYI2 [SAYI 2]
+	END
+ELSE
+	BEGIN
+		PRINT 'HAYIR SAYI1 SAYI2''DEN KÜÇÜK DEĞİLDİR.'
+		SELECT @SAYI1 [SAYI 1],@SAYI2 [SAYI 2]
+	END
+```
+
+- Örnek 1
+- Müşteriler tablosunda Amerikalı (USA) müşteri var mı?
+```SQL
+SELECT * FROM Musteriler WHERE Ulke = 'USA'
+
+IF @@ROWCOUNT > 0
+	PRINT 'EVET VAR'
+ELSE 
+	PRINT 'HAYIR YOK'
+```
+
+- @@ROWCOUNT Yapılan işlemden etkilenen satır sayısını getirir.
+
+- Örnek 2
+- Adı 'MUSA' soyadı 'UYUMAZ' olan personel var mı? Varsa Evet desin Yoksa kaydetsin.
+```SQL
+DECLARE @ADI NVARCHAR(MAX) = 'MUSA', @SOYADI NVARCHAR(MAX) = 'UYUMAZ'
+
+SELECT * FROM Personeller WHERE Adi = @ADI AND SoyAdi = @SOYADI
+
+IF @@ROWCOUNT > 0
+	PRINT 'EVET VAR.'
+ELSE
+	BEGIN
+		PRINT 'HAYIR YOK...'
+		INSERT Personeller([SoyAdi], [Adi]) VALUES (@SOYADI,@ADI)
+	END
+	
+```
