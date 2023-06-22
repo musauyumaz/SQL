@@ -1791,3 +1791,26 @@ SELECT * INTO GECICIPERSONELLER FROM Personeller
 ```SQL
 SELECT * FROM GECICIPERSONELLER
 ```
+
+***
+# 89-) T-SQL Geçici Tablolar - Bir Tabloyu # İfadesi İle Belleğe Geçici Olarak Kopyalama
+## #Bir Tabloyu # İfadesi İle Belleğe Geçici Kopyalama
+- Geçici tablolarda yani bellek üzerine kopyalanmış tablolarda çalışabiliriz. Haliyle bu tablolar üzerinde yapmış olduğumuz tüm değişiklikler ilgili oturum/bilgisayar/SQL Server kapatıldığında bellekten silinecek ve fiziksel tabloya yansıtılmayacaktır.
+
+```SQL
+SELECT * INTO #GECICIPERSONELLER FROM Personeller
+
+SELECT * FROM #GECICIPERSONELLER
+INSERT #GECICIPERSONELLER(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+DELETE FROM #GECICIPERSONELLER WHERE PersonelID = 3
+UPDATE #GECICIPERSONELLER SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID = 5
+```
+
+- Geçici tablo üzerinde her türlü işlem yapabiliyoruz.
+
+- `#` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
+
+- Sadece oturum açan şahıs kullanabilir.
+
+- Eğer oturum açan şahıs SQL Server'dan disconnect olursa bu tablo bellekten silinir.
+
