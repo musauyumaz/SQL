@@ -1563,3 +1563,15 @@ PRINT @X
 
 ***
 # 79-) T-SQL Sorgu Sonucu Gelen Verileri Değişkenle Elde Etme
+## Sorgu Sonucu Gelen Verileri Değişkenle Elde Etme
+
+```SQL
+DECLARE @ADI NVARCHAR(MAX), @SOYADI NVARCHAR(MAX)
+
+SELECT @ADI=Adi, @SOYADI=SoyAdi FROM Personeller WHERE PersonelID = 1
+
+SELECT @ADI,@SOYADI
+```
+1. Sorgu sonucu gelen satır sayısı bir adet olmalıdır.
+2. Kolonlardaki verilerin tipleri ne ise o verileri temsil edecek değişkenlerin tipleri de benzer olmalıdır.
+
