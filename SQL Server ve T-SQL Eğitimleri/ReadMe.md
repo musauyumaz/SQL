@@ -1501,3 +1501,336 @@ ON UPDATE SET DEFAULT
 ```
 
 - Bu ayarlar verilmediği taktirde NO ACTION özelliği geçerlidir.
+
+***
+# 76-) T-SQL Değişken Tanımlama
+## DEĞİŞKENLER
+- DECLARE Keywordü ile değişken tanımlanır.
+
+- DECLARE Komutu TSQL'de değişken oluşturmamızı sağlayan bir komuttur.
+
+- Prototip;
+- DECLARE @DEGISKENADI DEGISKENTIP
+
+```SQL
+DECLARE @X INT
+
+DECLARE @Y NVARCHAR
+
+DECLARE @Z MONEY
+
+DECLARE @X INT, @Z NVARCHAR, @Y BIT
+
+DECLARE @YAS INT = 3
+```
+
+***
+# 77-) T-SQL Tanımlanmış Değişkene Değer Atama
+## Tanımlanmış Değişkenlere Değer Atama
+- Önceden tanımlanmış ya da oluşturulmuş bir değişkenin değerine müdahale etmek istiyorsak SET komutunu kullanmalıyız.
+
+- SET komutu C# programlama dilinde bir property'nin dışarıdan verilen değeri yakaladığı bloktu. TSQL'de de aynı mantık değişkene dışarıdan verilen değer varsa SET ile yakalayacağız.
+
+```SQL
+DECLARE @YAS INT = 3
+
+DECLARE @X INT
+
+-- SET
+
+SET @X = 125
+
+DECLARE @TARIH DATETIME = GETDATE()
+
+SET @TARIH = GETDATE()
+```
+
+***
+# 78-) T-SQL Değişkenin Değerini Elde Etme
+## Değişken Değeri Okuma
+- Assign operatörünün(=) solundaysa eğer değişkenin referansı verilen değeri ata anlamına gelmektedir. Değişkenin referansı Yani Assign operatörünün(=) solundaysa o bize değişkenin değerini getirmez ama herhangi bir değişkenin direkt ismini çağırıyorsak direkt o değişkenin değerini getirir
+
+- SELECT komutu bir tablo oluşturur.
+
+```SQL
+DECLARE @X INT
+
+SET @X = 3 --X Değişkenine 3 değerini atadık
+
+SELECT @X
+PRINT @X
+```
+
+***
+# 79-) T-SQL Sorgu Sonucu Gelen Verileri Değişkenle Elde Etme
+## Sorgu Sonucu Gelen Verileri Değişkenle Elde Etme
+
+```SQL
+DECLARE @ADI NVARCHAR(MAX), @SOYADI NVARCHAR(MAX)
+
+SELECT @ADI=Adi, @SOYADI=SoyAdi FROM Personeller WHERE PersonelID = 1
+
+SELECT @ADI,@SOYADI
+```
+1. Sorgu sonucu gelen satır sayısı bir adet olmalıdır.
+2. Kolonlardaki verilerin tipleri ne ise o verileri temsil edecek değişkenlerin tipleri de benzer olmalıdır.
+
+***
+# 80-) T-SQL Batch Kavramı - Go Komutu
+## BATCH Kavramı - GO
+- GO komutu, eğer ki bir pencerede birden fazla işlem yapıyorsak ve bu işlemler birbirlerinden bağımsız ise bu yapıların birbirlerinden bağımsız olduğunu derleyiciyi de göstermek istiyorsak bu komutu kullanıyoruz.
+
+- Birbirlerinden bağımsız olan komutları bağımsızlığını derleyiciye GO komutu aracılığıyla göstermiş oluyoruz.
+
+- GO işlemi biten komutları birbirleriden ayırmaktadır.
+
+```SQL
+CREATE DATABASE ORNEKDATABASE
+GO
+USE ORNEKDATABASE
+GO
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX)
+)
+```
+
+***
+# 81-) T-SQL If - Else Yapısı
+## IF Yapısı
+- IF dediğimiz yapıda koşulumuzun sonuç olarak TRUE ya da FALSE yani TSQL'de BIT olarak dönmesi gerekmektedir.
+
+- IF ELSE yapısı içerisinde birden fazla komut kullanacaksak eğer scope anlamına gelen BEGIN END yapısı dediğimiz yapıları kullanırız. 
+
+- `=` : Eşitse C# ==
+- `<>` : Eşit Değilse C# !=
+- `>`: Büyükse
+- `<`: Küçükse
+
+## Tek Satırlık Çalışma
+```SQL
+DECLARE @ISIM NVARCHAR(MAX)
+SET @ISIM = 'MUSA'
+
+IF @ISIM = 'MUSA'
+	PRINT 'EVET'
+ELSE
+	PRINT 'HAYIR'
+```
+
+## BEGIN END Yapısı(Scope)
+```SQL
+DECLARE @SAYI1 INT = 3
+DECLARE @SAYI2 INT = 5
+
+IF @SAYI1 < @SAYI2
+	BEGIN 
+		PRINT 'EVET SAYI1 SAYI2''DEN KÜÇÜKTÜR.'
+		SELECT @SAYI1 [SAYI 1],@SAYI2 [SAYI 2]
+	END
+ELSE
+	BEGIN
+		PRINT 'HAYIR SAYI1 SAYI2''DEN KÜÇÜK DEĞİLDİR.'
+		SELECT @SAYI1 [SAYI 1],@SAYI2 [SAYI 2]
+	END
+```
+
+- Örnek 1
+- Müşteriler tablosunda Amerikalı (USA) müşteri var mı?
+```SQL
+SELECT * FROM Musteriler WHERE Ulke = 'USA'
+
+IF @@ROWCOUNT > 0
+	PRINT 'EVET VAR'
+ELSE 
+	PRINT 'HAYIR YOK'
+```
+
+- @@ROWCOUNT Yapılan işlemden etkilenen satır sayısını getirir.
+
+- Örnek 2
+- Adı 'MUSA' soyadı 'UYUMAZ' olan personel var mı? Varsa Evet desin Yoksa kaydetsin.
+```SQL
+DECLARE @ADI NVARCHAR(MAX) = 'MUSA', @SOYADI NVARCHAR(MAX) = 'UYUMAZ'
+
+SELECT * FROM Personeller WHERE Adi = @ADI AND SoyAdi = @SOYADI
+
+IF @@ROWCOUNT > 0
+	PRINT 'EVET VAR.'
+ELSE
+	BEGIN
+		PRINT 'HAYIR YOK...'
+		INSERT Personeller([SoyAdi], [Adi]) VALUES (@SOYADI,@ADI)
+	END
+	
+```
+
+***
+# 82-) T-SQL If- Else If - Else Yapısı
+## IF - ELSE IF - ELSE Yapısı
+```SQL
+DECLARE @ADI NVARCHAR(MAX) = 'MUSA'
+DECLARE @YAS INT = 24
+
+IF @ADI = 'MAHMUT'
+	PRINT 'EVET MAHMUT'
+ELSE IF @YAS > 23
+	PRINT 'YAŞI 23''TEN BÜYÜK'
+ELSE IF 3 > 5
+	BEGIN
+		PRINT ''
+	END
+ELSE IF 1 = 1
+	PRINT 'EŞİT'
+ELSE
+	PRINT 'ABC'
+```
+
+***
+# 83-) T-SQL Exists Fonksiyonu
+## EXISTS Fonksiyonu
+- Herhangi bir sorgu neticesinde gelen tablonun boş mu dolu mu olduğunu öğrenmemizi sağlayan bir fonksiyondur.
+
+```SQL
+IF EXISTS(SELECT * FROM Personeller)
+	PRINT 'DOLU'
+ELSE
+	PRINT 'BOŞ'
+```
+
+***
+# 84-) T-SQL While Döngüsü
+## WHILE Döngüsü
+
+- Prototip;
+- WHILE ŞART KOMUT
+
+```SQL
+DECLARE @SAYAC INT = 0
+
+WHILE @SAYAC < 100
+	BEGIN
+		PRINT @SAYAC
+		SET @SAYAC = @SAYAC + 1
+	END
+```
+
+***
+# 85-) T-SQL Break Komutu
+## WHILE Döngüsü BREAK Komutu
+- Herhangi bir döngü içerisinde compiler/derleyici BREAK komutunu görürse bulunduğu yapıyı terk eder.
+
+```SQL
+DECLARE @SAYAC INT = 0
+
+WHILE @SAYAC < 1000
+	BEGIN
+		PRINT @SAYAC
+		SET @SAYAC = @SAYAC + 1
+		IF @SAYAC % 5 = 0
+			BREAK
+	END
+```
+
+***
+# 86-) T-SQL Continue Komutu
+## WHILE Döngüsü CONTINUE Komutu
+- CONTINUE komutu derleyici tarafından karşılaşıldığı zaman Continue komutundan sonraki komutlar işlenmemektedir.
+
+```SQL
+DECLARE @SAYAC INT = 0
+
+WHILE @SAYAC < 100
+	BEGIN 
+		SET @SAYAC = @SAYAC + 1
+		IF @SAYAC % 5 = 0
+			CONTINUE
+		PRINT @SAYAC
+	END
+
+WHILE @SAYAC < 1000
+	BEGIN 
+		IF @SAYAC % 5 = 0
+			BEGIN
+				SET @SAYAC = @SAYAC + 1
+				CONTINUE
+			END
+		PRINT @SAYAC
+		SET @SAYAC = @SAYAC + 1
+	END
+```
+
+***
+# 87-) T-SQL Geçici Tablolar
+-- Geçici Tablolar - Temporary Tables
+
+- Genellikle bir SQL Server üzerinde farklı lokasyonlarda birden fazla kişinin çalıştığı durumlarda ya da verilerin test amaçlı geçici bir yerlerde tutulması, işlenmesi amacıyla kullanılan yapılardır.
+
+- Bilinen tablo yapısının aynısını sağlarlar. Tek farkları fiziksel olarak oluşmazlar. Sadece bellekte geçici olarak oluşturulurlar.
+
+- SELECT INSERT UPDATE ve DELETE işlemleri yapabilir. İlişki kurabilir.
+
+- Sunucu kapatıldığında ya da oturum sahibi oturumu kapattığında bellekten silinirler.
+
+- Fiziksel olarak tablolarımızda bir değişiklik olmasını istemiyorsak verilerimizde oynama yapılmasını test edilme sürecinde herhangi bir değişikliğe mahal verilmesini istemiyorsak geçici tabloları kullanıyoruz.
+
+- Yapılan hiçbir işlem fiziksel tabloya yansıtılmamaktadır.
+
+***
+# 88-) T-SQL Geçici Tablolar - Bir Tabloyu # İfadesi İle Belleğe Geçici Olarak Kopyalama
+## #Bir Tabloyu Fiziksel Kopyalama
+- Elimizdeki tablolar üzerinde test yapacaksak ve bu test ilgili tablonun fiziksel halini değiştirme ihtimali varsa ya da veri kaybı söz konusuysa ya da değişikliği mahal bıramak istemiyorsak geçici tabloları kullanacağız ya da bu tablonun bir kopyasını alacağız.
+
+```SQL
+SELECT * INTO GECICIPERSONELLER FROM Personeller
+```
+- Bu şekilde bir kullanımda sadece PRIMARY KEY ve FOREIGN KEY constraint'ker oluşturulmazlar. Geri kalan herşey birebir fiziksel olarak oluşturulur.
+
+```SQL
+SELECT * FROM GECICIPERSONELLER
+```
+
+***
+# 89-) T-SQL Geçici Tablolar - Bir Tabloyu # İfadesi İle Belleğe Geçici Olarak Kopyalama
+## #Bir Tabloyu # İfadesi İle Belleğe Geçici Kopyalama
+- Geçici tablolarda yani bellek üzerine kopyalanmış tablolarda çalışabiliriz. Haliyle bu tablolar üzerinde yapmış olduğumuz tüm değişiklikler ilgili oturum/bilgisayar/SQL Server kapatıldığında bellekten silinecek ve fiziksel tabloya yansıtılmayacaktır.
+
+```SQL
+SELECT * INTO #GECICIPERSONELLER FROM Personeller
+
+SELECT * FROM #GECICIPERSONELLER
+INSERT #GECICIPERSONELLER(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+DELETE FROM #GECICIPERSONELLER WHERE PersonelID = 3
+UPDATE #GECICIPERSONELLER SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID = 5
+```
+
+- Geçici tablo üzerinde her türlü işlem yapabiliyoruz.
+
+- `#` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
+
+- Sadece oturum açan şahıs kullanabilir.
+
+- Eğer oturum açan şahıs SQL Server'dan disconnect olursa bu tablo bellekten silinir.
+
+
+***
+# 90-) T-SQL Geçici Tablolar - Bir Tabloyu ## İfadesi İle Belleğe Geçici Olarak Kopyalama
+## #Bir Tabloyu ## İle Belleğe Geçici Kopyalama
+```SQL
+SELECT * INTO ##GECICIPERSONELLER2 FROM Personeller
+
+SELECT * FROM ##GECICIPERSONELLER2
+INSERT ##GECICIPERSONELLER2(Adi,SoyAdi) VALUES ('MUSA','UYUMAZ')
+DELETE FROM ##GECICIPERSONELLER2 WHERE PersonelID = 3
+UPDATE ##GECICIPERSONELLER2 SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID = 5
+```
+
+-`##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
+
+- Bu tabloyu oturum açan şahıs ve onun SQL Server'ına dışarıdan ulaşan 3. şahıslar kullanabilir.
+
+- Eğer oturum açan şahıs SQL Server'dan disconnect olursa bu tablo bellekten silinir.
+
+- Diğer bütün özellikleri `#` ile oluşturulan tablo ile aynıdır
