@@ -1544,3 +1544,22 @@ DECLARE @TARIH DATETIME = GETDATE()
 
 SET @TARIH = GETDATE()
 ```
+
+***
+# 78-) T-SQL Değişkenin Değerini Elde Etme
+## Değişken Değeri Okuma
+- Assign operatörünün(=) solundaysa eğer değişkenin referansı verilen değeri ata anlamına gelmektedir. Değişkenin referansı Yani Assign operatörünün(=) solundaysa o bize değişkenin değerini getirmez ama herhangi bir değişkenin direkt ismini çağırıyorsak direkt o değişkenin değerini getirir
+
+- SELECT komutu bir tablo oluşturur.
+
+```SQL
+DECLARE @X INT
+
+SET @X = 3 --X Değişkenine 3 değerini atadık
+
+SELECT @X
+PRINT @X
+```
+
+***
+# 79-) T-SQL Sorgu Sonucu Gelen Verileri Değişkenle Elde Etme
