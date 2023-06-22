@@ -1761,3 +1761,20 @@ WHILE @SAYAC < 1000
 		SET @SAYAC = @SAYAC + 1
 	END
 ```
+
+***
+# 87-) T-SQL Geçici Tablolar
+-- Geçici Tablolar - Temporary Tables
+
+- Genellikle bir SQL Server üzerinde farklı lokasyonlarda birden fazla kişinin çalıştığı durumlarda ya da verilerin test amaçlı geçici bir yerlerde tutulması, işlenmesi amacıyla kullanılan yapılardır.
+
+- Bilinen tablo yapısının aynısını sağlarlar. Tek farkları fiziksel olarak oluşmazlar. Sadece bellekte geçici olarak oluşturulurlar.
+
+- SELECT INSERT UPDATE ve DELETE işlemleri yapabilir. İlişki kurabilir.
+
+- Sunucu kapatıldığında ya da oturum sahibi oturumu kapattığında bellekten silinirler.
+
+- Fiziksel olarak tablolarımızda bir değişiklik olmasını istemiyorsak verilerimizde oynama yapılmasını test edilme sürecinde herhangi bir değişikliğe mahal verilmesini istemiyorsak geçici tabloları kullanıyoruz.
+
+- Yapılan hiçbir işlem fiziksel tabloya yansıtılmamaktadır.
+
