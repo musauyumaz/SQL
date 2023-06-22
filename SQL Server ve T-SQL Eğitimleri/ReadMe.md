@@ -1687,3 +1687,15 @@ ELSE IF 1 = 1
 ELSE
 	PRINT 'ABC'
 ```
+
+***
+# 83-) T-SQL Exists Fonksiyonu
+## EXISTS Fonksiyonu
+- Herhangi bir sorgu neticesinde gelen tablonun boş mu dolu mu olduğunu öğrenmemizi sağlayan bir fonksiyondur.
+
+```SQL
+IF EXISTS(SELECT * FROM Personeller)
+	PRINT 'DOLU'
+ELSE
+	PRINT 'BOŞ'
+```
