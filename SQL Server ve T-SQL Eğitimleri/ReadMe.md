@@ -1666,3 +1666,24 @@ ELSE
 	END
 	
 ```
+
+***
+# 82-) T-SQL If- Else If - Else Yapısı
+## IF - ELSE IF - ELSE Yapısı
+```SQL
+DECLARE @ADI NVARCHAR(MAX) = 'MUSA'
+DECLARE @YAS INT = 24
+
+IF @ADI = 'MAHMUT'
+	PRINT 'EVET MAHMUT'
+ELSE IF @YAS > 23
+	PRINT 'YAŞI 23''TEN BÜYÜK'
+ELSE IF 3 > 5
+	BEGIN
+		PRINT ''
+	END
+ELSE IF 1 = 1
+	PRINT 'EŞİT'
+ELSE
+	PRINT 'ABC'
+```
