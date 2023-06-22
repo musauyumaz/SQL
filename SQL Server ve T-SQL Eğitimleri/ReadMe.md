@@ -1778,3 +1778,16 @@ WHILE @SAYAC < 1000
 
 - Yapılan hiçbir işlem fiziksel tabloya yansıtılmamaktadır.
 
+***
+# 88-) T-SQL Geçici Tablolar - Bir Tabloyu # İfadesi İle Belleğe Geçici Olarak Kopyalama
+## #Bir Tabloyu Fiziksel Kopyalama
+- Elimizdeki tablolar üzerinde test yapacaksak ve bu test ilgili tablonun fiziksel halini değiştirme ihtimali varsa ya da veri kaybı söz konusuysa ya da değişikliği mahal bıramak istemiyorsak geçici tabloları kullanacağız ya da bu tablonun bir kopyasını alacağız.
+
+```SQL
+SELECT * INTO GECICIPERSONELLER FROM Personeller
+```
+- Bu şekilde bir kullanımda sadece PRIMARY KEY ve FOREIGN KEY constraint'ker oluşturulmazlar. Geri kalan herşey birebir fiziksel olarak oluşturulur.
+
+```SQL
+SELECT * FROM GECICIPERSONELLER
+```
