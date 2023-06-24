@@ -1942,4 +1942,19 @@ UPDATE ORNEKVIEWPERSONELLER SET Adi = 'SERHAT' WHERE Adi = 'MUSA'
 DELETE FROM ORNEKVIEWPERSONELLER WHERE Adi = 'SERHAT'
 ```
 
- 
+***
+# 93-) T-SQL View - With Encryption Komutu
+## == WITH ENCRYPTION KOMUTU ==
+- Eğer yazdığımız VIEW'ın kaynak kodlarını, Object Explorer penceresinde VIEWS kategorisine sağ tıklayarak Design Modda açıp görüntülenmesini istemiyorsak WITH ENCRYPTION komutu ile VIEW'ı oluşturmalıyız.
+## Dikkat ! ! !
+- WITH ENCRYPTION işleminden sonra VIEW'i oluşturan kişide dahil kimse komutları göremez. Geri dönüş yoktur. Ancak VIEW'i oluşturan şahsın komutların yedeğini bulundurması gerekmektedir. Ya da WITH ENCRYPTION olmaksızın VIEW yapısını yeniden ALTER'lamalıyız.
+## Dikkat ! ! !
+- Bir dikkat etmemiz gereken nokta da WITH ENCRYPTION ifadesini AS keywordünden önce yazmalıyız.
+
+```SQL
+CREATE VIEW ORNEKVIEWPERSONELLER
+WITH ENCRYPTION 
+AS 
+SELECT Adi,SoyAdi,Unvan FROM Personeller
+```
+- Bu işlemi yaptıktan sonra Design Modu kapatılmıştır.
