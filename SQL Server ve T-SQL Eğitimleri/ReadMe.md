@@ -2207,3 +2207,27 @@ SELECT * FROM Personeller WHERE PersonelID = @ID
 EXEC SP_ORNEK 3
 EXEC SP_ORNEK2 3,4,'ASD'
 ```
+
+***
+# 106-) T-SQL Geriye Değer Döndüren Stored Procedure
+## == Geriye Değer Döndüren Stored Procedure Yapısı ==
+```SQL
+CREATE PROC URUNGETIR
+(
+	@FIYAT MONEY
+)AS
+SELECT * FROM Urunler WHERE BirimFiyati > @FIYAT
+RETURN @@ROWCOUNT
+```
+
+## == KULLANIMI ==
+```SQL
+EXEC URUNGETIR 40
+```
+- Bu şekilde geriye döndürülen değeri elde etmeksizin kullanılabilir. Sıkıntı olmaz.
+
+```SQL
+DECLARE @SONUC INT 
+EXEC @SONUC - URUNGETIR 40
+PRINT CAST(@SONUC AS NVARCHAR(MAX)) + ' ADET ÜRÜN BU İŞLEMDEN ETKİLENMİŞTİR'
+```
