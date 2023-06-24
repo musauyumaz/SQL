@@ -2176,3 +2176,25 @@ SELECT DBO.RAPOR(K.KategoriAdi,U.UrunAdi,U.BirimFiyati,U.HedefStokDuzeyi)  FROM 
 --)AS
 -- YAZILACAK SORGULAR, KODLAR, ŞARTLAR, FONKSİYONLAR, KOMUTLAR
 ```
+
+***
+# 104-) T-SQL Stored Procedures Tanımlama
+## == STORED PROCEDURE Tanımlama ==
+```SQL
+CREATE PROC SP_ORNEK
+(
+	@ID INT -- Aksi söylenmediği taktirde bu parametrenin yapısı inputtur.
+)AS
+SELECT * FROM Personeller WHERE PersonelID = @ID
+
+```
+## Dikkat ! ! !
+- Prosedürün parametrelerini tanımlarken parantez kullanmak zorunlu değildir ama okunabilirliği arttırmak için kullanmakta fayda vardır.
+```SQL
+CREATE PROC SP_ORNEK2
+	@ID INT,
+	@PARAMETRE2 INT,
+	@PARAMETRE3 NVARCHAR(MAX)
+AS 
+SELECT * FROM Personeller WHERE PersonelID = @ID
+```
