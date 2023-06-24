@@ -2026,3 +2026,16 @@ WITH CHECK OPTION
 - CREATE komutu ile oluşturulmaktadır.
 
 - Üzerinde çalışılan database'in Programability -> Functions kombinasyonundan oluşturulan fonksiyonlara erişebilmekteyiz.
+
+***
+# 97-) T-SQL Scalar Functions - Tanımlama
+## SCALAR FUNCTION
+## == Fonksiyon Tanımlama ==
+- Scalar fonksiyonlara tanımlandıktan sonra Programmability -> Functions -> Scalar Valued Functions kombinasyonundan erişilebilir.
+```SQL
+CREATE FUNCTION TOPLA(@SAYI1 INT, @SAYI2 INT) RETURNS INT
+AS
+	BEGIN
+		RETURN @SAYI1 +  @SAYI2
+	END
+```
