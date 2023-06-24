@@ -1958,3 +1958,30 @@ AS
 SELECT Adi,SoyAdi,Unvan FROM Personeller
 ```
 - Bu işlemi yaptıktan sonra Design Modu kapatılmıştır.
+
+***
+# 94-) T-SQL View - With Schemabinding Komutu
+## === WITH SCHEMABINDING Komutu ===
+- Eğer VIEW'in kullandığı esas fiziksel tabloların kolon isimleri bir şekilde değiştirilir, kolonları silinir ya da tablo yapısı bir şekilde değişikliğe uğrar ise VIEW'in çalışması artık mümkün olmayacaktır.
+
+- VIEW'in kullandığı tablolar ve kolonları bu tarz işlemler yapılabilmesi ihtimaline karşı koruma altına alınabilir.
+
+- Bu koruma WITH SCHEMABINDING ile VIEW CREATE ya da ALTER edilirken, VIEW'in kullandığı tablo SCHEMA adıyla birlikte verilmelidir. Örneğin, DBO(DATABASE OWNER) bir şema adıdır. Şemalar C#'taki NAMESPACE'ler gibi düşünülebilir.
+
+- WITH SCHEMABINDING komutuda AS keywordünden önce yazılmalıdır.
+
+```SQL
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX)
+)
+
+CREATE VIEW ORNEKVIEW
+WITH SCHEMABINDING
+AS 
+SELECT ID, KOLON1 FROM DBO.ORNEKTABLO
+
+ALTER TABLE ORNEKTABLO
+ALTER COLUMN KOLON1 INT
+```
