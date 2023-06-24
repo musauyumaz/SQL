@@ -1834,3 +1834,549 @@ UPDATE ##GECICIPERSONELLER2 SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE Personel
 - Eğer oturum açan şahıs SQL Server'dan disconnect olursa bu tablo bellekten silinir.
 
 - Diğer bütün özellikleri `#` ile oluşturulan tablo ile aynıdır
+
+***
+# 91-) T-SQL Uniqueidentifier Veri Tipi 
+## UNIQUEIDENTIFIER Veri Tipi
+- INT VARCHAR vs. gibi bir veri tipidir.
+
+- Aldığı değer, rakamlar ve harflerden oluşan çok büyük bir sayıdır.
+
+- Bundan dolayı bu kolona aynı değerin birden fazla kez gelmesi neredeyse imkansızdır.
+
+- O yüzden tekil bir veri oluşturmak için kullanılır.
+
+- Genellikle biz bu türü yazmış olduğun bir sistemde kullanıcı kayıt yaptığı zaman ilgili kullanıcıdan mail onayı istiyorsak UNIQUEIDENTIFIER'la bir linki kullanıcıya göndeririz. O link o kullanıcıya özel olur kullanıcı linke tıkladığında ilgili UNIQUEIDENTIFIER'a özel kullanıcıyı kıyaslarız eğer öyle bir kullanıcı varsa o kullanıcıyı aktifleştiririz.
+
+```SQL
+CREATE TABLE ORNEKTABLO2
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+	KOLON3 UNIQUEIDENTIFIER
+)
+```
+
+## NEWID Fonksiyonu
+- NEWID Fonksiyonu anlık olarak random yani rastgele bir şekilde UNIQUEIDENTIFIER tipinde veri üretmemizi sağlamakta 
+
+```SQL
+SELECT NEWID()
+INSERT ORNEKTABLO2 VALUES('X','Y',NEWID())
+
+SELECT * FROM ORNEKTABLO2
+```
+
+***
+# 92-) T-SQL View Kullanımı, Genel Özellikleri ve Tanımlaması
+## VIEW Yapısı
+## === KULLANIM AMACI ===
+- Genellikle karmaşık sorguların tek bir sorgu üzerinden çalıştırılabilmesidir.
+
+- Bu amaçla raporlama işlemlerinde kullanılabilirler.
+
+- Aynı zamanda güvenlik ihtiyacı olduğu durumlarda herhangi bir sorgunun 2. - 3. şahıslardan gizlenmesi amacıyla da kullanılırlar.
+
+## === GENEL ÖZELLİKLERİ ===
+- Herhangi bir sorgunun sonucunu tablo olarak ele alıp, ondan sorgu çekilebilmesini sağlarlar.
+
+- INSERT, UPDATE, DELETE yapabilirler. Bu işlemleri fiziksel tabloya yansıtırlar. *** Önemli
+
+- VIEW yapıları fiziksel olarak oluşturulan yapılardır. Yani veritabanında kaydedilmektedirler.
+
+- VIEW yapıları normal sorgulardan daha yavaş çalışırlar.
+
+## Dikkat ! ! !
+- Database elemanlarını CREATE komutuyla oluşturuyorduk. VIEW yapısıda bir database yapısı olduğu için CREATE komutu ile oluşturacağız.
+```SQL
+CREATE VIEW  VW_GOTUR
+AS 
+SELECT P.Adi + ' ' + P.SoyAdi [ADI SOYADI], K.KategoriAdi [KATEGORİ ADI], COUNT(S.SatisID) [TOPLAM SATIŞ] FROM Personeller P 
+INNER JOIN Satislar S ON P.PersonelID = S.PersonelID 
+INNER JOIN [Satis Detaylari] SD ON S.SatisID = SD.SatisID 
+INNER JOIN Urunler U ON U.UrunID = SD.UrunID 
+INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID 
+GROUP BY P.Adi + ' ' + P.SoyAdi , K.KategoriAdi
+
+SELECT * FROM VW_GOTUR
+SELECT * FROM VW_GOTUR WHERE [ADI SOYADI] LIKE '%ROBERT%'
+```
+
+- VIEW oluşturulurken kolonlara verilen aliaslar VIEW'den sorgu çekilirken kullanılır.
+
+- Bir yandan da VIEW'ın kullandığı gerçek tabloların kolon isimleri, VIEW içinde alias tanımlanarak gizlenilmiş olunur.
+
+- VIEW içinde ORDER BY kullanılmaz.
+
+- ORDER BY VIEW içinde değil VIEW çalışırken sorgu esnasında kullanılmalıdır.
+
+```SQL
+SELECT * FROM VW_GOTUR ORDER BY [TOPLAM SATIŞ]
+```
+
+- Yok eğer illaki VIEW içinde ORDER BY kullanacağım diyorsanız VIEW içinde TOP komutunu kullanmalısınız.
+
+- TOP komutu ORDER BY'ın kullanılmasını sağlamaktadır.
+
+```SQL
+CREATE VIEW VW_GOTUR
+AS 
+SELECT TOP 100 P.Adi + ' ' + P.SoyAdi [ADI SOYADI], K.KategoriAdi [KATEGORİ ADI], COUNT(S.SatisID) [TOPLAM SATIŞ] FROM Personeller P 
+INNER JOIN Satislar S ON P.PersonelID = S.PersonelID 
+INNER JOIN [Satis Detaylari] SD ON S.SatisID = SD.SatisID 
+INNER JOIN Urunler U ON U.UrunID = SD.UrunID 
+INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID 
+GROUP BY P.Adi + ' ' + P.SoyAdi , K.KategoriAdi ORDER BY [TOPLAM SATIŞ]
+```
+- Bu durum çokta tavsiye edilen bir durum değildir.
+
+- VIEW üzerinde INSERT, DELETE ve UPDATE yapılabilir. Bu işlemler fiziksel tabloya yansıtılmaktadırlar.
+```SQL
+CREATE VIEW ORNEKVIEWPERSONELLER
+AS 
+SELECT Adi,SoyAdi,Unvan FROM Personeller
+
+INSERT ORNEKVIEWPERSONELLER VALUES('MUSA','UYUMAZ','YZLM. VRTBN. UZMN')
+UPDATE ORNEKVIEWPERSONELLER SET Adi = 'SERHAT' WHERE Adi = 'MUSA'
+DELETE FROM ORNEKVIEWPERSONELLER WHERE Adi = 'SERHAT'
+```
+
+***
+# 93-) T-SQL View - With Encryption Komutu
+## == WITH ENCRYPTION KOMUTU ==
+- Eğer yazdığımız VIEW'ın kaynak kodlarını, Object Explorer penceresinde VIEWS kategorisine sağ tıklayarak Design Modda açıp görüntülenmesini istemiyorsak WITH ENCRYPTION komutu ile VIEW'ı oluşturmalıyız.
+## Dikkat ! ! !
+- WITH ENCRYPTION işleminden sonra VIEW'i oluşturan kişide dahil kimse komutları göremez. Geri dönüş yoktur. Ancak VIEW'i oluşturan şahsın komutların yedeğini bulundurması gerekmektedir. Ya da WITH ENCRYPTION olmaksızın VIEW yapısını yeniden ALTER'lamalıyız.
+## Dikkat ! ! !
+- Bir dikkat etmemiz gereken nokta da WITH ENCRYPTION ifadesini AS keywordünden önce yazmalıyız.
+
+```SQL
+CREATE VIEW ORNEKVIEWPERSONELLER
+WITH ENCRYPTION 
+AS 
+SELECT Adi,SoyAdi,Unvan FROM Personeller
+```
+- Bu işlemi yaptıktan sonra Design Modu kapatılmıştır.
+
+***
+# 94-) T-SQL View - With Schemabinding Komutu
+## === WITH SCHEMABINDING Komutu ===
+- Eğer VIEW'in kullandığı esas fiziksel tabloların kolon isimleri bir şekilde değiştirilir, kolonları silinir ya da tablo yapısı bir şekilde değişikliğe uğrar ise VIEW'in çalışması artık mümkün olmayacaktır.
+
+- VIEW'in kullandığı tablolar ve kolonları bu tarz işlemler yapılabilmesi ihtimaline karşı koruma altına alınabilir.
+
+- Bu koruma WITH SCHEMABINDING ile VIEW CREATE ya da ALTER edilirken, VIEW'in kullandığı tablo SCHEMA adıyla birlikte verilmelidir. Örneğin, DBO(DATABASE OWNER) bir şema adıdır. Şemalar C#'taki NAMESPACE'ler gibi düşünülebilir.
+
+- WITH SCHEMABINDING komutuda AS keywordünden önce yazılmalıdır.
+
+```SQL
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX)
+)
+
+CREATE VIEW ORNEKVIEW
+WITH SCHEMABINDING
+AS 
+SELECT ID, KOLON1 FROM DBO.ORNEKTABLO
+
+ALTER TABLE ORNEKTABLO
+ALTER COLUMN KOLON1 INT
+```
+
+***
+# 95-) T-SQL View - With Check Option Komutu
+## === WITH CHECK OPTION Komutu ===
+- VIEW'in içerisindeki sorguda bulunan şarta uygun kayıtların INSERT edilmesine müsaade edilip, uymayan kayıtların müsaade edilmemesini sağlayan bir komuttur.
+
+```SQL
+CREATE VIEW ORNEKVIEW2
+AS
+SELECT Adi,SoyAdi FROM Personeller WHERE Adi LIKE 'a%'
+
+INSERT ORNEKVIEW2 ('AHMET','BİLMEMNEOĞLU')
+INSERT ORNEKVIEW2 ('MUSA','UYUMAZ')
+
+SELECT * FROM ORNEKVIEW2
+```
+
+- WITH ENCRYPTION ve WITH SCHEMABINDING komutları AS keywordünden önce belirtilirken WITH CHECK OPTION komutu WHERE şartından sonra belirtilmelidir.
+
+```SQL
+CREATE VIEW ORNEKVIEW2
+AS
+SELECT Adi,SoyAdi FROM Personeller WHERE Adi LIKE 'a%'
+WITH CHECK OPTION
+```
+
+***
+# 96-) T-SQL Fonksiyonlar Giriş
+## FUNCTIONS - SCALAR FUNCTION - INLINE FUNCTION
+
+- T-SQL'de iki tip fonksiyon vardır.
+
+- SCALAR Fonksiyonlar => Geriye istediğimiz bir tipte değer gönderen fonksiyon.
+
+- INLINE Fonksiyonlar => Geriye tablo gönderen fonksiyon.
+
+- Bu her iki fonksiyonda fiziksel olarak veritabanında oluşturulmaktadır.
+
+- CREATE komutu ile oluşturulmaktadır.
+
+- Üzerinde çalışılan database'in Programability -> Functions kombinasyonundan oluşturulan fonksiyonlara erişebilmekteyiz.
+
+***
+# 97-) T-SQL Scalar Functions - Tanımlama
+## SCALAR FUNCTION
+## == Fonksiyon Tanımlama ==
+- Scalar fonksiyonlara tanımlandıktan sonra Programmability -> Functions -> Scalar Valued Functions kombinasyonundan erişilebilir.
+```SQL
+CREATE FUNCTION TOPLA(@SAYI1 INT, @SAYI2 INT) RETURNS INT
+AS
+	BEGIN
+		RETURN @SAYI1 +  @SAYI2
+	END
+```
+
+***
+# 98-) T-SQL Scalar Functions - Kullanım
+## == Fonksiyon Kullanımı ==
+- Fonksiyonu kullanırken şemasıyla beraber çağrılmalıdır.
+ ```SQL
+SELECT DBO.TOPLA(2,5)
+PRINT DBO.TOPLA(10,20) 
+```
+
+- ÖRNEK 
+- Northwind veritabanında; herhangi bir ürünün %18 KDV dahil olmak üzere toplam maliyetini getiren fonksiyonu yazalım.
+```SQL
+CREATE FUNCTION MALIYET(@BIRIMFIYATI INT, @STOKMIKTARI INT) RETURNS NVARCHAR(MAX)
+AS 
+	BEGIN
+		DECLARE @SONUC INT = @BIRIMFIYATI * @STOKMIKTARI * 1.18
+		RETURN @SONUC
+	END
+
+SELECT DBO.MALIYET(10,20)
+```
+
+***
+# 99-) T-SQL Inline Functions - Tanımlama
+## == INLINE FUNCTIONS ==
+- Geriye bir değer değil tablo döndüren fonksiyonlardır.
+
+- Geriye tablo göndereceği için bu fonksiyonlar çalıştırılırken sanki bir tablodan sorgu çalıştırılır gibi çalıştırılırlar. Bu yönleriyle VIEW'lara benzerler. VIEW ile yapılan işlevler Inline Functions'larla yapılabilir.
+
+- Genellikle VIEW'le benzer işlevler için VIEW kullanılmasını öneririm.
+
+## == FONKSİYON TANIMLAMA ==
+- Inline fonksiyonlara tanımlandıktan sonra Programmability -> Functions -> Table Valued Functions kombinasyonundan erişilebilir.
+
+- Dikkat ! ! !
+
+- Inline Function oluşturulurken BEGIN END yapısı kullanılmaz.
+```SQL
+CREATE FUNCTION FC_GONDER(@AD NVARCHAR(20), @SOYAD NVARCHAR(20)) RETURNS TABLE 
+AS 
+	RETURN SELECT Adi, SoyAdi FROM Personeller WHERE Adi = @AD AND SoyAdi = @SOYAD
+```
+
+***
+# 100-) T-SQL Inline Functions - Kullanım
+## == FONKSİYON KULLANIMI ==
+- Fonksiyonu şemasıyla birlikte çağırmak gerekmektedir.
+```SQL
+SELECT * FROM DBO.FC_GONDER('Nancy','Davolio')
+```
+
+***
+# 101-) T-SQL Fonksiyonlarda With Encryption Komutu
+## == Fonksiyonlarda WITH ENCRYPTION Komutu ==
+- Eğer ki yazmış olduğumuz fonksiyonların kodlarına 2. 3. şahısların erişimini engellemek istiyorsak WITH ENCRYPTION komutunu kullanmalıyız.
+
+- WITH ENCRYPTION işleminden sonra fonksiyonu oluşturan kişide dahil kimse komutları göremez. Geri dönüş yoktur. Ancak fonksiyonu oluşturan şahsın komutlarn yedeğini bulundurması gerekmektedir. Ya da WITH ENCRYPTION olmaksızın fonksiyonu yeniden ALTER'lamalıyız.
+
+- WITH ENCRYPTION AS keywordünden önce kullanılmalıdır.
+```SQL
+CREATE FUNCTION ORNEKFONKSIYON() RETURNS INT
+WITH ENCRYPTION 
+AS 
+	BEGIN
+		RETURN 3
+	END
+
+CREATE FUNCTION ORNEKFONKSIYON2() RETURNS TABLE
+WITH ENCRYPTION 
+AS 
+	RETURN SELECT * FROM Personeller
+
+ALTER FUNCTION ORNEKFONKSIYON() RETURNS INT
+AS 
+	BEGIN
+		RETURN 3
+	END
+```
+
+***
+# 102-) T-SQL Fonksiyonlarla Otomatik Hesaplanabilir Kolonlar(Computed Column)
+## == Otomatik Hesaplanabilir Kolonlar - Computed Column ==
+- Herhangi bir kolonda fonksiyon kullanılarak otomatik hesaplanabilir kolonlar(Computed Column) oluşturmak mümkündür.
+
+```SQL
+CREATE FUNCTION TOPLA(@SAYI1 INT, @SAYI2 INT) RETURNS INT
+AS 
+BEGIN
+	RETURN @SAYI1 + @SAYI2
+END
+
+SELECT UrunAdi,DBO.TOPLA(BirimFiyati,HedefStokDuzeyi) HESAPLANMISKOLON FROM Urunler
+```
+
+- Örnek 
+- Çıktı olarak "____ kategorisindeki _____ ürününün toplam fiyatı : ____'dır. şeklinde bir çıktı veren fonksiyonu yazalım.
+```SQL
+CREATE FUNCTION RAPOR(@KATEGORI NVARCHAR(MAX),@URUNADI NVARCHAR(MAX), @BIRIMFIYATI INT, @STOK INT) RETURNS NVARCHAR(MAX)
+AS
+	BEGIN
+		DECLARE @CIKTI NVARCHAR(MAX) = @KATEGORI + ' kategorisindeki ' + @URUNADI + ' ürününün toplam fiyatı : ' + CAST(@BIRIMFIYATI * @STOK AS NVARCHAR(MAX)) + ' ''DIR.'
+		RETURN @CIKTI
+	END
+
+SELECT DBO.RAPOR(K.KategoriAdi,U.UrunAdi,U.BirimFiyati,U.HedefStokDuzeyi)  FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID
+```
+
+***
+# 103-) T-SQL Stored Procedures - Genel Özellikleri
+## STORED PROCEDURES (SAKLI YORDAMLAR)
+
+## == GENEL ÖZELLİKLERİ ==
+- Normal sorgudan hızlı çalışırlar.
+
+- Çünkü normal sorgular Execute edilirken Execute Plan işlemi yapılır. Bu işlem sırasında hangi tablodan veri çekilecek hangi kolonlardan gelecek bunlar nerede vs. gibi işlemler yapılır. Bir sorgu her çalıştırıldığında bu işlemler aynen tekrar tekrar yapılır. Fakat sorgu STORED PROCEDURE olarak çalıştırılırsa bu işlem sadece bir kere yapılır ve o da ilk çalıştırma esnasındadır. Diğer çalıştırmalarda bu işlemler yapılmaz. Bundan dolayı hız ve performansta artış sağlanır.
+
+- İçerisinde SELECT INSERT UPDATE ve DELETE ilemleri yapılabilir.
+
+- İç içe kullanılabilir.
+
+- İçersinde fonksiyon oluşturulabilir.
+
+- Sorgularımızın dışarıdan alacağı değerler parametre olarak STORED PROCEDURE'lere geçirilebildiğinden dolayı sorgularımızın SQL INJECTION yemelerini de önlemiş oluruz. Bu yönleriyle de daha güvenlidirler.
+
+- STORED PROCEDURE fiziksel bir veritabanı nesnesidir. Haliyle CREATE komutu ile oluşturulur.
+
+- Fiziksel olarak ilgili veritabanının Programmability -> Stored Procedures kombinasyonundan erişilebilirler.
+
+## == Prototip ==
+```SQL
+-- CREATE PROC YA DA PROCEDURE [İSİM]
+--(
+-- VARSA PARAMETRELER
+--)AS
+-- YAZILACAK SORGULAR, KODLAR, ŞARTLAR, FONKSİYONLAR, KOMUTLAR
+```
+
+***
+# 104-) T-SQL Stored Procedures Tanımlama
+## == STORED PROCEDURE Tanımlama ==
+```SQL
+CREATE PROC SP_ORNEK
+(
+	@ID INT -- Aksi söylenmediği taktirde bu parametrenin yapısı inputtur.
+)AS
+SELECT * FROM Personeller WHERE PersonelID = @ID
+
+```
+## Dikkat ! ! !
+- Prosedürün parametrelerini tanımlarken parantez kullanmak zorunlu değildir ama okunabilirliği arttırmak için kullanmakta fayda vardır.
+```SQL
+CREATE PROC SP_ORNEK2
+	@ID INT,
+	@PARAMETRE2 INT,
+	@PARAMETRE3 NVARCHAR(MAX)
+AS 
+SELECT * FROM Personeller WHERE PersonelID = @ID
+```
+
+***
+# 105-) T-SQL Stored Procedures Kullanımı
+## == STORED PROCEDURES Kullanımı == 
+- STORED PROCEDURE yapılarını EXEC komutu eşliğinde çalıştırabilmekteyiz.
+```SQL
+EXEC SP_ORNEK 3
+EXEC SP_ORNEK2 3,4,'ASD'
+```
+
+***
+# 106-) T-SQL Geriye Değer Döndüren Stored Procedure
+## == Geriye Değer Döndüren Stored Procedure Yapısı ==
+```SQL
+CREATE PROC URUNGETIR
+(
+	@FIYAT MONEY
+)AS
+SELECT * FROM Urunler WHERE BirimFiyati > @FIYAT
+RETURN @@ROWCOUNT
+```
+
+## == KULLANIMI ==
+```SQL
+EXEC URUNGETIR 40
+```
+- Bu şekilde geriye döndürülen değeri elde etmeksizin kullanılabilir. Sıkıntı olmaz.
+
+```SQL
+DECLARE @SONUC INT 
+EXEC @SONUC - URUNGETIR 40
+PRINT CAST(@SONUC AS NVARCHAR(MAX)) + ' ADET ÜRÜN BU İŞLEMDEN ETKİLENMİŞTİR'
+```
+
+***
+# 107-) T-SQL Output Parametre İle Geriye Değer Döndüren Stored Procedure
+## == OUTPUT İle Değer Döndürme ==
+- INPUT parametre dışarıdan değer alırken OUTPUT parametre içerideki değeri dışarı gönderir.
+```SQL
+CREATE PROC SP_ORNEK3
+(
+	@ID INT,
+	@ADI NVARCHAR(MAX) OUTPUT,
+	@SOYADI NVARCHAR(MAX) OUTPUT
+)AS
+SELECT @ADI = Adi, @SOYADI = SoyAdi FROM Personeller WHERE PersonelID = @ID
+```
+
+## == KULLANIMI ==
+```SQL
+DECLARE @ADI NVARCHAR(MAX), @SOYADI NVARCHAR(MAX)
+EXEC SP_ORNEK3 3,@ADI OUTPUT, @SOYADI OUTPUT
+SELECT @ADI + ' ' + @SOYADI
+```
+
+***
+# 108-) T-SQL Stored Procedures Örnek
+## == GENEL ÖRNEK ==
+- Dışarıdan aldığı isim, soyisim ve şehir bilgilerini Personeller tablosunda ilgili kolonlara ekleyen STORED PROCEDURE'ü yazınız
+```SQL
+CREATE PROC SP_PERSONELEKLE
+(
+	@ISIM NVARCHAR(MAX),
+	@SOYISIM NVARCHAR(MAX),
+	@SEHIR NVARCHAR(MAX)
+) AS
+INSERT Personeller(Adi,SoyAdi,Sehir) VALUES(@ISIM, @SOYISIM, @SEHIR)
+
+EXEC SP_PERSONELEKLE 'MUSA','UYUMAZ','ESKİŞEHİR'
+SELECT * FROM PERSONELLER
+```
+
+***
+# 109-) T-SQL Stored Procedure - Parametrelere Varsayılan Değer Verme
+## == Parametrelere Varsayılan Değer ==
+```SQL
+CREATE PROC SP_PERSONELEKLE2
+(
+	@AD VARCHAR(50) = 'İSİMSİZ',
+	@SOYAD VARCHAR(50) = 'SOYİSİMSİZ',
+	@SEHIR VARCHAR(50) = 'ŞEHİR GİRİLMEMİŞ'
+)AS
+INSERT Personeller(Adi,SoyAdi,Sehir) VALUES(@AD,@SOYAD,@SEHIR)
+
+EXEC SP_PERSONELEKLE2 'SERHAT','UYUMAZ','ESKİŞEHİR'
+```
+- Burada varsayılan değerler devreye girmemektedir.
+```SQL
+SELECT * FROM Personeller
+EXEC SP_PERSONELEKLE2
+```
+- Normalde bu şekilde parametrelere değer göndermeksizin çalışmaması lazım ama varsayılan değerler tanımda belirtildiği için devreye girmektedirler.
+
+```SQL
+Exec SP_PERSONELEKLE2 'İBRAHİM'
+```
+- @Ad parametresi İBRAHİM değerini alacaktır. Diğer parametreler varsayılan değerleri
+
+***
+# 110-) T-SQL Exec Komutu
+## EXEC Komutu
+- EXEC Komutu EXECUTE yani çalıştır manasına gelen bir komuttur.
+
+- T-SQL programlama dilindeki herşeyi çalıştırır diyebiliriz.
+
+- EXEC sanki bir fonksiyon niteliğinde çalışan tek tırnaklar arasına aldığı komutları çalıştıran bir komuttur.
+
+- Aslında yazdığımız sorgular/komutlar arka planda EXEC komutunun içinde gönderilir.
+
+```SQL
+EXEC('SELECT * FROM Personeller')
+SELECT * FROM Personeller
+```
+
+- Yanlış Kullanım
+```SQL
+EXEC('DECLARE @SAYAC INT = 0')
+EXEC('PRINT @SAYAC')
+
+```
+
+- Doğru Kullanım
+```SQL
+EXEC('DECLARE @SAYAC INT = 0 PRINT @SAYAC')
+```
+
+***
+# 111-) T-SQL Stored Procedure İçerisinde Nesne Oluşturma
+## == STORED PROCEDURE İçerisinde Nesne Oluşturma ==
+```SQL
+CREATE PROC SP_TABLOOLUSTUR
+(
+	@TABLOADI NVARCHAR(MAX),
+	@KOLON1ADI NVARCHAR(MAX),
+	@KOLON1OZELLIKLERI NVARCHAR(MAX),
+	@KOLON2ADI NVARCHAR(MAX),
+	@KOLON2OZELLIKLERI NVARCHAR(MAX)
+)AS
+EXEC
+('
+CREATE TABLE '+ @TABLOADI + '
+(
+	' + @KOLON1ADI + ' ' + @KOLON1OZELLIKLERI + ',
+	' + @KOLON2ADI + ' ' + @KOLON2OZELLIKLERI + ',
+)
+')
+
+EXEC SP_TABLOOLUSTUR 'ORNEKTABLO3','ID','INT PRIMARY KEY IDENTITY(1,1)', 'KOLON2','NVARCHAR(MAX)'
+```
+
+***
+# 112-) T-SQL Triggerlar Giriş
+## T-SQL TRIGGERS(Tetikleyiciler)
+- Bir işlem yapılırken o işlemin yerine ya da o işlemle beraber başka bir işlemin yapılmasını sağlayan başka bir işlemi tetikleyen yapılardır.
+
+## === DML TRIGGER
+- Bir tabloda INSERT, UPDATE ve DELETE işlemleri gerçekleştirildiğinde devreye giren yapılardır. Bu işlemler sonucunda veya sürecinde devreye girerler.
+
+## === DDL TRIGGER
+- CREATE, ALTER ve DROP işlemleri sonucunda veya sürecinde devreye girecek olan yapılardır.
+
+***
+# 113-) T-SQL DML Triggerlar - Inserted ve Deleted Tabloları
+## === DML TRIGGER ===
+- Bir tabloda INSET, UPDATE ve DELETE işlemleri gerçekleştirildiğinde devreye giren yapılardır. Bu işlemler sonucunda veya sürecinde devreye girerler.
+
+## *INSERTED TABLE
+- Eğer bir tabloda INSERT işlemi yapılıyorsa arka planda işlemler ilk önce RAM'de oluşturulan INSERTED isimli bir tablo üzerinde yapılır. Eğer işlemde bir problem yoksa INSERTED tablosundaki veriler fiziksel tabloya INSERT edilir. İşlem bittiğinde RAM'de oluşturulan bu INSERTED tablosu silinir.
+
+## *DELETED TABLE
+- Eğer bir tabloda DELETE işlemi yapılıyorsa arka planda işlemler ilk önce RAM'de oluşturulan DELETED isimli bir tablo üzerinde yapılır. Eğer işlemde bir problem yoksa DELETED tablosundaki veriler fiziksel tabloya INSERT edilir. İşlem bittiğinde RAM'de oluşturulan bu DELETED tablosu silinecektir.
+
+- Eğer bir tabloda UPDATE işlemi yapılıyorsa RAM'de UPDATED isimli bir tablo OLUŞTURULMAZ! ! !
+
+- SQL Server'da ki UPDATE mantığı önce silme(DELETE) sonra eklemedir(INSERT).
+
+- Eğer bir tabloda UPDATE işlemi yapılıyorsa arka planda RAM'de hem DELETED hem de INSERTED tabloları oluşturulur ve işlemler bunlar üzerinde yapılır.
+
+### NOT : UPDATE yaparken güncellenen kaydın orjinali DELETED tablosunda, güncellendikten sonraki hali ise INSERTED tablosunda bulunmaktadır. Çünkü güncelleme demek kaydı önce silmek sonra eklemek demektir.
+
+- DELETED ve INSERTED tabloları, ilgili sorgu sonucu oluştukları için o sorgunun kullandığı kolonlara da sahip olur. Böylece DELETED ve INSERTED tablolarından SELECT sorgusu yapmak mümkündür.
+
