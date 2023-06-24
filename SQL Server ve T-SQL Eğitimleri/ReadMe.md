@@ -1867,3 +1867,79 @@ INSERT ORNEKTABLO2 VALUES('X','Y',NEWID())
 
 SELECT * FROM ORNEKTABLO2
 ```
+
+***
+# 92-) T-SQL View Kullanımı, Genel Özellikleri ve Tanımlaması
+## VIEW Yapısı
+## === KULLANIM AMACI ===
+- Genellikle karmaşık sorguların tek bir sorgu üzerinden çalıştırılabilmesidir.
+
+- Bu amaçla raporlama işlemlerinde kullanılabilirler.
+
+- Aynı zamanda güvenlik ihtiyacı olduğu durumlarda herhangi bir sorgunun 2. - 3. şahıslardan gizlenmesi amacıyla da kullanılırlar.
+
+## === GENEL ÖZELLİKLERİ ===
+- Herhangi bir sorgunun sonucunu tablo olarak ele alıp, ondan sorgu çekilebilmesini sağlarlar.
+
+- INSERT, UPDATE, DELETE yapabilirler. Bu işlemleri fiziksel tabloya yansıtırlar. *** Önemli
+
+- VIEW yapıları fiziksel olarak oluşturulan yapılardır. Yani veritabanında kaydedilmektedirler.
+
+- VIEW yapıları normal sorgulardan daha yavaş çalışırlar.
+
+## Dikkat ! ! !
+- Database elemanlarını CREATE komutuyla oluşturuyorduk. VIEW yapısıda bir database yapısı olduğu için CREATE komutu ile oluşturacağız.
+```SQL
+CREATE VIEW  VW_GOTUR
+AS 
+SELECT P.Adi + ' ' + P.SoyAdi [ADI SOYADI], K.KategoriAdi [KATEGORİ ADI], COUNT(S.SatisID) [TOPLAM SATIŞ] FROM Personeller P 
+INNER JOIN Satislar S ON P.PersonelID = S.PersonelID 
+INNER JOIN [Satis Detaylari] SD ON S.SatisID = SD.SatisID 
+INNER JOIN Urunler U ON U.UrunID = SD.UrunID 
+INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID 
+GROUP BY P.Adi + ' ' + P.SoyAdi , K.KategoriAdi
+
+SELECT * FROM VW_GOTUR
+SELECT * FROM VW_GOTUR WHERE [ADI SOYADI] LIKE '%ROBERT%'
+```
+
+- VIEW oluşturulurken kolonlara verilen aliaslar VIEW'den sorgu çekilirken kullanılır.
+
+- Bir yandan da VIEW'ın kullandığı gerçek tabloların kolon isimleri, VIEW içinde alias tanımlanarak gizlenilmiş olunur.
+
+- VIEW içinde ORDER BY kullanılmaz.
+
+- ORDER BY VIEW içinde değil VIEW çalışırken sorgu esnasında kullanılmalıdır.
+
+```SQL
+SELECT * FROM VW_GOTUR ORDER BY [TOPLAM SATIŞ]
+```
+
+- Yok eğer illaki VIEW içinde ORDER BY kullanacağım diyorsanız VIEW içinde TOP komutunu kullanmalısınız.
+
+- TOP komutu ORDER BY'ın kullanılmasını sağlamaktadır.
+
+```SQL
+CREATE VIEW VW_GOTUR
+AS 
+SELECT TOP 100 P.Adi + ' ' + P.SoyAdi [ADI SOYADI], K.KategoriAdi [KATEGORİ ADI], COUNT(S.SatisID) [TOPLAM SATIŞ] FROM Personeller P 
+INNER JOIN Satislar S ON P.PersonelID = S.PersonelID 
+INNER JOIN [Satis Detaylari] SD ON S.SatisID = SD.SatisID 
+INNER JOIN Urunler U ON U.UrunID = SD.UrunID 
+INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID 
+GROUP BY P.Adi + ' ' + P.SoyAdi , K.KategoriAdi ORDER BY [TOPLAM SATIŞ]
+```
+- Bu durum çokta tavsiye edilen bir durum değildir.
+
+- VIEW üzerinde INSERT, DELETE ve UPDATE yapılabilir. Bu işlemler fiziksel tabloya yansıtılmaktadırlar.
+```SQL
+CREATE VIEW ORNEKVIEWPERSONELLER
+AS 
+SELECT Adi,SoyAdi,Unvan FROM Personeller
+
+INSERT ORNEKVIEWPERSONELLER VALUES('MUSA','UYUMAZ','YZLM. VRTBN. UZMN')
+UPDATE ORNEKVIEWPERSONELLER SET Adi = 'SERHAT' WHERE Adi = 'MUSA'
+DELETE FROM ORNEKVIEWPERSONELLER WHERE Adi = 'SERHAT'
+```
+
+ 
