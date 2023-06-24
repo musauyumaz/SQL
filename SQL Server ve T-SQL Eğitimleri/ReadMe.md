@@ -2082,3 +2082,11 @@ CREATE FUNCTION FC_GONDER(@AD NVARCHAR(20), @SOYAD NVARCHAR(20)) RETURNS TABLE
 AS 
 	RETURN SELECT Adi, SoyAdi FROM Personeller WHERE Adi = @AD AND SoyAdi = @SOYAD
 ```
+
+***
+# 100-) T-SQL Inline Functions - Kullanım
+## == FONKSİYON KULLANIMI ==
+- Fonksiyonu şemasıyla birlikte çağırmak gerekmektedir.
+```SQL
+SELECT * FROM DBO.FC_GONDER('Nancy','Davolio')
+```
