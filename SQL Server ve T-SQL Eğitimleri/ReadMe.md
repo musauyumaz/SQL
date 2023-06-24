@@ -2231,3 +2231,24 @@ DECLARE @SONUC INT
 EXEC @SONUC - URUNGETIR 40
 PRINT CAST(@SONUC AS NVARCHAR(MAX)) + ' ADET ÜRÜN BU İŞLEMDEN ETKİLENMİŞTİR'
 ```
+
+***
+# 107-) T-SQL Output Parametre İle Geriye Değer Döndüren Stored Procedure
+## == OUTPUT İle Değer Döndürme ==
+- INPUT parametre dışarıdan değer alırken OUTPUT parametre içerideki değeri dışarı gönderir.
+```SQL
+CREATE PROC SP_ORNEK3
+(
+	@ID INT,
+	@ADI NVARCHAR(MAX) OUTPUT,
+	@SOYADI NVARCHAR(MAX) OUTPUT
+)AS
+SELECT @ADI = Adi, @SOYADI = SoyAdi FROM Personeller WHERE PersonelID = @ID
+```
+
+## == KULLANIMI ==
+```SQL
+DECLARE @ADI NVARCHAR(MAX), @SOYADI NVARCHAR(MAX)
+EXEC SP_ORNEK3 3,@ADI OUTPUT, @SOYADI OUTPUT
+SELECT @ADI + ' ' + @SOYADI
+```
