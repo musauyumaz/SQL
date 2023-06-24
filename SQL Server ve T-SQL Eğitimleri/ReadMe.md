@@ -2090,3 +2090,31 @@ AS
 ```SQL
 SELECT * FROM DBO.FC_GONDER('Nancy','Davolio')
 ```
+
+***
+# 101-) T-SQL Fonksiyonlarda With Encryption Komutu
+## == Fonksiyonlarda WITH ENCRYPTION Komutu ==
+- Eğer ki yazmış olduğumuz fonksiyonların kodlarına 2. 3. şahısların erişimini engellemek istiyorsak WITH ENCRYPTION komutunu kullanmalıyız.
+
+- WITH ENCRYPTION işleminden sonra fonksiyonu oluşturan kişide dahil kimse komutları göremez. Geri dönüş yoktur. Ancak fonksiyonu oluşturan şahsın komutlarn yedeğini bulundurması gerekmektedir. Ya da WITH ENCRYPTION olmaksızın fonksiyonu yeniden ALTER'lamalıyız.
+
+- WITH ENCRYPTION AS keywordünden önce kullanılmalıdır.
+```SQL
+CREATE FUNCTION ORNEKFONKSIYON() RETURNS INT
+WITH ENCRYPTION 
+AS 
+	BEGIN
+		RETURN 3
+	END
+
+CREATE FUNCTION ORNEKFONKSIYON2() RETURNS TABLE
+WITH ENCRYPTION 
+AS 
+	RETURN SELECT * FROM Personeller
+
+ALTER FUNCTION ORNEKFONKSIYON() RETURNS INT
+AS 
+	BEGIN
+		RETURN 3
+	END
+```
