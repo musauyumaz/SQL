@@ -1834,3 +1834,36 @@ UPDATE ##GECICIPERSONELLER2 SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE Personel
 - Eğer oturum açan şahıs SQL Server'dan disconnect olursa bu tablo bellekten silinir.
 
 - Diğer bütün özellikleri `#` ile oluşturulan tablo ile aynıdır
+
+***
+# 91-) T-SQL Uniqueidentifier Veri Tipi 
+## UNIQUEIDENTIFIER Veri Tipi
+- INT VARCHAR vs. gibi bir veri tipidir.
+
+- Aldığı değer, rakamlar ve harflerden oluşan çok büyük bir sayıdır.
+
+- Bundan dolayı bu kolona aynı değerin birden fazla kez gelmesi neredeyse imkansızdır.
+
+- O yüzden tekil bir veri oluşturmak için kullanılır.
+
+- Genellikle biz bu türü yazmış olduğun bir sistemde kullanıcı kayıt yaptığı zaman ilgili kullanıcıdan mail onayı istiyorsak UNIQUEIDENTIFIER'la bir linki kullanıcıya göndeririz. O link o kullanıcıya özel olur kullanıcı linke tıkladığında ilgili UNIQUEIDENTIFIER'a özel kullanıcıyı kıyaslarız eğer öyle bir kullanıcı varsa o kullanıcıyı aktifleştiririz.
+
+```SQL
+CREATE TABLE ORNEKTABLO2
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+	KOLON3 UNIQUEIDENTIFIER
+)
+```
+
+## NEWID Fonksiyonu
+- NEWID Fonksiyonu anlık olarak random yani rastgele bir şekilde UNIQUEIDENTIFIER tipinde veri üretmemizi sağlamakta 
+
+```SQL
+SELECT NEWID()
+INSERT ORNEKTABLO2 VALUES('X','Y',NEWID())
+
+SELECT * FROM ORNEKTABLO2
+```
