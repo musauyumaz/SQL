@@ -2118,3 +2118,31 @@ AS
 		RETURN 3
 	END
 ```
+
+***
+# 102-) T-SQL Fonksiyonlarla Otomatik Hesaplanabilir Kolonlar(Computed Column)
+## == Otomatik Hesaplanabilir Kolonlar - Computed Column ==
+- Herhangi bir kolonda fonksiyon kullanılarak otomatik hesaplanabilir kolonlar(Computed Column) oluşturmak mümkündür.
+
+```SQL
+CREATE FUNCTION TOPLA(@SAYI1 INT, @SAYI2 INT) RETURNS INT
+AS 
+BEGIN
+	RETURN @SAYI1 + @SAYI2
+END
+
+SELECT UrunAdi,DBO.TOPLA(BirimFiyati,HedefStokDuzeyi) HESAPLANMISKOLON FROM Urunler
+```
+
+- Örnek 
+- Çıktı olarak "____ kategorisindeki _____ ürününün toplam fiyatı : ____'dır. şeklinde bir çıktı veren fonksiyonu yazalım.
+```SQL
+CREATE FUNCTION RAPOR(@KATEGORI NVARCHAR(MAX),@URUNADI NVARCHAR(MAX), @BIRIMFIYATI INT, @STOK INT) RETURNS NVARCHAR(MAX)
+AS
+	BEGIN
+		DECLARE @CIKTI NVARCHAR(MAX) = @KATEGORI + ' kategorisindeki ' + @URUNADI + ' ürününün toplam fiyatı : ' + CAST(@BIRIMFIYATI * @STOK AS NVARCHAR(MAX)) + ' ''DIR.'
+		RETURN @CIKTI
+	END
+
+SELECT DBO.RAPOR(K.KategoriAdi,U.UrunAdi,U.BirimFiyati,U.HedefStokDuzeyi)  FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID
+```
