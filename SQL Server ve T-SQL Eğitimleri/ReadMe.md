@@ -2039,3 +2039,25 @@ AS
 		RETURN @SAYI1 +  @SAYI2
 	END
 ```
+
+***
+# 98-) T-SQL Scalar Functions - Kullanım
+## == Fonksiyon Kullanımı ==
+- Fonksiyonu kullanırken şemasıyla beraber çağrılmalıdır.
+ ```SQL
+SELECT DBO.TOPLA(2,5)
+PRINT DBO.TOPLA(10,20) 
+```
+
+- ÖRNEK 
+- Northwind veritabanında; herhangi bir ürünün %18 KDV dahil olmak üzere toplam maliyetini getiren fonksiyonu yazalım.
+```SQL
+CREATE FUNCTION MALIYET(@BIRIMFIYATI INT, @STOKMIKTARI INT) RETURNS NVARCHAR(MAX)
+AS 
+	BEGIN
+		DECLARE @SONUC INT = @BIRIMFIYATI * @STOKMIKTARI * 1.18
+		RETURN @SONUC
+	END
+
+SELECT DBO.MALIYET(10,20)
+```
