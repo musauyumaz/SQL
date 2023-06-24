@@ -1827,7 +1827,7 @@ DELETE FROM ##GECICIPERSONELLER2 WHERE PersonelID = 3
 UPDATE ##GECICIPERSONELLER2 SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID = 5
 ```
 
--`##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
+- `##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
 
 - Bu tabloyu oturum açan şahıs ve onun SQL Server'ına dışarıdan ulaşan 3. şahıslar kullanabilir.
 
@@ -2379,3 +2379,4 @@ EXEC SP_TABLOOLUSTUR 'ORNEKTABLO3','ID','INT PRIMARY KEY IDENTITY(1,1)', 'KOLON2
 ### NOT : UPDATE yaparken güncellenen kaydın orjinali DELETED tablosunda, güncellendikten sonraki hali ise INSERTED tablosunda bulunmaktadır. Çünkü güncelleme demek kaydı önce silmek sonra eklemek demektir.
 
 - DELETED ve INSERTED tabloları, ilgili sorgu sonucu oluştukları için o sorgunun kullandığı kolonlara da sahip olur. Böylece DELETED ve INSERTED tablolarından SELECT sorgusu yapmak mümkündür.
+
