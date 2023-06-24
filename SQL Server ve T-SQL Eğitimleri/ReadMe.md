@@ -1985,3 +1985,28 @@ SELECT ID, KOLON1 FROM DBO.ORNEKTABLO
 ALTER TABLE ORNEKTABLO
 ALTER COLUMN KOLON1 INT
 ```
+
+***
+# 95-) T-SQL View - With Check Option Komutu
+## === WITH CHECK OPTION Komutu ===
+- VIEW'in içerisindeki sorguda bulunan şarta uygun kayıtların INSERT edilmesine müsaade edilip, uymayan kayıtların müsaade edilmemesini sağlayan bir komuttur.
+
+```SQL
+CREATE VIEW ORNEKVIEW2
+AS
+SELECT Adi,SoyAdi FROM Personeller WHERE Adi LIKE 'a%'
+
+INSERT ORNEKVIEW2 ('AHMET','BİLMEMNEOĞLU')
+INSERT ORNEKVIEW2 ('MUSA','UYUMAZ')
+
+SELECT * FROM ORNEKVIEW2
+```
+
+- WITH ENCRYPTION ve WITH SCHEMABINDING komutları AS keywordünden önce belirtilirken WITH CHECK OPTION komutu WHERE şartından sonra belirtilmelidir.
+
+```SQL
+CREATE VIEW ORNEKVIEW2
+AS
+SELECT Adi,SoyAdi FROM Personeller WHERE Adi LIKE 'a%'
+WITH CHECK OPTION
+```
