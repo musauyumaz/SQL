@@ -2269,3 +2269,29 @@ INSERT Personeller(Adi,SoyAdi,Sehir) VALUES(@ISIM, @SOYISIM, @SEHIR)
 EXEC SP_PERSONELEKLE 'MUSA','UYUMAZ','ESKİŞEHİR'
 SELECT * FROM PERSONELLER
 ```
+
+***
+# 109-) T-SQL Stored Procedure - Parametrelere Varsayılan Değer Verme
+## == Parametrelere Varsayılan Değer ==
+```SQL
+CREATE PROC SP_PERSONELEKLE2
+(
+	@AD VARCHAR(50) = 'İSİMSİZ',
+	@SOYAD VARCHAR(50) = 'SOYİSİMSİZ',
+	@SEHIR VARCHAR(50) = 'ŞEHİR GİRİLMEMİŞ'
+)AS
+INSERT Personeller(Adi,SoyAdi,Sehir) VALUES(@AD,@SOYAD,@SEHIR)
+
+EXEC SP_PERSONELEKLE2 'SERHAT','UYUMAZ','ESKİŞEHİR'
+```
+- Burada varsayılan değerler devreye girmemektedir.
+```SQL
+SELECT * FROM Personeller
+EXEC SP_PERSONELEKLE2
+```
+- Normalde bu şekilde parametrelere değer göndermeksizin çalışmaması lazım ama varsayılan değerler tanımda belirtildiği için devreye girmektedirler.
+
+```SQL
+Exec SP_PERSONELEKLE2 'İBRAHİM'
+```
+- @Ad parametresi İBRAHİM değerini alacaktır. Diğer parametreler varsayılan değerleri
