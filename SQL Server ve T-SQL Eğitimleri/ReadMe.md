@@ -2347,3 +2347,14 @@ CREATE TABLE '+ @TABLOADI + '
 
 EXEC SP_TABLOOLUSTUR 'ORNEKTABLO3','ID','INT PRIMARY KEY IDENTITY(1,1)', 'KOLON2','NVARCHAR(MAX)'
 ```
+
+***
+# 112-) T-SQL Triggerlar Giriş
+## T-SQL TRIGGERS(Tetikleyiciler)
+- Bir işlem yapılırken o işlemin yerine ya da o işlemle beraber başka bir işlemin yapılmasını sağlayan başka bir işlemi tetikleyen yapılardır.
+
+## === DML TRIGGER
+- Bir tabloda INSERT, UPDATE ve DELETE işlemleri gerçekleştirildiğinde devreye giren yapılardır. Bu işlemler sonucunda veya sürecinde devreye girerler.
+
+## === DDL TRIGGER
+- CREATE, ALTER ve DROP işlemleri sonucunda veya sürecinde devreye girecek olan yapılardır.
