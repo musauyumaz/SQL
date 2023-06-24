@@ -2358,3 +2358,24 @@ EXEC SP_TABLOOLUSTUR 'ORNEKTABLO3','ID','INT PRIMARY KEY IDENTITY(1,1)', 'KOLON2
 
 ## === DDL TRIGGER
 - CREATE, ALTER ve DROP işlemleri sonucunda veya sürecinde devreye girecek olan yapılardır.
+
+***
+# 113-) T-SQL DML Triggerlar - Inserted ve Deleted Tabloları
+## === DML TRIGGER ===
+- Bir tabloda INSET, UPDATE ve DELETE işlemleri gerçekleştirildiğinde devreye giren yapılardır. Bu işlemler sonucunda veya sürecinde devreye girerler.
+
+## *INSERTED TABLE
+- Eğer bir tabloda INSERT işlemi yapılıyorsa arka planda işlemler ilk önce RAM'de oluşturulan INSERTED isimli bir tablo üzerinde yapılır. Eğer işlemde bir problem yoksa INSERTED tablosundaki veriler fiziksel tabloya INSERT edilir. İşlem bittiğinde RAM'de oluşturulan bu INSERTED tablosu silinir.
+
+## *DELETED TABLE
+- Eğer bir tabloda DELETE işlemi yapılıyorsa arka planda işlemler ilk önce RAM'de oluşturulan DELETED isimli bir tablo üzerinde yapılır. Eğer işlemde bir problem yoksa DELETED tablosundaki veriler fiziksel tabloya INSERT edilir. İşlem bittiğinde RAM'de oluşturulan bu DELETED tablosu silinecektir.
+
+- Eğer bir tabloda UPDATE işlemi yapılıyorsa RAM'de UPDATED isimli bir tablo OLUŞTURULMAZ! ! !
+
+- SQL Server'da ki UPDATE mantığı önce silme(DELETE) sonra eklemedir(INSERT).
+
+- Eğer bir tabloda UPDATE işlemi yapılıyorsa arka planda RAM'de hem DELETED hem de INSERTED tabloları oluşturulur ve işlemler bunlar üzerinde yapılır.
+
+### NOT : UPDATE yaparken güncellenen kaydın orjinali DELETED tablosunda, güncellendikten sonraki hali ise INSERTED tablosunda bulunmaktadır. Çünkü güncelleme demek kaydı önce silmek sonra eklemek demektir.
+
+- DELETED ve INSERTED tabloları, ilgili sorgu sonucu oluştukları için o sorgunun kullandığı kolonlara da sahip olur. Böylece DELETED ve INSERTED tablolarından SELECT sorgusu yapmak mümkündür.
