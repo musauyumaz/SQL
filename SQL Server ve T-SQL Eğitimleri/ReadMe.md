@@ -2146,3 +2146,33 @@ AS
 
 SELECT DBO.RAPOR(K.KategoriAdi,U.UrunAdi,U.BirimFiyati,U.HedefStokDuzeyi)  FROM Urunler U INNER JOIN Kategoriler K ON K.KategoriID = U.KategoriID
 ```
+
+***
+# 103-) T-SQL Stored Procedures - Genel Özellikleri
+## STORED PROCEDURES (SAKLI YORDAMLAR)
+
+## == GENEL ÖZELLİKLERİ ==
+- Normal sorgudan hızlı çalışırlar.
+
+- Çünkü normal sorgular Execute edilirken Execute Plan işlemi yapılır. Bu işlem sırasında hangi tablodan veri çekilecek hangi kolonlardan gelecek bunlar nerede vs. gibi işlemler yapılır. Bir sorgu her çalıştırıldığında bu işlemler aynen tekrar tekrar yapılır. Fakat sorgu STORED PROCEDURE olarak çalıştırılırsa bu işlem sadece bir kere yapılır ve o da ilk çalıştırma esnasındadır. Diğer çalıştırmalarda bu işlemler yapılmaz. Bundan dolayı hız ve performansta artış sağlanır.
+
+- İçerisinde SELECT INSERT UPDATE ve DELETE ilemleri yapılabilir.
+
+- İç içe kullanılabilir.
+
+- İçersinde fonksiyon oluşturulabilir.
+
+- Sorgularımızın dışarıdan alacağı değerler parametre olarak STORED PROCEDURE'lere geçirilebildiğinden dolayı sorgularımızın SQL INJECTION yemelerini de önlemiş oluruz. Bu yönleriyle de daha güvenlidirler.
+
+- STORED PROCEDURE fiziksel bir veritabanı nesnesidir. Haliyle CREATE komutu ile oluşturulur.
+
+- Fiziksel olarak ilgili veritabanının Programmability -> Stored Procedures kombinasyonundan erişilebilirler.
+
+## == Prototip ==
+```SQL
+-- CREATE PROC YA DA PROCEDURE [İSİM]
+--(
+-- VARSA PARAMETRELER
+--)AS
+-- YAZILACAK SORGULAR, KODLAR, ŞARTLAR, FONKSİYONLAR, KOMUTLAR
+```
