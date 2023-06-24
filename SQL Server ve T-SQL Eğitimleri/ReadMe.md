@@ -2198,3 +2198,12 @@ CREATE PROC SP_ORNEK2
 AS 
 SELECT * FROM Personeller WHERE PersonelID = @ID
 ```
+
+***
+# 105-) T-SQL Stored Procedures Kullanımı
+## == STORED PROCEDURES Kullanımı == 
+- STORED PROCEDURE yapılarını EXEC komutu eşliğinde çalıştırabilmekteyiz.
+```SQL
+EXEC SP_ORNEK 3
+EXEC SP_ORNEK2 3,4,'ASD'
+```
