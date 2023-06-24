@@ -2295,3 +2295,31 @@ EXEC SP_PERSONELEKLE2
 Exec SP_PERSONELEKLE2 'İBRAHİM'
 ```
 - @Ad parametresi İBRAHİM değerini alacaktır. Diğer parametreler varsayılan değerleri
+
+***
+# 110-) T-SQL Exec Komutu
+## EXEC Komutu
+- EXEC Komutu EXECUTE yani çalıştır manasına gelen bir komuttur.
+
+- T-SQL programlama dilindeki herşeyi çalıştırır diyebiliriz.
+
+- EXEC sanki bir fonksiyon niteliğinde çalışan tek tırnaklar arasına aldığı komutları çalıştıran bir komuttur.
+
+- Aslında yazdığımız sorgular/komutlar arka planda EXEC komutunun içinde gönderilir.
+
+```SQL
+EXEC('SELECT * FROM Personeller')
+SELECT * FROM Personeller
+```
+
+- Yanlış Kullanım
+```SQL
+EXEC('DECLARE @SAYAC INT = 0')
+EXEC('PRINT @SAYAC')
+
+```
+
+- Doğru Kullanım
+```SQL
+EXEC('DECLARE @SAYAC INT = 0 PRINT @SAYAC')
+```
