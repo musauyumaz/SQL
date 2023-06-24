@@ -2252,3 +2252,20 @@ DECLARE @ADI NVARCHAR(MAX), @SOYADI NVARCHAR(MAX)
 EXEC SP_ORNEK3 3,@ADI OUTPUT, @SOYADI OUTPUT
 SELECT @ADI + ' ' + @SOYADI
 ```
+
+***
+# 108-) T-SQL Stored Procedures Örnek
+## == GENEL ÖRNEK ==
+- Dışarıdan aldığı isim, soyisim ve şehir bilgilerini Personeller tablosunda ilgili kolonlara ekleyen STORED PROCEDURE'ü yazınız
+```SQL
+CREATE PROC SP_PERSONELEKLE
+(
+	@ISIM NVARCHAR(MAX),
+	@SOYISIM NVARCHAR(MAX),
+	@SEHIR NVARCHAR(MAX)
+) AS
+INSERT Personeller(Adi,SoyAdi,Sehir) VALUES(@ISIM, @SOYISIM, @SEHIR)
+
+EXEC SP_PERSONELEKLE 'MUSA','UYUMAZ','ESKİŞEHİR'
+SELECT * FROM PERSONELLER
+```
