@@ -2480,3 +2480,52 @@ INSERT Personeller(Adi,SoyAdi) VALUES('MUSA','UYUMAZ')
 DELETE FROM Personeller WHERE PersonelID = 30
 ```
 
+***
+# 116-) T-SQL Instead Of Triggerlar
+## === INSTEAD OF TRIGGERLAR ===
+- Şu ana kadar INSERT UPDATE ve DELETE işlemleri yapılırken şu şu işlemleri yap mantığıyşa çalıştık.(Yanında şunu yap)
+
+- Instead Of Triggerlar ise INSERT UPDATE ve DELETE işlemleri yerine şu şu işleri yap mantığıyla çalışmaktadır. (Yerine Şunu Yap)
+
+## Prototip
+- CREATE TRIGGER [TRIGGER ADI]
+- ON [TABLO ADI]
+- INSTEAD OF DELETE INSERT UPDATE
+- AS
+- [KOMUTLAR]
+
+- Örnek 5
+- Personeller tablosunda UPDATE gerçekleştiği anda yapılacak güncelleştirme yerine bir log tablosuna ADI ... olan personel ... yani adıyla değiştirilerek ... kullanıcı tarafından ... tarihinde güncellenmek istendi. kalıbında rapır yazan trigger'ı yazalım.
+```SQL
+CREATE TRIGGER TRGPERSONELLERRAPORINSTEAD
+ON PERSONELLER
+INSTEAD OF UPDATE
+AS
+DECLARE @ESKIADI NVARCHAR(MAX), @YENIADI NVARCHAR(MAX)
+SELECT @ESKIADI = Adi FROM deleted
+SELECT @YENIADI = Adi FROM inserted
+INSERT LOGTABLOSU(RAPOR) VALUES('Adı '+ @ESKIADI  +' olan personel ' + @YENIADI +' yeni adıyla değiştirilerek ' + SUSER_NAME() +' kullanıcısı tarafından ' +CAST(GETDATE() AS NVARCHAR(MAX))+ ' tarihinde istendi.')
+
+UPDATE Personeller SET Adi = 'HÜSEYİN' WHERE PersonelID = 15
+```
+
+- Örnek 6
+- Personeller tablosunda adı Andrew olan kaydın ilinmesini engelleyen ama diğerlerine izin veren trigger'ı yazalım.
+```SQL
+CREATE TRIGGER AndrewTrigger
+ON PERSONELLER
+AFTER DELETE 
+AS
+DECLARE @ADI NVARCHAR(MAX)
+SELECT @ADI = Adi FROM deleted
+IF @ADI = 'Andrew'
+	BEGIN 
+		PRINT 'Bu kaydı Silemezsiniz.'
+		ROLLBACK -- Yapılan tüm işlemleri geri alır.
+	END
+
+DELETE FROM Personeller WHERE PersonelID = 17
+```
+		
+
+
