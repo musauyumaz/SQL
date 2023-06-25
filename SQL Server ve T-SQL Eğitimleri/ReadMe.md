@@ -2724,3 +2724,68 @@ SELECT IDENT_CURRENT('Personeller')
 
 SELECT IDENT_CURRENT('Personeller') + 1
 ```
+
+***
+# 125-) T-SQL @@Identity, Scope_Identity ve Ident_Current Komutları
+## @@IDENTITY, SCOPE_IDENTITY() ve IDENT_CURRENT() Komutları
+## == @@IDENTITY
+- Açılmış olan bağlantıda(connection); tablo yahut sorgunun çalıştığı scope'a bakmaksızın son üretilen identity değerini vermektedir.
+## Dikkat ! ! !
+- Trigger kullanılan sorgularda yanlış sonuç alma ihtimalinden dolayı kullanılması tavsiye edilmez.
+
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES('MUİDDİN','İMPATRİNO') 
+SELECT @@IDENTITY
+```
+
+## == SCOPE_IDENTITY()
+- Açılmış olan bağlantıda(connection) ve sorgunun çalıştığı scope'ta son üretilen identity değerini döndürür.
+## Dikkat ! ! !
+- Trigger kullanılan sorgularda @@IDENTITY yerine bu fonksiyonun kullanılması tavsiye edilir.
+
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES('MUİDDİN','İMPATRİNO') 
+SELECT SCOPE_IDENTITY()
+```
+
+## == IDENT_CURRENT('TabloAdi')
+- Bağlantı ve sorgunun çalıştırıldığı scope'a bakmaksızın parametre olarak verilen tabloda üretilen sonuncu identity değerini döndürür.
+
+```SQL
+CREATE DATABASE ORNEKVERITABANI
+GO
+CREATE TABLE ORNEKTABLO1
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+)
+GO 
+CREATE TABLE ORNEKTABLO2
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+)
+
+USE ORNEKVERITABANI
+
+CREATE TRIGGER KONTROL
+ON ORNEKTABLO1 FOR INSERT 
+AS 
+INSERT ORNEKTABLO2 VALUES('','')
+
+INSERT ORNEKTABLO2 VALUES('1','1')
+INSERT ORNEKTABLO2 VALUES('2','2')
+INSERT ORNEKTABLO2 VALUES('3','3')
+INSERT ORNEKTABLO2 VALUES('4','4')
+INSERT ORNEKTABLO2 VALUES('5','5')
+
+INSERT ORNEKTABLO1 VALUES('6','6')
+
+SELECT @@IDENTITY
+UNION ALL
+SELECT SCOPE_IDENTITY()
+UNION ALL
+SELECT IDENT_CURRENT('ORNEKTABLO1')
+```
