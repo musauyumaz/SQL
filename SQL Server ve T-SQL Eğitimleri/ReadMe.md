@@ -2710,3 +2710,7 @@ EXEC SP_HAVALEYAP 'ABANKA',20,40,5000
 
 ## BACKUP İle Yedek Alma
 ## Restore İle Yedeği Yükleme
+
+***
+# 123-) T-SQL SQL Server Database Yedeğini Alma ve Yükleme - Generate Scripts
+## GENERATE SCRIPTS
