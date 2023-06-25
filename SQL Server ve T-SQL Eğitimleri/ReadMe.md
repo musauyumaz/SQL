@@ -2465,3 +2465,18 @@ UPDATE Personeller SET Adi = 'MUSA' WHERE PersonelID = 3
 
 SELECT * FROM LOGTABLOSU
 ```
+
+***
+# 115-) T-SQL Multiple Actions Trigger
+## === Multiple Actions TRIGGER ===
+```SQL
+CREATE TRIGGER MULTITRIGGER
+ON PERSONELLER
+AFTER DELETE, INSERT
+AS 
+PRINT 'MERHABA'
+
+INSERT Personeller(Adi,SoyAdi) VALUES('MUSA','UYUMAZ')
+DELETE FROM Personeller WHERE PersonelID = 30
+```
+
