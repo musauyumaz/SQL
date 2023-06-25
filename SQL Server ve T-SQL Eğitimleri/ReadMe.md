@@ -2852,3 +2852,22 @@ DELETE FROM VERILER WHERE ID<=10
 
 DELETE TOP(5) FROM VERILER
 ```
+
+***
+# 129-) T-SQL ROW_NUMBER Fonksiyonu
+## T-SQL ROW_NUMBER Fonksiyonu
+- T-SQL'de SELECT sorgusu neticesinde yapısal olarak elde ettiğimiz tabloların satır index numaralarına ihtiyacımız olabilir. 
+
+- Veritabanında tekrar eden datalar/veriler varsa veriler arasında ayrım yapmak yahut sıralamak gibi işlemler yapmak istiyorsak ROW_NUMBER() fonksiyonunu kullanabiliriz.
+
+- Temelde işlevi her satıra karşılık PRIMARY kolonundan bağımsız sıralı index numarası atanmış kolon tanımlanmaktadır.
+
+## Prototipi 
+- SELECT ROW_NUMBER() OVER(ORDER BY KOLONADI) INDEXER, * FROM TABLO 
+
+```SQL
+SELECT ROW_NUMBER() OVER(ORDER BY Adi) INDEXER, * FROM Personeller ORDER BY PersonelID
+```
+
+***
+# 130-) T-SQL ROW_NUMBER Fonksiyonu - Partition By Komutu İle Gruplama
