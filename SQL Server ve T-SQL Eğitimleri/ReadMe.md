@@ -2703,3 +2703,10 @@ EXEC SP_HAVALEYAP 'ABANKA', 10,30,100
 EXEC SP_HAVALEYAP 'BBANKA', 30,10,300
 EXEC SP_HAVALEYAP 'ABANKA',20,40,5000
 ```
+
+***
+# 122-) T-SQL SQL Server Database Yedeğini Alma ve Yükleme - Backup ve Restore
+## SQL SERVER Database Yedeği Alma ve Yükleme
+
+## BACKUP İle Yedek Alma
+## Restore İle Yedeği Yükleme
