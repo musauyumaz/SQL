@@ -2541,3 +2541,17 @@ ROLLBACK
 
 DROP TABLE LOGTABLOSU
 ```
+## Dikkat ! ! !
+- DDL TRİGGER'larla ilgili veritabanının Programmability -> Database Triggers sekmesi altından erişebilirsiniz.
+
+***
+# 118-) T-SQL Trigger Disable - Enable
+## === TRIGGER'ı Devre Dışı Bırakma ===
+```SQL
+DISABLE TRIGGER ORNEKTRIGGER ON PERSONELLER
+```
+
+## === TRIGGER'ı Aktifleştirme ==
+```SQL
+ENABLE RIGGER ORNEKTRIGGER ON PERSONELLER
+```
