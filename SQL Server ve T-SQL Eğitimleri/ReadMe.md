@@ -2576,3 +2576,43 @@ ENABLE RIGGER ORNEKTRIGGER ON PERSONELLER
 - Normalde default olarak herşey BEGIN TRAN ile başlayıp COMMIT TRAN ile biter. !!! Biz bu yapıları kullanmasak bile!!!
 
 ***
+# 120-) T-SQL Transaction Tanımlama
+## == TRANSACTION Tanımlama ==
+## PROTOTIP
+- BEGIN TRAN [TRANSACTION ADI]
+- İŞLEMLER
+
+```SQL
+INSERT Bolge VALUES(5,'Çorum') -- Varsayılan olarak TRANSACTION kontrolünde bir işlemdir. Netice olarak gene varsayılan olarak COMMIT TRAN olarak bitmektedir.
+
+BEGIN TRAN KONTROL
+INSERT Bolge VALUES(6,'Ankara')
+COMMIT TRAN
+```
+
+- Transaction'a isim vermek zorunda değiliz.
+
+```SQL
+BEGIN TRAN 
+INSERT Bolge VALUES(7,'Antalya')
+COMMIT TRAN
+
+BEGIN TRAN KONTROL
+DECLARE @i int
+DELETE FROM Personeller WHERE PersonelID > 20
+SET @i = @@ROWCOUNT
+IF @i = 1
+BEGIN
+	PRINT 'KAYIT SİLİNDİ.'
+	COMMIT
+	-- YA DA 
+	-- COMMIT TRAN
+END
+ELSE
+BEGIN
+	PRINT 'İşlemler geri alındı'
+	ROLLBACK
+	-- YA DA
+	-- ROLLBACK TRAN
+END
+```
