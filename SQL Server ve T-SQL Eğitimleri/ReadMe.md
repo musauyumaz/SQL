@@ -2527,5 +2527,17 @@ IF @ADI = 'Andrew'
 DELETE FROM Personeller WHERE PersonelID = 17
 ```
 		
+***
+# 117-) T-SQL DDL Triggerlar
+## === DDL TRIGGERLAR ===
+- CREATE, ALTER ve DROP işlemleri sonucunda veya sürecinde devreye girecek olan yapılardır.
+```SQL
+CREATE TRIGGER DDL_TRIGGER
+ON DATABASE
+FOR DROP_TABLE, ALTER_TABLE, CREATE_FUNCTION, CREATE_PROCEDURE, DROP_PROCEDURE --VS. VS.
+AS
+PRINT 'BU İŞLEM GERÇEKLEŞTİRİLEMEZ'
+ROLLBACK
 
-
+DROP TABLE LOGTABLOSU
+```
