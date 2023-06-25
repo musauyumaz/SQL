@@ -2789,3 +2789,25 @@ SELECT SCOPE_IDENTITY()
 UNION ALL
 SELECT IDENT_CURRENT('ORNEKTABLO1')
 ```
+
+***
+# 126-) T-SQL Default Values İle Sadece Identity Kolonuna Veri Eklemek
+
+## DEFAULT VALUES İle Sadece Identity Kolonuna Veri Eklemek
+- Eğer ki veritabanında görevi sadece diğer tablolar tarafından referans alınacağı ideleri üretecek ve barındıracak olan bir tabloya ihtiyacınız varsa kullanılır.
+
+```SQL
+CREATE DATABASE ORNEKVERITABANI
+
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+)
+
+USE ORNEKVERITABANI
+
+INSERT ORNEKTABLO
+DEFAULT VALUES
+```
