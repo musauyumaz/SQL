@@ -2555,3 +2555,24 @@ DISABLE TRIGGER ORNEKTRIGGER ON PERSONELLER
 ```SQL
 ENABLE RIGGER ORNEKTRIGGER ON PERSONELLER
 ```
+
+***
+# 119-) T-SQL Transaction Giriş
+## TRANSACTION
+-  Birden çok işlemin bir arada yapıldığı durumlarda eğer parçayı oluşturan işlemlerden herhangi birinde sorun olursa tüm işlemi iptal ettirmeye yarar.
+
+- Örneğin; kredi kartı ile alışveriş işlemlerinde transaction işlemi vardır. Siz marketten ürün alırken sizin hesabınızdan para düşülecek, marketin hesabına para aktarılıcaktır. Bu işlemde hata olmaması gerekir ve bundan dolayı bu işlem bir transaction bloğunda gerçekleştirilmelidir. Bu esnada herhangi bir sorun olursa bütün işlemler transaction tarafından iptal edilebilecektir.
+
+- BEGIN TRAN veya BEGIN TRANSACTION : Transaction işlemi başlatır.
+
+- COMMIT TRAN : Transaction işlemini başarıyla sına erdirir. İşlem(ler)i gerçekleştirir.
+
+- ROLLBACK TRAN : Transaction işlemini iptal eder. İşlem(ler)i geri alır.
+
+- COMMIT TRAN yerine sadece COMMIT yazılabilir
+
+- ROLLBACK TRAN yerine sadece ROLLBACK yazılabilir.
+
+- Normalde default olarak herşey BEGIN TRAN ile başlayıp COMMIT TRAN ile biter. !!! Biz bu yapıları kullanmasak bile!!!
+
+***
