@@ -1827,7 +1827,7 @@ DELETE FROM ##GECICIPERSONELLER2 WHERE PersonelID = 3
 UPDATE ##GECICIPERSONELLER2 SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID = 5
 ```
 
-- `##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
+-`##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
 
 - Bu tabloyu oturum açan şahıs ve onun SQL Server'ına dışarıdan ulaşan 3. şahıslar kullanabilir.
 
@@ -2380,3 +2380,502 @@ EXEC SP_TABLOOLUSTUR 'ORNEKTABLO3','ID','INT PRIMARY KEY IDENTITY(1,1)', 'KOLON2
 
 - DELETED ve INSERTED tabloları, ilgili sorgu sonucu oluştukları için o sorgunun kullandığı kolonlara da sahip olur. Böylece DELETED ve INSERTED tablolarından SELECT sorgusu yapmak mümkündür.
 
+***
+# 114-) T-SQL Trigger Tanımlama
+## === T-SQL Tanımlama ===
+## Prototip
+- CREATE TRIGGER [TRIGGER ADI]
+- ON [İŞLEM YAPILACAK TABLO ADI]
+- AFTER -- veya FOR DELETE, UPDATE, INSERT
+- AS
+- [KODLAR]
+
+## Dikkat ! ! !
+- Tanımlanan TRIGGER'larla ilgili tablonun içerisindeki TRIGGERS sekmesi altından erişebiliriz
+
+```SQL
+CREATE TRIGGER ORNEKTRIGGER
+ON Personeller
+AFTER INSERT 
+AS 
+SELECT * FROM Personeller
+
+INSERT Personeller(Adi,SoyAdi) VALUES('MUSA','UYUMAZ')
+```
+
+- Örnek 1
+- Tedarikçiler tablosundan bir veri silindiğinde tüm ürünlerin fiyatı otomatik olarak 10 artsın.
+```SQL
+CREATE TRIGGER TRIGGERTEDARIKCILER
+ON Tedarikciler
+AFTER DELETE
+AS
+UPDATE Urunler SET BirimFiyati = BirimFiyati + 10
+SELECT * FROM URUNLER
+
+DELETE FROM Tedarikciler WHERE TedarikciID = 31
+```
+
+- Örnek 2
+- Tedarikçiler tablosunda bir veri güncellendiğinde, kategoriler tablosunda meyve kokteyli adında bir kategori oluşsun :)
+```SQL
+CREATE TRIGGER TRGTEDARIKGUNCELLENDIGINDE
+ON Tedarikciler
+AFTER UPDATE
+AS
+INSERT Kategoriler(KategoriAdi) VALUES('MEYVE KOKTEYLİ')
+
+UPDATE Tedarikciler SET MusteriAdi = 'SERHAT' WHERE TedarikciID = 29
+SELECT * FROM Kategoriler
+```
+
+- Örnek 3
+- Personeller tablosundan bir kayıt silindiğinde silinen kaydın adı, soyadı, kim tarafından ve hangi tarihte silindiği başka bir tabloya kayıt edilsin Bir nevi log tablosu misali...
+```SQL
+CREATE TABLE LOGTABLOSU
+(
+	ID INT PRIMARY KEY IDENTITY(1,1),
+	RAPOR NVARCHAR(MAX)
+)
+
+CREATE TRIGGER TRIGGERPERSONELLER
+ON Personeller
+FOR DELETE
+AS
+DECLARE @ADI NVARCHAR(MAX), @SOYADI NVARCHAR(MAX)
+SELECT @ADI = Adi, @SOYADI = SoyAdi FROM DELETED
+INSERT LOGTABLOSU(RAPOR) VALUES('ADI VE SOYADI ' + @ADI + ' ' + @SOYADI + ' OLAN PERSONEL ' +SUSER_NAME() + ' TARAFINDAN ' + CAST(GETDATE() AS NVARCHAR(MAX)) + ' TARİHİNDE SİLİNMİŞTİR.')
+
+DELETE FROM Personeller WHERE PersonelID = 16
+```
+
+- Örnek 4
+- Personeller tablosunda update gerçekleştiği anda devreye giren ve bir log tablosuna Adı ... olan personel ... yeni adıyla değiştirilerek ... kullanıcı tarafından ... tarihinde güncellendi. Kalıbında rapor yazan trigger'ı yazalım.
+```SQL
+CREATE TRIGGER TRGPERSONELRAPOR
+ON Personeller
+AFTER UPDATE 
+AS
+DECLARE @ESKIISIM NVARCHAR(MAX), @YENIISIM NVARCHAR(MAX)
+SELECT @ESKIISIM = Adi FROM deleted
+SELECT @YENIISIM = Adi FROM inserted
+INSERT LOGTABLOSU(RAPOR) VALUES('Adı '+ @ESKIISIM  +' olan personel ' + @YENIISIM +' yeni adıyla değiştirilerek ' + SUSER_NAME() +' kullanıcısı tarafından ' +CAST(GETDATE() AS NVARCHAR(MAX))+ ' tarihinde güncellendi.')
+
+UPDATE Personeller SET Adi = 'MUSA' WHERE PersonelID = 3
+
+SELECT * FROM LOGTABLOSU
+```
+
+***
+# 115-) T-SQL Multiple Actions Trigger
+## === Multiple Actions TRIGGER ===
+```SQL
+CREATE TRIGGER MULTITRIGGER
+ON PERSONELLER
+AFTER DELETE, INSERT
+AS 
+PRINT 'MERHABA'
+
+INSERT Personeller(Adi,SoyAdi) VALUES('MUSA','UYUMAZ')
+DELETE FROM Personeller WHERE PersonelID = 30
+```
+
+***
+# 116-) T-SQL Instead Of Triggerlar
+## === INSTEAD OF TRIGGERLAR ===
+- Şu ana kadar INSERT UPDATE ve DELETE işlemleri yapılırken şu şu işlemleri yap mantığıyşa çalıştık.(Yanında şunu yap)
+
+- Instead Of Triggerlar ise INSERT UPDATE ve DELETE işlemleri yerine şu şu işleri yap mantığıyla çalışmaktadır. (Yerine Şunu Yap)
+
+## Prototip
+- CREATE TRIGGER [TRIGGER ADI]
+- ON [TABLO ADI]
+- INSTEAD OF DELETE INSERT UPDATE
+- AS
+- [KOMUTLAR]
+
+- Örnek 5
+- Personeller tablosunda UPDATE gerçekleştiği anda yapılacak güncelleştirme yerine bir log tablosuna ADI ... olan personel ... yani adıyla değiştirilerek ... kullanıcı tarafından ... tarihinde güncellenmek istendi. kalıbında rapır yazan trigger'ı yazalım.
+```SQL
+CREATE TRIGGER TRGPERSONELLERRAPORINSTEAD
+ON PERSONELLER
+INSTEAD OF UPDATE
+AS
+DECLARE @ESKIADI NVARCHAR(MAX), @YENIADI NVARCHAR(MAX)
+SELECT @ESKIADI = Adi FROM deleted
+SELECT @YENIADI = Adi FROM inserted
+INSERT LOGTABLOSU(RAPOR) VALUES('Adı '+ @ESKIADI  +' olan personel ' + @YENIADI +' yeni adıyla değiştirilerek ' + SUSER_NAME() +' kullanıcısı tarafından ' +CAST(GETDATE() AS NVARCHAR(MAX))+ ' tarihinde istendi.')
+
+UPDATE Personeller SET Adi = 'HÜSEYİN' WHERE PersonelID = 15
+```
+
+- Örnek 6
+- Personeller tablosunda adı Andrew olan kaydın ilinmesini engelleyen ama diğerlerine izin veren trigger'ı yazalım.
+```SQL
+CREATE TRIGGER AndrewTrigger
+ON PERSONELLER
+AFTER DELETE 
+AS
+DECLARE @ADI NVARCHAR(MAX)
+SELECT @ADI = Adi FROM deleted
+IF @ADI = 'Andrew'
+	BEGIN 
+		PRINT 'Bu kaydı Silemezsiniz.'
+		ROLLBACK -- Yapılan tüm işlemleri geri alır.
+	END
+
+DELETE FROM Personeller WHERE PersonelID = 17
+```
+		
+***
+# 117-) T-SQL DDL Triggerlar
+## === DDL TRIGGERLAR ===
+- CREATE, ALTER ve DROP işlemleri sonucunda veya sürecinde devreye girecek olan yapılardır.
+```SQL
+CREATE TRIGGER DDL_TRIGGER
+ON DATABASE
+FOR DROP_TABLE, ALTER_TABLE, CREATE_FUNCTION, CREATE_PROCEDURE, DROP_PROCEDURE --VS. VS.
+AS
+PRINT 'BU İŞLEM GERÇEKLEŞTİRİLEMEZ'
+ROLLBACK
+
+DROP TABLE LOGTABLOSU
+```
+## Dikkat ! ! !
+- DDL TRİGGER'larla ilgili veritabanının Programmability -> Database Triggers sekmesi altından erişebilirsiniz.
+
+***
+# 118-) T-SQL Trigger Disable - Enable
+## === TRIGGER'ı Devre Dışı Bırakma ===
+```SQL
+DISABLE TRIGGER ORNEKTRIGGER ON PERSONELLER
+```
+
+## === TRIGGER'ı Aktifleştirme ==
+```SQL
+ENABLE RIGGER ORNEKTRIGGER ON PERSONELLER
+```
+
+***
+# 119-) T-SQL Transaction Giriş
+## TRANSACTION
+-  Birden çok işlemin bir arada yapıldığı durumlarda eğer parçayı oluşturan işlemlerden herhangi birinde sorun olursa tüm işlemi iptal ettirmeye yarar.
+
+- Örneğin; kredi kartı ile alışveriş işlemlerinde transaction işlemi vardır. Siz marketten ürün alırken sizin hesabınızdan para düşülecek, marketin hesabına para aktarılıcaktır. Bu işlemde hata olmaması gerekir ve bundan dolayı bu işlem bir transaction bloğunda gerçekleştirilmelidir. Bu esnada herhangi bir sorun olursa bütün işlemler transaction tarafından iptal edilebilecektir.
+
+- BEGIN TRAN veya BEGIN TRANSACTION : Transaction işlemi başlatır.
+
+- COMMIT TRAN : Transaction işlemini başarıyla sına erdirir. İşlem(ler)i gerçekleştirir.
+
+- ROLLBACK TRAN : Transaction işlemini iptal eder. İşlem(ler)i geri alır.
+
+- COMMIT TRAN yerine sadece COMMIT yazılabilir
+
+- ROLLBACK TRAN yerine sadece ROLLBACK yazılabilir.
+
+- Normalde default olarak herşey BEGIN TRAN ile başlayıp COMMIT TRAN ile biter. !!! Biz bu yapıları kullanmasak bile!!!
+
+***
+# 120-) T-SQL Transaction Tanımlama
+## == TRANSACTION Tanımlama ==
+## PROTOTIP
+- BEGIN TRAN [TRANSACTION ADI]
+- İŞLEMLER
+
+```SQL
+INSERT Bolge VALUES(5,'Çorum') -- Varsayılan olarak TRANSACTION kontrolünde bir işlemdir. Netice olarak gene varsayılan olarak COMMIT TRAN olarak bitmektedir.
+
+BEGIN TRAN KONTROL
+INSERT Bolge VALUES(6,'Ankara')
+COMMIT TRAN
+```
+
+- Transaction'a isim vermek zorunda değiliz.
+
+```SQL
+BEGIN TRAN 
+INSERT Bolge VALUES(7,'Antalya')
+COMMIT TRAN
+
+BEGIN TRAN KONTROL
+DECLARE @i int
+DELETE FROM Personeller WHERE PersonelID > 20
+SET @i = @@ROWCOUNT
+IF @i = 1
+BEGIN
+	PRINT 'KAYIT SİLİNDİ.'
+	COMMIT
+	-- YA DA 
+	-- COMMIT TRAN
+END
+ELSE
+BEGIN
+	PRINT 'İşlemler geri alındı'
+	ROLLBACK
+	-- YA DA
+	-- ROLLBACK TRAN
+END
+```
+
+***
+# 121-) T-SQL Transaction Banka Uygulaması
+## Örnek
+- İki adet banka tablosu oluşturalım. Bankalar arası havale işlemi gerçekleştirelim. Ve bu işlemleri yaparken transaction kullanalım.
+```SQL
+CREATE DATABASE BANKADB
+GO
+USE BANKADB
+GO 
+CREATE TABLE ABANKA
+(
+	HESAPNO INT,
+	BAKIYE MONEY
+)
+GO
+CREATE TABLE BBANKA
+(
+	HESAPNO INT,
+	BAKIYE MONEY
+)
+GO
+INSERT ABANKA VALUES(10,1000),
+					(20,2500)
+INSERT BBANKA VALUES(30,2300),
+					(40,760)
+GO
+CREATE PROC SP_HAVALEYAP
+(
+	@BANKAKIMDEN NVARCHAR(MAX),
+	@GONDERENHESAPNO INT,
+	@ALANHESAPNO INT,
+	@TUTAR MONEY
+)AS
+BEGIN TRANSACTION KONTROL
+DECLARE @ABAKIYE INT, @BBAKIYE INT, @HESAPTAKIPARA MONEY
+IF @BANKAKIMDEN = 'ABANKA'
+BEGIN
+	SELECT @HESAPTAKIPARA = BAKIYE FROM ABANKA WHERE HESAPNO=@GONDERENHESAPNO
+	IF @TUTAR > @HESAPTAKIPARA
+	BEGIN
+		PRINT CAST(@GONDERENHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTA GÖNDERİLMEK İSTENEN TUTARDAN DAHA AZ PARA MEVCUTTUR.'
+		ROLLBACK -- İŞLEMLERİ GERİ AL
+	END
+	ELSE
+	BEGIN 
+		UPDATE ABANKA SET BAKIYE = BAKIYE - @TUTAR WHERE HESAPNO = @GONDERENHESAPNO
+		UPDATE BBANKA SET BAKIYE = BAKIYE + @TUTAR WHERE HESAPNO = @ALANHESAPNO
+		PRINT 'ABANKASINDAKİ '+ CAST(@GONDERENHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTAN ABANKASINDAKİ ' +CAST(@ALANHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESABA ' +  CAST(@TUTAR AS NVARCHAR(MAX)) + ' DEĞERİNDE PARA HAVALE EDİLMİŞTİR.'
+		PRINT 'SON DEĞERLER;'
+
+		SELECT @BBAKIYE=BAKIYE FROM BBANKA WHERE HESAPNO = @ALANHESAPNO
+		SELECT @ABAKIYE=BAKIYE FROM ABANKA WHERE HESAPNO = @GONDERENHESAPNO
+		PRINT 'ABANKASINDAKİ ' + CAST(@GONDERENHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTA KALAN BAKİYE : ' + CAST(@ABAKIYE AS NVARCHAR(MAX))
+		PRINT 'BBANKASINDAKİ ' + CAST(@ALANHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTA KALAN BAKİYE : ' + CAST(@BBAKIYE AS NVARCHAR(MAX))
+		COMMIT
+	END
+END
+
+ELSE
+BEGIN
+	SELECT @HESAPTAKIPARA=BAKIYE FROM BBANKA WHERE HESAPNO = @GONDERENHESAPNO
+	IF @TUTAR > @HESAPTAKIPARA
+	BEGIN
+		PRINT CAST(@GONDERENHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTA GÖNDERİLMEK İSTENEN TUTARDAN DAHA AZ PARA MEVCUTTUR.'
+		ROLLBACK -- İŞLEMLERİ GERİ AL
+	END
+	ELSE
+	BEGIN
+	
+	UPDATE BBANKA SET BAKIYE = BAKIYE - @TUTAR WHERE HESAPNO = @GONDERENHESAPNO
+	UPDATE ABANKA SET BAKIYE = BAKIYE + @TUTAR WHERE HESAPNO = @ALANHESAPNO
+	PRINT 'BBANKASINDAKİ '+ CAST(@GONDERENHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTAN ABANKASINDAKİ ' +CAST(@ALANHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESABA ' +  CAST(@TUTAR AS NVARCHAR(MAX)) + ' DEĞERİNDE PARA HAVALE EDİLMİŞTİR.'
+	PRINT 'SON DEĞERLER;'
+
+	SELECT @BBAKIYE=BAKIYE FROM BBANKA WHERE HESAPNO = @GONDERENHESAPNO
+	SELECT @ABAKIYE=BAKIYE FROM ABANKA WHERE HESAPNO = @ALANHESAPNO
+	PRINT 'ABANKASINDAKİ ' + CAST(@ALANHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTA KALAN BAKİYE : ' + CAST(@ABAKIYE AS NVARCHAR(MAX))
+	PRINT 'BBANKASINDAKİ ' + CAST(@GONDERENHESAPNO AS NVARCHAR(MAX)) + ' NUMARALI HESAPTA KALAN BAKİYE : ' + CAST(@BBAKIYE AS NVARCHAR(MAX))
+	COMMIT
+	END
+	END
+
+EXEC SP_HAVALEYAP 'ABANKA', 10,30,100
+EXEC SP_HAVALEYAP 'BBANKA', 30,10,300
+EXEC SP_HAVALEYAP 'ABANKA',20,40,5000
+```
+
+***
+# 122-) T-SQL SQL Server Database Yedeğini Alma ve Yükleme - Backup ve Restore
+## SQL SERVER Database Yedeği Alma ve Yükleme
+
+## BACKUP İle Yedek Alma
+## Restore İle Yedeği Yükleme
+
+***
+# 123-) T-SQL SQL Server Database Yedeğini Alma ve Yükleme - Generate Scripts
+## GENERATE SCRIPTS
+
+***
+# 124-) T-SQL En Son Primary Key ID yi Bulmak
+-- T-SQL En Son Primary Key ID'yi Bulmak
+
+```SQL
+SELECT IDENT_CURRENT('Personeller')
+
+SELECT IDENT_CURRENT('Personeller') + 1
+```
+
+***
+# 125-) T-SQL @@Identity, Scope_Identity ve Ident_Current Komutları
+## @@IDENTITY, SCOPE_IDENTITY() ve IDENT_CURRENT() Komutları
+## == @@IDENTITY
+- Açılmış olan bağlantıda(connection); tablo yahut sorgunun çalıştığı scope'a bakmaksızın son üretilen identity değerini vermektedir.
+## Dikkat ! ! !
+- Trigger kullanılan sorgularda yanlış sonuç alma ihtimalinden dolayı kullanılması tavsiye edilmez.
+
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES('MUİDDİN','İMPATRİNO') 
+SELECT @@IDENTITY
+```
+
+## == SCOPE_IDENTITY()
+- Açılmış olan bağlantıda(connection) ve sorgunun çalıştığı scope'ta son üretilen identity değerini döndürür.
+## Dikkat ! ! !
+- Trigger kullanılan sorgularda @@IDENTITY yerine bu fonksiyonun kullanılması tavsiye edilir.
+
+```SQL
+INSERT Personeller(Adi,SoyAdi) VALUES('MUİDDİN','İMPATRİNO') 
+SELECT SCOPE_IDENTITY()
+```
+
+## == IDENT_CURRENT('TabloAdi')
+- Bağlantı ve sorgunun çalıştırıldığı scope'a bakmaksızın parametre olarak verilen tabloda üretilen sonuncu identity değerini döndürür.
+
+```SQL
+CREATE DATABASE ORNEKVERITABANI
+GO
+CREATE TABLE ORNEKTABLO1
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+)
+GO 
+CREATE TABLE ORNEKTABLO2
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+)
+
+USE ORNEKVERITABANI
+
+CREATE TRIGGER KONTROL
+ON ORNEKTABLO1 FOR INSERT 
+AS 
+INSERT ORNEKTABLO2 VALUES('','')
+
+INSERT ORNEKTABLO2 VALUES('1','1')
+INSERT ORNEKTABLO2 VALUES('2','2')
+INSERT ORNEKTABLO2 VALUES('3','3')
+INSERT ORNEKTABLO2 VALUES('4','4')
+INSERT ORNEKTABLO2 VALUES('5','5')
+
+INSERT ORNEKTABLO1 VALUES('6','6')
+
+SELECT @@IDENTITY
+UNION ALL
+SELECT SCOPE_IDENTITY()
+UNION ALL
+SELECT IDENT_CURRENT('ORNEKTABLO1')
+```
+
+***
+# 126-) T-SQL Default Values İle Sadece Identity Kolonuna Veri Eklemek
+
+## DEFAULT VALUES İle Sadece Identity Kolonuna Veri Eklemek
+- Eğer ki veritabanında görevi sadece diğer tablolar tarafından referans alınacağı ideleri üretecek ve barındıracak olan bir tabloya ihtiyacınız varsa kullanılır.
+
+```SQL
+CREATE DATABASE ORNEKVERITABANI
+
+CREATE TABLE ORNEKTABLO
+(
+	ID INT PRIMARY KEY IDENTITY,
+	KOLON1 NVARCHAR(MAX),
+	KOLON2 NVARCHAR(MAX),
+)
+
+USE ORNEKVERITABANI
+
+INSERT ORNEKTABLO
+DEFAULT VALUES
+```
+
+***
+# 127-) T-SQL Top Keywordü İle Update İşlemi
+## TOP Keywordü İle Update İşlemi
+- Biz herhangi bir UPDATE işleminde herhangi bir filtreleme uygulayabiliriz ama yapacağımız filtrelemede ilklik ya da sonluk gerekiyorsa bunu TOP komutuyla yapmamız daha doğru olacaktır.
+
+```SQL
+CREATE TABLE VERILER
+(
+	ID INT PRIMARY KEY IDENTITY,
+	DEGER INT
+)
+
+DECLARE @I INT = 1
+WHILE @I < 151
+BEGIN 
+	INSERT VERILER(DEGER) VALUES(@I)
+	SET @I = @I + 1
+END
+
+SELECT TOP 2 * FROM Personeller
+
+SELECT * FROM Veriler
+
+UPDATE VERILER SET DEGER = DEGER - 5 WHERE ID <= 10
+UPDATE TOP(10) VERILER SET DEGER = DEGER - 5
+```
+
+***
+# 128-) T-SQL Top Keywordü İle Delete İşlemi
+## TOP Keywordü İle DELETE İşlemi
+
+```SQL
+SELECT * FROM VERILER
+
+DELETE FROM VERILER WHERE ID > 100
+
+DELETE FROM VERILER WHERE ID<=10
+
+DELETE TOP(5) FROM VERILER
+```
+
+***
+# 129-) T-SQL ROW_NUMBER Fonksiyonu
+## T-SQL ROW_NUMBER Fonksiyonu
+- T-SQL'de SELECT sorgusu neticesinde yapısal olarak elde ettiğimiz tabloların satır index numaralarına ihtiyacımız olabilir. 
+
+- Veritabanında tekrar eden datalar/veriler varsa veriler arasında ayrım yapmak yahut sıralamak gibi işlemler yapmak istiyorsak ROW_NUMBER() fonksiyonunu kullanabiliriz.
+
+- Temelde işlevi her satıra karşılık PRIMARY kolonundan bağımsız sıralı index numarası atanmış kolon tanımlanmaktadır.
+
+## Prototipi 
+- SELECT ROW_NUMBER() OVER(ORDER BY KOLONADI) INDEXER, * FROM TABLO 
+
+```SQL
+SELECT ROW_NUMBER() OVER(ORDER BY Adi) INDEXER, * FROM Personeller ORDER BY PersonelID
+```
+
+***
+# 130-) T-SQL ROW_NUMBER Fonksiyonu - Partition By Komutu İle Gruplama
+## PARTITION BY Komutu İle Gruplama
+
+## PROTOTİP
+- SELECT ROW_NUMBER() OVER(PARTITION BY KOLON1 ORDER BY KOLON2) INDEXER, * FROM TABLO
+
+```SQL
+SELECT ROW_NUMBER() OVER(PARTITION BY MusteriID ORDER BY OdemeTarihi) INDEXER,* FROM Satislar ORDER BY SatisID
+```

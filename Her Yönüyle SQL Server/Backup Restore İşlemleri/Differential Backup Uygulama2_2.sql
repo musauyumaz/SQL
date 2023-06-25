@@ -1,9 +1,0 @@
-SELECT * FROM DATES ORDER BY 1
-
-SELECT * INTO DATES14 FROM DATES
-
-SELECT * FROM DATES2
-
-SP_SPACEUSED 'DATES'
-
---DIFFERANTIAL BACKUP kendisinden önceki alýnan en son FULL BACKUP'la arasýndaki farký yedekler.

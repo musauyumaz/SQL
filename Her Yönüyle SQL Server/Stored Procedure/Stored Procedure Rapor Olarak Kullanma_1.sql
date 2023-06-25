@@ -1,1 +1,0 @@
--- Biz sadece Stored Procedure'leri toplu iþlemleri bir arada yapmak için kullanmayýz. Bunun yanýnda birçok yerde raporlama amacýyla da kullanýrýz.

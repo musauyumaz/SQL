@@ -1,1 +1,0 @@
-SELECT DB_NAME(database_id) AS DBNAME,OBJECT_NAME(338100245) AS PROCNAME, * FROM sys.dm_exec_procedure_stats WHERE DB_NAME(database_id)='ETRADE'
