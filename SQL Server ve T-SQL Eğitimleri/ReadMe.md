@@ -1827,7 +1827,7 @@ DELETE FROM ##GECICIPERSONELLER2 WHERE PersonelID = 3
 UPDATE ##GECICIPERSONELLER2 SET Adi= 'GENÇAY', SoyAdi = 'YILDIZ' WHERE PersonelID = 5
 ```
 
--`##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
+- `##` ile oluşturulan tablo o an SQL Server'da oturum açmış kişinin sunucu belleğinde oluşur.
 
 - Bu tabloyu oturum açan şahıs ve onun SQL Server'ına dışarıdan ulaşan 3. şahıslar kullanabilir.
 
@@ -2380,88 +2380,3 @@ EXEC SP_TABLOOLUSTUR 'ORNEKTABLO3','ID','INT PRIMARY KEY IDENTITY(1,1)', 'KOLON2
 
 - DELETED ve INSERTED tabloları, ilgili sorgu sonucu oluştukları için o sorgunun kullandığı kolonlara da sahip olur. Böylece DELETED ve INSERTED tablolarından SELECT sorgusu yapmak mümkündür.
 
-***
-# 114-) T-SQL Trigger Tanımlama
-## === T-SQL Tanımlama ===
-## Prototip
-- CREATE TRIGGER [TRIGGER ADI]
-- ON [İŞLEM YAPILACAK TABLO ADI]
-- AFTER -- veya FOR DELETE, UPDATE, INSERT
-- AS
-- [KODLAR]
-
-## Dikkat ! ! !
-- Tanımlanan TRIGGER'larla ilgili tablonun içerisindeki TRIGGERS sekmesi altından erişebiliriz
-
-```SQL
-CREATE TRIGGER ORNEKTRIGGER
-ON Personeller
-AFTER INSERT 
-AS 
-SELECT * FROM Personeller
-
-INSERT Personeller(Adi,SoyAdi) VALUES('MUSA','UYUMAZ')
-```
-
-- Örnek 1
-- Tedarikçiler tablosundan bir veri silindiğinde tüm ürünlerin fiyatı otomatik olarak 10 artsın.
-```SQL
-CREATE TRIGGER TRIGGERTEDARIKCILER
-ON Tedarikciler
-AFTER DELETE
-AS
-UPDATE Urunler SET BirimFiyati = BirimFiyati + 10
-SELECT * FROM URUNLER
-
-DELETE FROM Tedarikciler WHERE TedarikciID = 31
-```
-
-- Örnek 2
-- Tedarikçiler tablosunda bir veri güncellendiğinde, kategoriler tablosunda meyve kokteyli adında bir kategori oluşsun :)
-```SQL
-CREATE TRIGGER TRGTEDARIKGUNCELLENDIGINDE
-ON Tedarikciler
-AFTER UPDATE
-AS
-INSERT Kategoriler(KategoriAdi) VALUES('MEYVE KOKTEYLİ')
-
-UPDATE Tedarikciler SET MusteriAdi = 'SERHAT' WHERE TedarikciID = 29
-SELECT * FROM Kategoriler
-```
-
-- Örnek 3
-- Personeller tablosundan bir kayıt silindiğinde silinen kaydın adı, soyadı, kim tarafından ve hangi tarihte silindiği başka bir tabloya kayıt edilsin Bir nevi log tablosu misali...
-```SQL
-CREATE TABLE LOGTABLOSU
-(
-	ID INT PRIMARY KEY IDENTITY(1,1),
-	RAPOR NVARCHAR(MAX)
-)
-
-CREATE TRIGGER TRIGGERPERSONELLER
-ON Personeller
-FOR DELETE
-AS
-DECLARE @ADI NVARCHAR(MAX), @SOYADI NVARCHAR(MAX)
-SELECT @ADI = Adi, @SOYADI = SoyAdi FROM DELETED
-INSERT LOGTABLOSU(RAPOR) VALUES('ADI VE SOYADI ' + @ADI + ' ' + @SOYADI + ' OLAN PERSONEL ' +SUSER_NAME() + ' TARAFINDAN ' + CAST(GETDATE() AS NVARCHAR(MAX)) + ' TARİHİNDE SİLİNMİŞTİR.')
-
-DELETE FROM Personeller WHERE PersonelID = 16
-```
-
-- Örnek 4
-- Personeller tablosunda update gerçekleştiği anda devreye giren ve bir log tablosuna Adı ... olan personel ... yeni adıyla değiştirilerek ... kullanıcı tarafından ... tarihinde güncellendi. Kalıbında rapor yazan trigger'ı yazalım.
-```SQL
-CREATE TRIGGER TRGPERSONELRAPOR
-ON Personeller
-AFTER UPDATE 
-AS
-DECLARE @ESKIISIM NVARCHAR(MAX), @YENIISIM NVARCHAR(MAX)
-SELECT @ESKIISIM = Adi FROM deleted
-SELECT @YENIISIM = Adi FROM inserted
-INSERT LOGTABLOSU(RAPOR) VALUES('Adı '+ @ESKIISIM  +' olan personel ' + @YENIISIM +' yeni adıyla değiştirilerek ' + SUSER_NAME() +' kullanıcısı tarafından ' +CAST(GETDATE() AS NVARCHAR(MAX))+ ' tarihinde güncellendi.')
-
-UPDATE Personeller SET Adi = 'MUSA' WHERE PersonelID = 3
-
-SELECT * FROM LOGTABLOSU
-```
