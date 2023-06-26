@@ -3090,3 +3090,54 @@ CREATE TABLE DERSKAYITLARI
 	WITH(SYSTEM_VERSIONING = ON(HISTORY_TABLE = DBO.DERSKAYITLARILOG)) -- Eğer HISTORY_TABLE özelliği ile History tablosuna isim vermezsek rastgele isimde oluşturulur.
 	---------- 4. KISIM ----------
 ```
+
+***
+# 144-) SQL Server 2016 Var Olan Tabloyu Temporal Tables Olarak Ayarlama
+## == Var Olan Tabloyu Temporal Tables Olarak Ayarlama ==
+```SQL
+CREATE TABLE DERSKAYITLARI
+(
+	DERSID INT PRIMARY KEY IDENTITY(1,1),
+	DERS NVARCHAR(MAX),
+	ONAY BIT
+)
+
+INSERT DERSKAYITLARI VALUES('MATEMATİK',1),
+						   ('FİZİK',1),
+						   ('KİMYA',1),
+						   ('TÜRKÇE',0),
+						   ('COĞRAFYA',0),
+						   ('VATANDAŞLIK',0)
+```
+
+- Eğer bu tabloyu temporal yapmak istiyorsak dikkat ! ! !
+
+- Tablo içerisinde veri var mı? Yok mu? Eğer varsa yeni eklenecek olan StartDate ve EndDate kolonları boş kalamayacakları için varsayılan değerlerin belirtilmesi gerekmektedir. Yok eğer veri yoksa bu işlemi düşünmemize gerek olmayacaktır.
+
+## Eğer Veri Yoksa...
+```SQL
+ALTER TABLE DERSKAYITLARI
+ADD 
+STARTDATE DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL,
+ENDDATE DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL,
+PERIOD FOR SYSTEM_TIME(STARTDATE,ENDDATE)
+```
+
+## Eğer Veri Varsa...
+```SQL
+ALTER TABLE DERSKAYITLARI
+ADD 
+STARTDATE DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL
+DEFAULT CAST('1900-01-01 00:00:00.0000000' AS DATETIME2),
+ENDDATE DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL
+DEFAULT CAST('9999-12-31 23:59:59.9999999' AS DATETIME2),
+PERIOD FOR SYSTEM_TIME(STARTDATE,ENDDATE)
+```
+
+- Şeklinde periyodik kayıt kolonlarımızı ekleyebiliriz.
+
+- Kolonlar eklendikten sonra ilgili tablo aşağıdaki gibi Temporal hale getirilir.
+```SQL
+ALTER TABLE DERSKAYITLARI
+SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = DBO.DERSKAYITLARILOG))
+```
