@@ -1,0 +1,7 @@
+-- Dynamic Data Masking
+-- Dinamik veri maskeleme sistemidir.
+-- Veritabanýnda iliþkisel tablolarýmýzda tuttuðumuz verilerimizi tararken gösterilmesi istenen veriler dýþýndaki verileri maskeleme özelliðidir.
+-- Verinin orjinal halini yani fiziksel yapýsýný deðiþtirmeden kullanýcýya bir kýsmýný göstermek yahut gizlemektir.
+-- Bir alýþveriþ sitesinde kayýtlý kullanýcýnýn her bilgisine örneðin tc kimlik numarasýna, kredi kartý numarasýna, telefon numarasýna, ev adresine bunun gibi kritik bilgilere biz kritik görevler dýþýndakilerin personellerin ulaþmasýný istemeyiz.
+-- Bir nevi güvenlik önlemi olsada amaca dönük sorgularýn gerçekleþtirilmesini saðlamaktýr.
+-- Dynamic Data Masking default, email ve partial olmak üzere 3 adet fonksiyonel parametre ile çalýþmaktadýr.

@@ -1,0 +1,6 @@
+-- Temporal Tables(System-Verisoned Table - Zamansal Tablolar)
+-- Veritabanýnda yapýlan DML iþlemlerini raporlamamýzý saðlayan bir yapýdýr.
+-- Tablomuzda bulunan kayýtlarýn zaman içinde deðiþikliklerini yani UPDATE güncelleme dediðimiz bu deðiþiklikleri izlenmesini ve takip edilmesini saðlayan bir yapý sunmaktadýr.
+-- Tablo üstünde yanlýþlýkla yapýlan DELETE ve UPDATE sorgularýný geri getirilmesini saðlamaktadýr.
+-- Bir verinin belirli bir zamana yahut zaman aralýðýna odaklý izlenebilmesini de saðlayabiliyoruz.
+-- 

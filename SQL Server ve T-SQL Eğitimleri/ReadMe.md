@@ -2879,3 +2879,397 @@ SELECT ROW_NUMBER() OVER(ORDER BY Adi) INDEXER, * FROM Personeller ORDER BY Pers
 ```SQL
 SELECT ROW_NUMBER() OVER(PARTITION BY MusteriID ORDER BY OdemeTarihi) INDEXER,* FROM Satislar ORDER BY SatisID
 ```
+
+***
+# 131-) T-SQL ANSI_NULLS Komutu
+## T-SQL ANSI_NULLS Komutu
+
+- SET ANSI_NULLS [ON | OFF]
+
+- ANSI_NULLS komutu, WHERE şartlarında kontrol edilen eşitlik yahut eşit değillik durumlarında NULL değerlerin dikkate alınıp alınmayacağını belirlememizi sağlayan bir özelliktir.
+
+- 'ON' değeri verilirse NULL değerler dikkate alınmaz.
+
+- 'OFF' değeri verilirse NULL değerler dikkate alınır.
+
+```SQL
+SET ANSI_NULLS ON
+
+SELECT * FROM PersonelMaas WHERE Maas = NULL
+
+SET ANSI_NULLS OFF
+```
+
+***
+# 132-) SQL Server 2016 Dynamic Data Masking Giriş
+## Dynamic Data Masking
+- Dinamik veri maskeleme sistemidir.
+
+- Veritabanında ilişkisel tablolarımızda tuttuğumuz verilerimizi tararken gösterilmesi istenen veriler dışındaki verileri maskeleme özelliğidir.
+
+- Verinin orjinal halini yani fiziksel yapısını değiştirmeden kullanıcıya bir kısmını göstermek yahut gizlemektir.
+
+- Bir alışveriş sitesinde kayıtlı kullanıcının her bilgisine örneğin tc kimlik numarasına, kredi kartı numarasına, telefon numarasına, ev adresine bunun gibi kritik bilgilere biz kritik görevler dışındakilerin personellerin ulaşmasını istemeyiz.
+
+- Bir nevi güvenlik önlemi olsada amaca dönük sorguların gerçekleştirilmesini sağlamaktır.
+
+- Dynamic Data Masking default, email ve partial olmak üzere 3 adet fonksiyonel parametre ile çalışmaktadır.
+
+***
+# 133-) SQL Server 2016 Dynamic Data Masking - default, email ve partial Parametreleri
+## == DEFAULT Parametresi ==
+- Metinsel : XXXX
+- Sayısal : 0000
+- Tarihsel : 01.01.2000 00:00:00.0000000
+- Binary : 0 -> ASCII
+
+## == EMAIL Parametresi ==
+- 'musa.uyumaz73@gmail.com' : 'mXXX@XXXX.com'
+
+## == PARTIAL Parametresi ==
+- Partial(3,H,2)
+
+***
+# 134-) SQL Server 2016 Dynamic Data Masking Uygulama
+## == Dynamic Data Masking Nasıl Uygulanır? ==
+## Prototip
+- CREATE TABLE [TABLO ADI]
+-(
+- [KOLON ADI] [KOLON TİPİ] MASKED WITH(FUNCTION = 'DEFAULT()')
+-)
+
+```SQL
+CREATE TABLE OGRENCILER2
+(
+	OGRENCIID INT PRIMARY KEY IDENTITY,
+	ADI NVARCHAR(10) MASKED WITH (FUNCTION = 'DEFAULT()') NULL,
+	SOYADI NVARCHAR(10) MASKED WITH (FUNCTION = 'DEFAULT()') NULL,
+	MEMLEKETI NVARCHAR(10) MASKED WITH (FUNCTION = 'DEFAULT()') NULL,
+	TCNO INT MASKED WITH (FUNCTION = 'DEFAULT()') NULL,
+	SUBE NVARCHAR(1) MASKED WITH (FUNCTION = 'DEFAULT()') NULL,
+	EMAIL NVARCHAR(MAX) MASKED WITH (FUNCTION = 'EMAIL()') NULL,
+	HAKKINDA NVARCHAR(MAX) MASKED WITH (FUNCTION = 'PARTIAL(3,"H",2)') NULL,
+	DOGUMTARIHI DATETIME MASKED WITH (FUNCTION = 'DEFAULT()') NULL,
+)
+
+INSERT OGRENCILER2 VALUES('MUSA','UYUMAZ','ESKİŞEHİR',1234,'A','musa.uyumaz73@gmail.com','Türk Milletine Canım Feda Olsun...','1999-02-14')
+INSERT OGRENCILER2 VALUES('GENÇAY','YILDIZ','ARTVİN',1234,'A','gncy@gencayyildiz.com','Türk Milletine Canım Feda Olsun...','1992-09-05')
+INSERT OGRENCILER2 VALUES('İBRAHİM','YILDIRIM','MALATYA',1234,'B','ibrahim@yildirim.com','Türk Milletine Canım Feda Olsun...','1975-09-05')
+
+SELECT * FROM OGRENCILER2
+
+CREATE USER YETKILIUSER WITHOUT LOGIN --YETKILIUSER isminde bir kullanıcı oluşturuluyor.
+GO 
+GRANT SELECT ON OGRENCILER2 TO YETKILIUSER --YETKILIUSER isimli kullanıcıya OGRENCILER2 tablosunda SELECT yetkisi veriliyor.
+
+EXECUTE AS USER = 'YETKILIUSER' -- YETKILIUSER isimli kullanıcıya geçiş sağlıyoruz.
+
+SELECT * FROM OGRENCILER2
+```
+
+***
+# 135-) SQL Server 2016 Dynamic Data Masking - Alter İle Maskelenmiş Kolon Ekleme
+## == ALTER İle Kolona Dynamic Data Masking Uygulama ==
+```SQL
+ALTER TABLE OGRENCILER2
+ADD EKKOLON NVARCHAR(MAX) MASKED WITH (FUNCTION = 'PARTIAL(3,"XXX",0)')
+
+EXECUTE AS USER = 'YETKILIUSER'
+SELECT * FROM OGRENCILER2
+```
+
+***
+# 136-) SQL Server 2016 Dynamic Data Masking - Alter İle Kolunun Maske Formatını Güncelleme
+## == ALTER İle Dynamic Data Masking Kolonunda Değişiklik Yapma ==
+```SQL
+ALTER TABLE OGRENCILER2
+ADD EKKOLON NVARCHAR(MAX) MASKED WITH (FUNCTION = 'PARTIAL(3,"XXX",0)')
+
+ALTER TABLE OGRENCILER2
+ADD EKKOLON NVARCHAR(MAX) MASKED WITH (FUNCTION = 'PARTIAL(2,"AAA",4)')
+
+EXECUTE AS USER='YETKILIUSER'
+SELECT * FROM OGRENCILER2
+```
+
+***
+# 137-) SQL Server 2016 Dynamic Data Masking Özelliğini Kolondan Kaldırma
+## == Dynamic Data Masking Kaldırma ==
+```SQL
+ALTER TABLE OGRENCILER2
+ALTER COLUMN EMAIL DROP MASKED
+
+EXECUTE AS USER='YETKILIUSER'
+SELECT * FROM OGRENCILER2
+```
+
+***
+# 138-) SQL Server 2016 Dynamic Data Masking Özelliğini Kullanıcıya Özel Pasifleştirme
+## == Kullanıcıya Göre Dynamic Data Masking Özelliğini Pasifleştirme == 
+```SQL
+GRANT UNMASK TO YETKILIUSER
+
+EXECUTE AS USER = 'YETKILIUSER'
+SELECT * FROM OGRENCILER2
+```
+
+***
+# 139-) SQL Server 2016 Temporal Tables Giriş
+## Temporal Tables(System-Verisoned Table - Zamansal Tablolar)
+- Veritabanında yapılan DML işlemlerini raporlamamızı sağlayan bir yapıdır.
+
+- Tablomuzda bulunan kayıtların zaman içinde değişikliklerini yani UPDATE güncelleme dediğimiz bu değişiklikleri izlenmesini ve takip edilmesini sağlayan bir yapı sunmaktadır.
+
+- Tablo üstünde yanlışlıkla yapılan DELETE ve UPDATE sorgularını geri getirilmesini sağlamaktadır.
+
+- Bir verinin belirli bir zamana yahut zaman aralığına odaklı izlenebilmesini de sağlayabiliyoruz.
+
+***
+# 140-) SQL Server 2016 Temporal Tables Çalışma Mantığı
+## == Bir Verinin Zamansal Takibi ==
+- == Veri İlk Kaydedildiğinde (INSERT)==
+
+- == Veri İlk Güncellendiğinde (UPDATE)==
+
+- == Verinin Sonraki Güncellemelerinde (UPDATE)==
+
+***
+# 141-) SQL Server 2016 Temporal Tables Özelliğini Kullanırken Nelere Dikkat Etmeliyiz?
+## == Temporal Tables Özelliğini Kullanırken Nelere Dikkat Etmeliyiz? ==
+- Temporal Tables ile raporlama ve takip mekanizmasını oluşturacağımız tablolarda PRIMARY KEY tanımlanmış bir kolon olması gerekmektedir. Bu şekilde yaşam döngüsünde hangi verinin değişime uğradığını PRIMARY KEY aracılığıyla ayırt edebileceğiz.
+
+- Takibi sağlayacağımız ve kaydınıu tutacağımız tablomuzun içerisinde bir başlangıç(StartDate) birde bitiş(EndDate) niteliğinde iki adet DATETIME2 tipinden kolonların bulunması gerekmektedir.
+
+- Linked Server üzerinde Temporal Tables kullanılmamaktadır.
+
+- History tablomuzda constraint yapılarının hiçbirini uygulayamayız.
+
+- Eğer bir tabloda Temporal Tables aktifse o tabloda TRUNCATE işlemi gerçekleştiremiyoruz.
+
+- History tablosunda direkt olarak DML işlemleri gerçekleştiremiyoruz.
+
+- Temporal Tables özelliğinin bulunduğu bir tabloda Computed Column(Hesaplanmış Kolon) tanımlayamıyoruz.
+
+***
+# 142-) SQL Server Pratikte Temporal Table Çalışma Mantığı
+## == Temporal Table Çalışma Mekanizması ==
+```SQL
+UPDATE DERSKAYITLARI SET DERS = 'MATEMATİK2' WHERE DERSID = 1
+UPDATE DERSKAYITLARI SET DERS = 'FİZİK2' WHERE DERSID = 2
+UPDATE DERSKAYITLARI SET DERS = 'KİMYA2' WHERE DERSID = 3
+UPDATE DERSKAYITLARI SET DERS = 'KİMYA3' WHERE DERSID = 3
+UPDATE DERSKAYITLARI SET DERS = 'BİYOLOJİ2' WHERE DERSID = 4
+UPDATE DERSKAYITLARI SET DERS = 'BİYOLOJİ3' WHERE DERSID = 4
+
+SELECT * FROM DERSKAYITLARI
+SELECT * FROM DERSKAYITLARILOG
+```
+
+***
+# 143-) SQL Server 2016 Temporal Tables Oluşturma
+## == Temporal Tables Oluşturma ==
+```SQL
+CREATE TABLE DERSKAYITLARI
+(
+	---------- 1. KISIM ----------
+	DERSID INT PRIMARY KEY IDENTITY(1,1),
+	DERS NVARCHAR(MAX),
+	ONAY BIT,
+	---------- 1. KISIM ----------
+
+	---------- 2. KISIM ----------
+	STARTDATE DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL,
+	ENDDATE DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL,
+	---------- 2. KISIM ----------
+
+	---------- 3. KISIM ----------
+	PERIOD FOR SYSTEM_TIME(STARTDATE,ENDDATE)
+	---------- 3. KISIM ----------
+)
+	---------- 4. KISIM ----------
+	WITH(SYSTEM_VERSIONING = ON(HISTORY_TABLE = DBO.DERSKAYITLARILOG)) -- Eğer HISTORY_TABLE özelliği ile History tablosuna isim vermezsek rastgele isimde oluşturulur.
+	---------- 4. KISIM ----------
+```
+
+***
+# 144-) SQL Server 2016 Var Olan Tabloyu Temporal Tables Olarak Ayarlama
+## == Var Olan Tabloyu Temporal Tables Olarak Ayarlama ==
+```SQL
+CREATE TABLE DERSKAYITLARI
+(
+	DERSID INT PRIMARY KEY IDENTITY(1,1),
+	DERS NVARCHAR(MAX),
+	ONAY BIT
+)
+
+INSERT DERSKAYITLARI VALUES('MATEMATİK',1),
+						   ('FİZİK',1),
+						   ('KİMYA',1),
+						   ('TÜRKÇE',0),
+						   ('COĞRAFYA',0),
+						   ('VATANDAŞLIK',0)
+```
+
+- Eğer bu tabloyu temporal yapmak istiyorsak dikkat ! ! !
+
+- Tablo içerisinde veri var mı? Yok mu? Eğer varsa yeni eklenecek olan StartDate ve EndDate kolonları boş kalamayacakları için varsayılan değerlerin belirtilmesi gerekmektedir. Yok eğer veri yoksa bu işlemi düşünmemize gerek olmayacaktır.
+
+## Eğer Veri Yoksa...
+```SQL
+ALTER TABLE DERSKAYITLARI
+ADD 
+STARTDATE DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL,
+ENDDATE DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL,
+PERIOD FOR SYSTEM_TIME(STARTDATE,ENDDATE)
+```
+
+## Eğer Veri Varsa...
+```SQL
+ALTER TABLE DERSKAYITLARI
+ADD 
+STARTDATE DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL
+DEFAULT CAST('1900-01-01 00:00:00.0000000' AS DATETIME2),
+ENDDATE DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL
+DEFAULT CAST('9999-12-31 23:59:59.9999999' AS DATETIME2),
+PERIOD FOR SYSTEM_TIME(STARTDATE,ENDDATE)
+```
+
+- Şeklinde periyodik kayıt kolonlarımızı ekleyebiliriz.
+
+- Kolonlar eklendikten sonra ilgili tablo aşağıdaki gibi Temporal hale getirilir.
+```SQL
+ALTER TABLE DERSKAYITLARI
+SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = DBO.DERSKAYITLARILOG))
+```
+
+***
+# 145-) SQL Server 2016 Parametrik Olarak Temporal Tabloyu Sorgulama
+## == History Tablosuna Özel Temporal Tabloyu Sorgulama ==
+- SELECT * FROM DERSKAYITLARI DK INNER JOIN DERSKAYITLARILOG DKL ON DK.DERSID = DKL.DERSID WHERE DAY(DKL.STARTDATE) >= DAY(CAST 'TARİH' AS DATETIME2) OR DAY(DKL.ENDDATE) <= DAY(CAST('2016-09-26 06:23:45.8195851' AS DATETIME2))
+
+- Bu şekilde ilişkisel tablolar ile de sorgulama yapabiliriz. Lakin tablomuzu History tablosunun periyoduna özel bir şekilde de rahatça sorgulatabilmekteyiz.
+
+## == AS OF<DATETIME> ==
+- Mantıksal sorgusu : 'STARDATE >= DATETIME and ENDDATE < DATETIME' şeklindedir.
+```SQL
+SELECT * FROM DERSKAYITLARI
+FOR SYSTEM_TIME AS OF '2016-09-26 06:22:53.5432528' WHERE DERSID = 3
+```
+
+## == FROM <START_DATETIME> TO <END_DATETIME> ==
+- Mantıksal sorgusu : 'start_datetime >= datetime and end_datetime < datetime' şeklindedir.
+```SQL
+SELECT * FROM DERSKAYITLARI
+FOR SYSTEM_TIME FROM '2016-09-26 06:22:53.5432528' TO '2016-09-26 06:22:53.5432528' 
+WHERE DERSID = 3
+```
+
+## == BETWEEN <start_datetime> AND <end_datetime> ==
+- Mantıksal sorgusu : 'start_datetime >= datetime and end_datetime < datetime' şeklindedir.
+
+## == CONTAINED IN(start_datetime, end_datetime) ==
+- Mantıksal sorgusu : 'start_datetime >= datetime and end_datetime < datetime' şeklindedir.
+
+***
+# 146-) SQL Server 2016 Veritabanındaki Temporal Tabloları Listelemek
+## == Temporal Tabloları Listelemek
+```SQL
+SELECT NAME,OBJECT_ID,TEMPORAL_TYPE_DESC, HISTORY_TABLE_ID, OBJECT_NAME(HISTORY_TABLE_ID) AS [HISTORY TABLO ADI] FROM SYS.TABLES WHERE OBJECT_NAME(HISTORY_TABLE_ID) IS NOT NULL
+```
+
+- ya da
+
+```SQL
+SELECT NAME,OBJECT_ID,TEMPORAL_TYPE_DESC, HISTORY_TABLE_ID, OBJECT_NAME(HISTORY_TABLE_ID) AS [HISTORY TABLO ADI] FROM SYS.TABLES WHERE TEMPORAL_TYPE_DESC = 'SYSTEM_VERSIONED_TEMPORAL_TABLE'
+```
+
+***
+# 147-) SQL Server 2016 Temporal Tables'i Pasifize Etme
+## == Temporal Tables'i Pasifize Etme ==
+```SQL
+ALTER TABLE DBO.DERSKAYITLARI SET(SYSTEM_VERSIONING = OFF)
+
+TRUNCATE TABLE DERSKAYITLARI
+DROP TABLE DERSKAYITLARI
+```
+
+***
+# 148-) SQL Server 2016 Row Level Security Özelliği Giriş
+## ROW LEVEL SECURITY
+- Veritabanı yönetim sistemlerinde amacımız düzenli ve organize edilmiş ilişkisel bir şekilde verilerimizi modifiye etmektir. Bu amacı icra ederken güvenlik birinci dereceden önem teşkil etmekte ve çeşitli yöntemlerle güvenlik mekanizması sağlanmaktadır.
+
+- Bu yöntemler genellikle kullanıcı rol ve yetkilendirmeleriyle sağlanmaktayken verilere dönük oalrakta VIEW gibi yapılarla gerçekleştirilmektedir.
+
+- ROW LEVEL SECURITY özelliği ile Kullanıcılara tablo üzerinde yetki verirken tüm kayıtlara değil sadece kendisini ilgilendiren kayıtlara özel bir yetkilendirme yapabiliriz.
+
+***
+# 149-) SQL Server 2016 Row Level Security Özelliğinin Kullanımı
+## == Row Level Security Uygulaması ==
+```SQL
+CREATE DATABASE YENILIKLER
+GO 
+USE YENILIKLER
+GO 
+CREATE TABLE SATISLAR
+(
+	SATISID INT PRIMARY KEY IDENTITY,
+	URUN NVARCHAR(MAX),
+	ADET INT,
+	KULLANICI NVARCHAR(MAX)
+)
+GO
+INSERT SATISLAR VALUES
+('AURUN',3,'MUSA'),
+('AURUN',3,'GENÇAY'),
+('BURUN',5,'MEHMET'),
+('CURUN',13,'ALİ'),
+('DURUN',23,'GENÇAY'),
+('EURUN',33,'MEHMET'),
+('FURUN',43,'ALİ'),
+('GURUN',53,'GENÇAY'),
+('HURUN',63,'MEHMET'),
+('IURUN',73,'ALİ'),
+('OURUN',83,'GENÇAY'),
+('PURUN',93,'MEHMET'),
+('RURUN',133,'ALİ')
+```
+
+## Kullanıcıları oluşturalım...
+```SQL
+CREATE USER GENCAY WITHOUT LOGIN
+CREATE USER MEHMET WITHOUT LOGIN
+CREATE USER ALI WITHOUT LOGIN
+```
+
+## Bu kullanıcılara SATISLAR tablosunda SELECT yetkisi verelim.
+```SQL
+GRANT SELECT ON SATISLAR TO GENCAY
+GRANT SELECT ON SATISLAR TO MEHMET
+GRANT SELECT ON SATISLAR TO ALI
+```
+
+- ROW LEVEL SECURITY kullanabilmek için Inline Table Value Function oluşturmalıyız.
+```SQL
+CREATE FUNCTION ROWLEVELSECURITYFUNCTION (@KULLANICIADI AS SYSNAME)
+RETURNS TABLE
+WITH SCHEMABINDING
+AS
+RETURN SELECT 1 ROWLEVELRESULT
+WHERE @KULLANICIADI = USER_NAME()
+```
+
+- Şimdi bu fonksiyonu birazdan oluşturacağımız Security Policy(Güvenlik Politikası) için Filter Predicate olarak ekliyoruz. Yani uzun lafın kısası filtre olarak ayarlıyoruz.
+```SQL
+CREATE SECURITY POLICY GUVENLIKFILTRESI
+ADD FILTER PREDICATE DBO.ROWLEVELSECURITYFUNCTION(KULLANICI)
+ON DBO.SATISLAR
+WITH(STATE = ON)
+```
+
+## Dikkat ! ! !
+- KULLANILAN TÜM YAPIDA ŞEMA ADLARINI(.dbo) UNUTMA
+- 
+```SQL
+EXEC AS USER = 'MEHMET'
+SELECT * FROM SATISLAR
+```
