@@ -3023,4 +3023,12 @@ SELECT * FROM OGRENCILER2
 - Tablo üstünde yanlışlıkla yapılan DELETE ve UPDATE sorgularını geri getirilmesini sağlamaktadır.
 
 - Bir verinin belirli bir zamana yahut zaman aralığına odaklı izlenebilmesini de sağlayabiliyoruz.
- 
+
+***
+# 140-) SQL Server 2016 Temporal Tables Çalışma Mantığı
+## == Bir Verinin Zamansal Takibi ==
+- == Veri İlk Kaydedildiğinde (INSERT)==
+
+- == Veri İlk Güncellendiğinde (UPDATE)==
+
+- == Verinin Sonraki Güncellemelerinde (UPDATE)==
