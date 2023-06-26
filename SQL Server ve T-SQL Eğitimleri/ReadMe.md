@@ -2914,3 +2914,17 @@ SET ANSI_NULLS OFF
 - Bir nevi güvenlik önlemi olsada amaca dönük sorguların gerçekleştirilmesini sağlamaktır.
 
 - Dynamic Data Masking default, email ve partial olmak üzere 3 adet fonksiyonel parametre ile çalışmaktadır.
+
+***
+# 133-) SQL Server 2016 Dynamic Data Masking - default, email ve partial Parametreleri
+## == DEFAULT Parametresi ==
+- Metinsel : XXXX
+- Sayısal : 0000
+- Tarihsel : 01.01.2000 00:00:00.0000000
+- Binary : 0 -> ASCII
+
+## == EMAIL Parametresi ==
+- 'musa.uyumaz73@gmail.com' : 'mXXX@XXXX.com'
+
+## == PARTIAL Parametresi ==
+- Partial(3,H,2)
