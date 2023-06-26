@@ -2882,3 +2882,35 @@ SELECT ROW_NUMBER() OVER(PARTITION BY MusteriID ORDER BY OdemeTarihi) INDEXER,* 
 
 ***
 # 131-) T-SQL ANSI_NULLS Komutu
+## T-SQL ANSI_NULLS Komutu
+
+- SET ANSI_NULLS [ON | OFF]
+
+- ANSI_NULLS komutu, WHERE şartlarında kontrol edilen eşitlik yahut eşit değillik durumlarında NULL değerlerin dikkate alınıp alınmayacağını belirlememizi sağlayan bir özelliktir.
+
+- 'ON' değeri verilirse NULL değerler dikkate alınmaz.
+
+- 'OFF' değeri verilirse NULL değerler dikkate alınır.
+
+```SQL
+SET ANSI_NULLS ON
+
+SELECT * FROM PersonelMaas WHERE Maas = NULL
+
+SET ANSI_NULLS OFF
+```
+
+***
+# 132-) SQL Server 2016 Dynamic Data Masking Giriş
+## Dynamic Data Masking
+- Dinamik veri maskeleme sistemidir.
+
+- Veritabanında ilişkisel tablolarımızda tuttuğumuz verilerimizi tararken gösterilmesi istenen veriler dışındaki verileri maskeleme özelliğidir.
+
+- Verinin orjinal halini yani fiziksel yapısını değiştirmeden kullanıcıya bir kısmını göstermek yahut gizlemektir.
+
+- Bir alışveriş sitesinde kayıtlı kullanıcının her bilgisine örneğin tc kimlik numarasına, kredi kartı numarasına, telefon numarasına, ev adresine bunun gibi kritik bilgilere biz kritik görevler dışındakilerin personellerin ulaşmasını istemeyiz.
+
+- Bir nevi güvenlik önlemi olsada amaca dönük sorguların gerçekleştirilmesini sağlamaktır.
+
+- Dynamic Data Masking default, email ve partial olmak üzere 3 adet fonksiyonel parametre ile çalışmaktadır.
