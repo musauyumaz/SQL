@@ -3201,3 +3201,75 @@ DROP TABLE DERSKAYITLARI
 - Bu yöntemler genellikle kullanıcı rol ve yetkilendirmeleriyle sağlanmaktayken verilere dönük oalrakta VIEW gibi yapılarla gerçekleştirilmektedir.
 
 - ROW LEVEL SECURITY özelliği ile Kullanıcılara tablo üzerinde yetki verirken tüm kayıtlara değil sadece kendisini ilgilendiren kayıtlara özel bir yetkilendirme yapabiliriz.
+
+***
+# 149-) SQL Server 2016 Row Level Security Özelliğinin Kullanımı
+## == Row Level Security Uygulaması ==
+```SQL
+CREATE DATABASE YENILIKLER
+GO 
+USE YENILIKLER
+GO 
+CREATE TABLE SATISLAR
+(
+	SATISID INT PRIMARY KEY IDENTITY,
+	URUN NVARCHAR(MAX),
+	ADET INT,
+	KULLANICI NVARCHAR(MAX)
+)
+GO
+INSERT SATISLAR VALUES
+('AURUN',3,'MUSA'),
+('AURUN',3,'GENÇAY'),
+('BURUN',5,'MEHMET'),
+('CURUN',13,'ALİ'),
+('DURUN',23,'GENÇAY'),
+('EURUN',33,'MEHMET'),
+('FURUN',43,'ALİ'),
+('GURUN',53,'GENÇAY'),
+('HURUN',63,'MEHMET'),
+('IURUN',73,'ALİ'),
+('OURUN',83,'GENÇAY'),
+('PURUN',93,'MEHMET'),
+('RURUN',133,'ALİ')
+```
+
+## Kullanıcıları oluşturalım...
+```SQL
+CREATE USER GENCAY WITHOUT LOGIN
+CREATE USER MEHMET WITHOUT LOGIN
+CREATE USER ALI WITHOUT LOGIN
+```
+
+## Bu kullanıcılara SATISLAR tablosunda SELECT yetkisi verelim.
+```SQL
+GRANT SELECT ON SATISLAR TO GENCAY
+GRANT SELECT ON SATISLAR TO MEHMET
+GRANT SELECT ON SATISLAR TO ALI
+```
+
+- ROW LEVEL SECURITY kullanabilmek için Inline Table Value Function oluşturmalıyız.
+```SQL
+CREATE FUNCTION ROWLEVELSECURITYFUNCTION (@KULLANICIADI AS SYSNAME)
+RETURNS TABLE
+WITH SCHEMABINDING
+AS
+RETURN SELECT 1 ROWLEVELRESULT
+WHERE @KULLANICIADI = USER_NAME()
+```
+
+- Şimdi bu fonksiyonu birazdan oluşturacağımız Security Policy(Güvenlik Politikası) için Filter Predicate olarak ekliyoruz. Yani uzun lafın kısası filtre olarak ayarlıyoruz.
+```SQL
+CREATE SECURITY POLICY GUVENLIKFILTRESI
+ADD FILTER PREDICATE DBO.ROWLEVELSECURITYFUNCTION(KULLANICI)
+ON DBO.SATISLAR
+WITH(STATE = ON)
+```
+
+## Dikkat ! ! !
+- KULLANILAN TÜM YAPIDA ŞEMA ADLARINI(.dbo) UNUTMA
+- 
+```SQL
+EXEC AS USER = 'MEHMET'
+SELECT * FROM SATISLAR
+```
