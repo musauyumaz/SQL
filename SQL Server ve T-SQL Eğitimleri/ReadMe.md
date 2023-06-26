@@ -3049,3 +3049,18 @@ SELECT * FROM OGRENCILER2
 - History tablosunda direkt olarak DML işlemleri gerçekleştiremiyoruz.
 
 - Temporal Tables özelliğinin bulunduğu bir tabloda Computed Column(Hesaplanmış Kolon) tanımlayamıyoruz.
+
+***
+# 142-) SQL Server Pratikte Temporal Table Çalışma Mantığı
+## == Temporal Table Çalışma Mekanizması ==
+```SQL
+UPDATE DERSKAYITLARI SET DERS = 'MATEMATİK2' WHERE DERSID = 1
+UPDATE DERSKAYITLARI SET DERS = 'FİZİK2' WHERE DERSID = 2
+UPDATE DERSKAYITLARI SET DERS = 'KİMYA2' WHERE DERSID = 3
+UPDATE DERSKAYITLARI SET DERS = 'KİMYA3' WHERE DERSID = 3
+UPDATE DERSKAYITLARI SET DERS = 'BİYOLOJİ2' WHERE DERSID = 4
+UPDATE DERSKAYITLARI SET DERS = 'BİYOLOJİ3' WHERE DERSID = 4
+
+SELECT * FROM DERSKAYITLARI
+SELECT * FROM DERSKAYITLARILOG
+```
