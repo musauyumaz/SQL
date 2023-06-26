@@ -3169,3 +3169,16 @@ WHERE DERSID = 3
 
 ## == CONTAINED IN(start_datetime, end_datetime) ==
 - Mantıksal sorgusu : 'start_datetime >= datetime and end_datetime < datetime' şeklindedir.
+
+***
+# 146-) SQL Server 2016 Veritabanındaki Temporal Tabloları Listelemek
+## == Temporal Tabloları Listelemek
+```SQL
+SELECT NAME,OBJECT_ID,TEMPORAL_TYPE_DESC, HISTORY_TABLE_ID, OBJECT_NAME(HISTORY_TABLE_ID) AS [HISTORY TABLO ADI] FROM SYS.TABLES WHERE OBJECT_NAME(HISTORY_TABLE_ID) IS NOT NULL
+```
+
+- ya da
+
+```SQL
+SELECT NAME,OBJECT_ID,TEMPORAL_TYPE_DESC, HISTORY_TABLE_ID, OBJECT_NAME(HISTORY_TABLE_ID) AS [HISTORY TABLO ADI] FROM SYS.TABLES WHERE TEMPORAL_TYPE_DESC = 'SYSTEM_VERSIONED_TEMPORAL_TABLE'
+```
