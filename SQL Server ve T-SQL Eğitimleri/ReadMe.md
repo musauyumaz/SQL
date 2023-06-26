@@ -3012,3 +3012,15 @@ GRANT UNMASK TO YETKILIUSER
 EXECUTE AS USER = 'YETKILIUSER'
 SELECT * FROM OGRENCILER2
 ```
+
+***
+# 139-) SQL Server 2016 Temporal Tables Giriş
+## Temporal Tables(System-Verisoned Table - Zamansal Tablolar)
+- Veritabanında yapılan DML işlemlerini raporlamamızı sağlayan bir yapıdır.
+
+- Tablomuzda bulunan kayıtların zaman içinde değişikliklerini yani UPDATE güncelleme dediğimiz bu değişiklikleri izlenmesini ve takip edilmesini sağlayan bir yapı sunmaktadır.
+
+- Tablo üstünde yanlışlıkla yapılan DELETE ve UPDATE sorgularını geri getirilmesini sağlamaktadır.
+
+- Bir verinin belirli bir zamana yahut zaman aralığına odaklı izlenebilmesini de sağlayabiliyoruz.
+ 
