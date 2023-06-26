@@ -3192,3 +3192,12 @@ ALTER TABLE DBO.DERSKAYITLARI SET(SYSTEM_VERSIONING = OFF)
 TRUNCATE TABLE DERSKAYITLARI
 DROP TABLE DERSKAYITLARI
 ```
+
+***
+# 148-) SQL Server 2016 Row Level Security Özelliği Giriş
+## ROW LEVEL SECURITY
+- Veritabanı yönetim sistemlerinde amacımız düzenli ve organize edilmiş ilişkisel bir şekilde verilerimizi modifiye etmektir. Bu amacı icra ederken güvenlik birinci dereceden önem teşkil etmekte ve çeşitli yöntemlerle güvenlik mekanizması sağlanmaktadır.
+
+- Bu yöntemler genellikle kullanıcı rol ve yetkilendirmeleriyle sağlanmaktayken verilere dönük oalrakta VIEW gibi yapılarla gerçekleştirilmektedir.
+
+- ROW LEVEL SECURITY özelliği ile Kullanıcılara tablo üzerinde yetki verirken tüm kayıtlara değil sadece kendisini ilgilendiren kayıtlara özel bir yetkilendirme yapabiliriz.

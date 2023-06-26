@@ -1,0 +1,4 @@
+-- ROW LEVEL SECURITY
+-- Veritabaný yönetim sistemlerinde amacýmýz düzenli ve organize edilmiþ iliþkisel bir þekilde verilerimizi modifiye etmektir. Bu amacý icra ederken güvenlik birinci dereceden önem teþkil etmekte ve çeþitli yöntemlerle güvenlik mekanizmasý saðlanmaktadýr.
+-- Bu yöntemler genellikle kullanýcý rol ve yetkilendirmeleriyle saðlanmaktayken verilere dönük oalrakta VIEW gibi yapýlarla gerçekleþtirilmektedir.
+-- ROW LEVEL SECURITY özelliði ile Kullanýcýlara tablo üzerinde yetki verirken tüm kayýtlara deðil sadece kendisini ilgilendiren kayýtlara özel bir yetkilendirme yapabiliriz.
