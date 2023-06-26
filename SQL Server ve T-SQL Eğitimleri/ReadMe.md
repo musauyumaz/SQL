@@ -3141,3 +3141,31 @@ PERIOD FOR SYSTEM_TIME(STARTDATE,ENDDATE)
 ALTER TABLE DERSKAYITLARI
 SET (SYSTEM_VERSIONING = ON (HISTORY_TABLE = DBO.DERSKAYITLARILOG))
 ```
+
+***
+# 145-) SQL Server 2016 Parametrik Olarak Temporal Tabloyu Sorgulama
+## == History Tablosuna Özel Temporal Tabloyu Sorgulama ==
+- SELECT * FROM DERSKAYITLARI DK INNER JOIN DERSKAYITLARILOG DKL ON DK.DERSID = DKL.DERSID WHERE DAY(DKL.STARTDATE) >= DAY(CAST 'TARİH' AS DATETIME2) OR DAY(DKL.ENDDATE) <= DAY(CAST('2016-09-26 06:23:45.8195851' AS DATETIME2))
+
+- Bu şekilde ilişkisel tablolar ile de sorgulama yapabiliriz. Lakin tablomuzu History tablosunun periyoduna özel bir şekilde de rahatça sorgulatabilmekteyiz.
+
+## == AS OF<DATETIME> ==
+- Mantıksal sorgusu : 'STARDATE >= DATETIME and ENDDATE < DATETIME' şeklindedir.
+```SQL
+SELECT * FROM DERSKAYITLARI
+FOR SYSTEM_TIME AS OF '2016-09-26 06:22:53.5432528' WHERE DERSID = 3
+```
+
+## == FROM <START_DATETIME> TO <END_DATETIME> ==
+- Mantıksal sorgusu : 'start_datetime >= datetime and end_datetime < datetime' şeklindedir.
+```SQL
+SELECT * FROM DERSKAYITLARI
+FOR SYSTEM_TIME FROM '2016-09-26 06:22:53.5432528' TO '2016-09-26 06:22:53.5432528' 
+WHERE DERSID = 3
+```
+
+## == BETWEEN <start_datetime> AND <end_datetime> ==
+- Mantıksal sorgusu : 'start_datetime >= datetime and end_datetime < datetime' şeklindedir.
+
+## == CONTAINED IN(start_datetime, end_datetime) ==
+- Mantıksal sorgusu : 'start_datetime >= datetime and end_datetime < datetime' şeklindedir.
