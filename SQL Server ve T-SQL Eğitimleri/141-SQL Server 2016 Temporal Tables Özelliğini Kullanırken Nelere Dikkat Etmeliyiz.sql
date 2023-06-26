@@ -1,0 +1,8 @@
+-- == Temporal Tables Özelliðini Kullanýrken Nelere Dikkat Etmeliyiz? ==
+-- Temporal Tables ile raporlama ve takip mekanizmasýný oluþturacaðýmýz tablolarda PRIMARY KEY tanýmlanmýþ bir kolon olmasý gerekmektedir. Bu þekilde yaþam döngüsünde hangi verinin deðiþime uðradýðýný PRIMARY KEY aracýlýðýyla ayýrt edebileceðiz.
+-- Takibi saðlayacaðýmýz ve kaydýnýu tutacaðýmýz tablomuzun içerisinde bir baþlangýç(StartDate) birde bitiþ(EndDate) niteliðinde iki adet DATETIME2 tipinden kolonlarýn bulunmasý gerekmektedir.
+-- Linked Server üzerinde Temporal Tables kullanýlmamaktadýr.
+-- History tablomuzda constraint yapýlarýnýn hiçbirini uygulayamayýz.
+-- Eðer bir tabloda Temporal Tables aktifse o tabloda TRUNCATE iþlemi gerçekleþtiremiyoruz.
+-- History tablosunda direkt olarak DML iþlemleri gerçekleþtiremiyoruz.
+-- Temporal Tables özelliðinin bulunduðu bir tabloda Computed Column(Hesaplanmýþ Kolon) tanýmlayamýyoruz.

@@ -3032,3 +3032,20 @@ SELECT * FROM OGRENCILER2
 - == Veri İlk Güncellendiğinde (UPDATE)==
 
 - == Verinin Sonraki Güncellemelerinde (UPDATE)==
+
+***
+# 141-) SQL Server 2016 Temporal Tables Özelliğini Kullanırken Nelere Dikkat Etmeliyiz?
+## == Temporal Tables Özelliğini Kullanırken Nelere Dikkat Etmeliyiz? ==
+- Temporal Tables ile raporlama ve takip mekanizmasını oluşturacağımız tablolarda PRIMARY KEY tanımlanmış bir kolon olması gerekmektedir. Bu şekilde yaşam döngüsünde hangi verinin değişime uğradığını PRIMARY KEY aracılığıyla ayırt edebileceğiz.
+
+- Takibi sağlayacağımız ve kaydınıu tutacağımız tablomuzun içerisinde bir başlangıç(StartDate) birde bitiş(EndDate) niteliğinde iki adet DATETIME2 tipinden kolonların bulunması gerekmektedir.
+
+- Linked Server üzerinde Temporal Tables kullanılmamaktadır.
+
+- History tablomuzda constraint yapılarının hiçbirini uygulayamayız.
+
+- Eğer bir tabloda Temporal Tables aktifse o tabloda TRUNCATE işlemi gerçekleştiremiyoruz.
+
+- History tablosunda direkt olarak DML işlemleri gerçekleştiremiyoruz.
+
+- Temporal Tables özelliğinin bulunduğu bir tabloda Computed Column(Hesaplanmış Kolon) tanımlayamıyoruz.
