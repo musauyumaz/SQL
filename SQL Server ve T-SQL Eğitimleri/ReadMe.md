@@ -3002,3 +3002,13 @@ ALTER COLUMN EMAIL DROP MASKED
 EXECUTE AS USER='YETKILIUSER'
 SELECT * FROM OGRENCILER2
 ```
+
+***
+# 138-) SQL Server 2016 Dynamic Data Masking Özelliğini Kullanıcıya Özel Pasifleştirme
+## == Kullanıcıya Göre Dynamic Data Masking Özelliğini Pasifleştirme == 
+```SQL
+GRANT UNMASK TO YETKILIUSER
+
+EXECUTE AS USER = 'YETKILIUSER'
+SELECT * FROM OGRENCILER2
+```
