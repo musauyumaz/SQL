@@ -2966,3 +2966,14 @@ EXECUTE AS USER = 'YETKILIUSER' -- YETKILIUSER isimli kullanıcıya geçiş sağ
 
 SELECT * FROM OGRENCILER2
 ```
+
+***
+# 135-) SQL Server 2016 Dynamic Data Masking - Alter İle Maskelenmiş Kolon Ekleme
+## == ALTER İle Kolona Dynamic Data Masking Uygulama ==
+```SQL
+ALTER TABLE OGRENCILER2
+ADD EKKOLON NVARCHAR(MAX) MASKED WITH (FUNCTION = 'PARTIAL(3,"XXX",0)')
+
+EXECUTE AS USER = 'YETKILIUSER'
+SELECT * FROM OGRENCILER2
+```
