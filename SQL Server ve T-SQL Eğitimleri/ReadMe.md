@@ -3064,3 +3064,29 @@ UPDATE DERSKAYITLARI SET DERS = 'BİYOLOJİ3' WHERE DERSID = 4
 SELECT * FROM DERSKAYITLARI
 SELECT * FROM DERSKAYITLARILOG
 ```
+
+***
+# 143-) SQL Server 2016 Temporal Tables Oluşturma
+## == Temporal Tables Oluşturma ==
+```SQL
+CREATE TABLE DERSKAYITLARI
+(
+	---------- 1. KISIM ----------
+	DERSID INT PRIMARY KEY IDENTITY(1,1),
+	DERS NVARCHAR(MAX),
+	ONAY BIT,
+	---------- 1. KISIM ----------
+
+	---------- 2. KISIM ----------
+	STARTDATE DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL,
+	ENDDATE DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL,
+	---------- 2. KISIM ----------
+
+	---------- 3. KISIM ----------
+	PERIOD FOR SYSTEM_TIME(STARTDATE,ENDDATE)
+	---------- 3. KISIM ----------
+)
+	---------- 4. KISIM ----------
+	WITH(SYSTEM_VERSIONING = ON(HISTORY_TABLE = DBO.DERSKAYITLARILOG)) -- Eğer HISTORY_TABLE özelliği ile History tablosuna isim vermezsek rastgele isimde oluşturulur.
+	---------- 4. KISIM ----------
+```
