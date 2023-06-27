@@ -1,0 +1,15 @@
+-- ASCII Fonksiyonu
+-- Bir karakterin ASCII kodunu bize döndürür.
+SELECT ASCII('B')
+SELECT ASCII('b')
+SELECT ASCII('A')
+SELECT ASCII('0')
+SELECT ASCII('1')
+SELECT ASCII('-')
+SELECT ASCII(' ')
+SELECT ASCII('!')
+SELECT ASCII('+')
+SELECT ASCII('$')
+SELECT ASCII('#')
+SELECT ASCII('
+')
