@@ -1,4 +1,4 @@
--- Anlýk Tarih-Saat Bilgisini Getiren Fonksiyonlar
+-- 1-Anlýk Tarih-Saat Bilgisini Getiren Fonksiyonlar
 SELECT GETDATE() GETDATE,
 SYSDATETIME() SYSDATETIME,
 SYSDATETIMEOFFSET() SYSDATETIMEOFFSET,
