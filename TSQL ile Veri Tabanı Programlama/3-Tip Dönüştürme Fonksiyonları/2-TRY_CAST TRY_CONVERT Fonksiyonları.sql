@@ -1,0 +1,7 @@
+-- 2-TRY_CAST/TRY_CONVERT Fonksiyonlarý
+-- CONVERT edemediði veriler olduðunda hata vermek yerine NULL deðer döndürür.
+SELECT TRY_CAST('2022-16-24' AS DATE) AS DATE_
+SELECT TRY_CONVERT(DATE,'2022-16-24') AS DATE_
+
+SELECT CONVERT(DATE,'2022-16-24')
+SELECT CAST('2022-16-24' AS DATE)
