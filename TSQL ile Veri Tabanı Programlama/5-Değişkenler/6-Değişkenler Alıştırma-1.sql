@@ -1,0 +1,18 @@
+-- 6-Deðiþkenler Alýþtýrma-1
+-- T-SQL ile tanýmlanan iki sayýnýn toplamýný, farkýný, çarpýmýný ve birbirine olan bölme iþlemlerini gerçekleþtiriniz.
+DECLARE @SAYI1 AS INT
+SET @SAYI1 = 20
+DECLARE @SAYI2 AS INT
+SET @SAYI2 = 100
+DECLARE @TOPLAM AS INT
+DECLARE @CARPIM AS INT
+DECLARE @FARK AS INT
+DECLARE @BOLUM AS FLOAT
+
+SET @TOPLAM = @SAYI1 + @SAYI2
+SET @CARPIM = @SAYI1 * @SAYI2
+SET @FARK = @SAYI1 - @SAYI2
+SET @BOLUM = CONVERT(FLOAT,@SAYI1) / @SAYI2
+
+SELECT @SAYI1,@SAYI2,@TOPLAM,@CARPIM,@FARK,@BOLUM
+
