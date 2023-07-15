@@ -1,0 +1,8 @@
+-- 2-VIEW
+-- Bir ya da birdebn fazla tablodan SELECT sorgusunu çekerek oluþan verisetinin bir tablo gibi kullanýlmasýdýr.
+-- SQL sorgusunda dönen alanlar filtreleme, sýralama, gruplama, aggregation gibi iþlemler için ayný bir tablo alaný gibi kullanýlabilir.
+-- View'lar diskte yer kaplamazlar. Arka tarafta veriyi tutmazlar. Sadece bu veriyi getirecek SQL bilgisini tutarlar.
+-- Tüm veriyi çekmek yerine ilgili veriyi çekerek performansý arttýrýr.
+-- Birden fazla join ile birleþen tablolarýn oluþturduðu karmaþýk sorgularý bir tablo gibi basitleþtirir.
+-- Veritabanýnda genelde ingilizce olarak tutulan alanlarýn raporlama tarafýnda rahat kullanýlmasý için Türkçe gibi daha anlaþýlabilir halde kullanýlmasýný saðlar.
+-- View'lar raporlama amaçlý ya da bir uygulama tarafýndan kullanýldýklarýnda herhangi bir deðiþiklikte view üzerinde bu deðiþikliði yapmak çok daha pratiktir.

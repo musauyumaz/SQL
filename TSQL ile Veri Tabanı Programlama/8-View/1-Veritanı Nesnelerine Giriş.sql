@@ -1,0 +1,6 @@
+-- 1-Veritabaný Nesnelerine Giriþ
+-- VIEW => Karmaþýk bir SQL sorgusunun tek bir tabloymuþ gibi çekilmesini saðlayan karmaþýk sql sorgusunu basitleþtiren yapýlara denir.
+-- USER DEFINED FUNCTION => Kendi yazdýðýmýz fonksiyonlar
+-- STORED PROCEDURE => Karmaþýk þekilde yazýlmýþ SQL cümlelerini kendi içerisinde saklayarak çaðýrmak istediðimiz zaman bu SQL cümlelerini teker teker yazmak yerine sadece Procedure'ün adýný çaðýrarak yazmamýzý saðlayan yapýlar. View'lar sadece SELECT iþlemlerini gerçekleþtirebildiðimiz yapýlardýr. Oysa Stored Procedure'ler TSQL'de yazabileceðimiz her þeyi yazabiliriz.
+-- TRIGGER => Herhangi bir iþlem gerçekleþtiðinde otomatik olarak gerçekleþmesini istediðimiz kodlarý oraya yazarýz. Herhangi bir tabloda INSERT, UPDATE, DELETE gibi veritabaný tablosunu manipüle eden bir iþlem olduðunda otomatik olarak gerçekleþmesini istediðimiz iþlemleri biz TRIGGER'larýn içerisinde yazýyoruz.
+-- INDEX => Veritabaný Performansýndaki en önemli etken. Verilerin bizim belirleyeceðimiz kolonlara göre sýralý bir þekilde tutulmasýný saðlayan ve böylelikle binlerce yüzbinlerce kat daha hýzlý verinin sorgulanmasýný saðlar.
