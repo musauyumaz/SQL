@@ -1,0 +1,8 @@
+-- 1-User Defined Functions
+-- Ýçine hiç parametre almadan ya da bir veya birden fazla parametre alarak sýnuç döndüren T-SQL nesneleridir.
+-- Scalar Valued ve Table Valued olmak üzere iki çeþidi vardýr.
+-- Sorgu içinde kullanýlabilir ve her satýr için çalýþtýrýlabilir.
+-- Fonksiyonlarýn içinde INSERT UPDATE DELETE cümleleri kullanýlmaz SELECT cümleleri kullanýlýr.
+-- View'dan farklý olarak içinde deðiþken tanýmlanabilir bu deðiþkenlere deðer atanabilir. 
+-- Kodu sadeleþtirir.
+-- Sürekli yapýlan iþlemler için ayný kodu sürekli yazmak yerine tek seferde yazmamýzý saðlar. Böylece deðiþiklik yapýlacaðý zaman sadece fonksiyonda deðiþiklik yapýlmasý yeterlidir.
