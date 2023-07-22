@@ -1,0 +1,15 @@
+-- 2-Ad Hoc Query ve Stored Procedure Kavramlarý
+-- Temel anlamda bir SQL Server'dan sorgulama iþlemini gerçekleþtirmek için iki tane yapý kullanýrýz. Bunlardan biri Ad Hoc Query biri de Stored Procedure'dür.
+-- SQL cümlelerini herhangi bir uygulamadan gönderdiðimiz zaman bu iþlem Ad Hoc Query olmaktadýr.
+-- Ad Hoc Query'i sisteme gönderdiðim zaman arka planda 6 adýmdan oluþan bir iþlem gerçekleþir.
+-- 1. Query: Query'nin gönderilmesi ve veritabaný tarafýndan bu Query'inin alýnmasý.
+-- 2. Parse: Alýnan Query'nin parse edilmesi Yani ben bu sorguyu doðru mu yazdým bir yerde bir eksiklik mi var bunun kontrol edilmesi.
+-- 3. Optimize: Veritabaný tablosundan çekilen sorgunun en hýzlý en doðru þekilde çekileceðinin planlamasý ve optimize edilmesi. Tamamen Index kavramýyla alakalý. Sistemde bir tabloda benim sorguma uygun bir þekilde hangi index varsa o indexin belirlenmesi ve buna Execution Plan dediðimiz planýn çýkartýlmasý.
+-- 4. Compile: Oluþturulan bu Execution Plan'ýn compile edilmesi/derlenmesi durumudur ki Stored Procedure'ler hafýzada derlenmiþ olarak saklanýrlar. Derlenip makine diline çevrilmesi söz konusu.
+-- 5. Execute: Derlenen bu kodun çalýþtýrýlmasý Execute edilmesi.
+-- 6. Result: Sonuçlarýn Client'a gönderilmesi durumu.
+
+-- Stored Procedure'ler T-SQL kodlarýnýn derlenerek hafýza da tutulmuþ halidir.
+-- Stored Procedure'lerde ise sadece Execute ve Result adýmlarý gerçekleþir.
+-- Stored Procedure'ler Ad Hoc Query'lere göre performanslý ve hýzlý çalýþýr.
+-- Stored Procedure bizlere ciddi manada yönetilebilirlik saðlar.

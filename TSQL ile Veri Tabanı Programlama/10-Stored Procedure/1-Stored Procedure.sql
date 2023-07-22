@@ -1,0 +1,18 @@
+-- 1-Stored Procedure
+-- Birden fazla TSQL kodunun birlikte yazýlýp sunucu üzerine derlenerek kaydedildiði yapýlardýr.
+-- Stored Procedure'ler içinde TSQL kodlarýnýn tamamý yazýlabilir.
+-- ## Neler Yapabiliriz
+-- SELECT INSERT UPDATE DELETE iþlemlerini kullanma
+-- Deðiþken tanýmlama
+-- Döngü oluþturma
+-- If þartlarýný kullanma
+-- Dosya okuma, dosya yazma
+-- Baþka bir procedure'ü fonksiyonu ya da view'ý içinden çaðýrma
+-- Web servislere baðlanma
+-- Tem table kullanma
+-- Cursor kullanma
+-- Mail gönderme
+-- ## Nerelerde Kullanýrýz
+-- Operasyonel iþlemlerde
+-- Raporlama ekranlarýnda
+-- ETL ve Data warehouse uygulamalarýnda => Verinin bir yerden baþka bir yere taþýnarak belli bir formatta dönüþümünün saðlanmasý ile sorgulanabilir bir hale getirilmesi.

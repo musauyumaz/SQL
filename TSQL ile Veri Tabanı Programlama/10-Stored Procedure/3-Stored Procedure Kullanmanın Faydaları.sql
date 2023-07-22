@@ -1,0 +1,14 @@
+-- 3-Stored Procedure Kullanmanýn Faydalarý
+-- Hýzlýdýr
+	-- Execution plan çýkarýlþdýðý ve derlendiði için ilk 4 aþamayý atlar ve daha hýzlý çalýþýr.
+	-- Client Server mimarisinin aksine toplu iþlemler kendi içerisinde çalýþtýðý için sorgular network hýzýnda deðil RAM hýzýnda çalýþýr.
+-- Esnektir. 
+	-- Yazýlým güncellemeden deðiþiklikler yapýlabilir.
+	-- Herhangi bir programlama dilinde yazýlabilecek hemen hemen her türlü komut burada yazýlýp çalýþtýrýlabilir.
+	-- Stored Procedure'ler birbiri içerisinden çaðýrýlabilir.
+-- Güvenlidir.
+	-- SQL Injection saldýrýlarýna kesin çözümdür.
+	-- Kritik raporlar için stored procedure bazýnda yetki verilebilir.
+-- Yönetilebilirdir.
+	-- Performansý ölçülebilir.
+	-- Kaç kez çalýþtýrýlmýþ en son ne zaman çalýþtýrýlmýþ gibi bilgiler görülebilir.
