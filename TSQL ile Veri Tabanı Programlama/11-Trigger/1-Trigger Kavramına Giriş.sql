@@ -1,0 +1,11 @@
+-- 1-Trigger Kavramýna Giriþ
+-- Trigger'lar tam olarak programlama dillerinde event'in karþýlýðýdýr.
+-- Türkçe karþýlýðý tetik,tetiklemek olarak çevrilebilir.
+-- Veritabaný tablosunda bir iþlem gerçekleþtiðinde baþka bir iþlemin otomatik olarak gerçekleþmesi anlamýna gelir.
+-- Burada iþlem olarak kastedilen data manipülasyonudur.
+-- Data manipülasyonlarý ise INSERT, UPDATE, DELETE iþlemleridir.
+-- Yazýlan trigger'lar INSERT, UPDATE, DELETE iþlemlerinden sonra otomatik çalýþan yapýlardýr.
+-- Trigger'larýn içinde sanal olarak oluþan INSERTED ve DELETED tablolarý vardýr.
+-- INSERTED tablosu yeni eklenen kaydýn ya da update edildiðinde deðiþen kaydýn yeni deðerini tutar.
+-- DELETED tablosu silinen kaydý ya da deðiþtirilen kaydýn eski deðerini tutar.
+-- Trigger'lar genelde otomatik toplam hesaplama, son deðeri alma ya da loglama amacý ile kullanýlýr.
