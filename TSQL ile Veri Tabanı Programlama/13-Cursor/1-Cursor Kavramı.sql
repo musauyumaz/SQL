@@ -1,0 +1,5 @@
+-- 1-Cursor Kavramý
+-- Bir SQL sorgusu içinde döngü ile satýr satýr dolaþmak ve iþlem yaptýrmak için kullandýðýmýz yapýdýr.
+-- Deðiþkenler tanýmlanýr ve her bir satýr için bu deðiþkenler tablodan dönen deðerlere atanýr.
+-- DECLARE <Cursor Adý> FOR SELECT .. FROM Tablo kalýbý ile tanýmlanýr.
+-- FETCH NEXT INTO deðiþkenler kalýbý ile bir sonraki satýra geçilir.
