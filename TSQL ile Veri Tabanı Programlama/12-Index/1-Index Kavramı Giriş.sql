@@ -1,0 +1,8 @@
+-- 1-Index Kavramý Giriþ
+-- Performans için en önemli kriterimizdir.
+-- Veritabaný sistemlerini temel misyonu veriyi yönetmektir.
+-- Veriyi yönetmek ise büyük oranda io yapmak yani okuma/yazma yapmaktýr.
+-- IO iþlemleri harddiskten RAM'e alýnarak yapýlan iþlemlerdir.
+-- Genel ortalamaya baktýðýmýzda veritabaný yönetim sistemlerinin %5 oranýnda yazma, %95 oranýnda okuma yaptýðýný görüyoruz.
+-- Bu durumda okuma performansýný arttýrmak sistem performansýný arttýrmak adýna en çok yapýlan iþlemlerin baþýnda gelir.
+-- Veritabanýndaki indexler Býnary Search mantýðýnda çalýþýr.
