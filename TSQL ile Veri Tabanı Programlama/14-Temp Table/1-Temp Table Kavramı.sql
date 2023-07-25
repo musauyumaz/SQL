@@ -1,0 +1,6 @@
+-- 1-Temp Table Kavramý
+-- TempDB üzerinde geçici olarak oluþturulan tablolardýr.
+-- #TabloAdý þeklinde oluþturulur.
+-- # ile oluþturulduðunda sadece o oturuma özel olarak oluþur, ## ile oluþturulduðunda global olarak oluþturulan tablolardýr.
+-- Karmaþýk SQL sorgularýný daha kolay yazabilmek amaçlý ve performans amaçlý kullanýlýr.
+-- SQL Server hizmeti yeniden baþlatýldýðýnda hafýzadan silinirler. 
