@@ -253,3 +253,57 @@ komutları ile iki tablonun boyutunu karşılaştırınız.
 3. CUSTOMERS tablosunda kadınlar arasında en genç 10 kişiyi getiren SQL sorgusunu yazınız.
 4. CUSTOMERS tablosunda erkekler arasında en yaşlı %10'luk kişiyi getiren SQL sorgusunu yazınız.
 5. CUSTOMERS tablosunda erkekler arasında adı A ile başlayan ilk 5 kişiyi getiriniz. 
+
+# DDL Komutları
+## Alıştırma 1
+1. TEST isimli bir database'i CREATE komutu ile oluşturunuz. Mevcutta böyle bir database var ise önce bu database'i siliniz.
+2. TEST database'inin altına CUSTOMERS isimli bir tablo oluşturunuz. Bu tablo oluşturma işlemini CREATE komutu ile script ile gerçekleştiriniz.
+3. Oluşturduğunuz tablonun scriptini Management Studio üzerinden alarak inceleyiniz.
+
+|CUSTOMERS||
+|---------|---------|
+|ID:|INT IDENTITY(1,1)|
+|NAMESURNAME:|VARCHAR(50)|
+|GENDER:|VARCHAR(1)|
+|BIRTHDATE:|DATE|
+|CITY:|VARCHAR(50)|
+|TOWN:|VARCHAR(50)|
+|TELNR:|VARCHAR(15)|
+|TCNUMBER:|VARCHAR(11)|
+
+## Alıştırma 2
+1. Bir önceki alıştırmada create ettiğiniz CUSTOMERS tablosunda ID alanını Primary Key olarak işaretleyiniz.
+2. NAMESURNAME alanını NVARCHAR(50) ve Not Null olaral değiştiriniz.
+3. Tabloya integer türünde AGE isimli bir alan ekleyiniz.
+4. Tabloya eklediğiniz AGE alanını TINYINT olarak değiştiriniz.
+5. Tabloya AGEgroup isimli, varchar(20) türünde bir alan ekleyiniz.
+
+|CUSTOMERS||
+|---------|---------|
+|ID:|INT IDENTITY(1,1)|
+|NAMESURNAME:|VARCHAR(50)|
+|GENDER:|VARCHAR(1)|
+|BIRTHDATE:|DATE|
+|CITY:|VARCHAR(50)|
+|TOWN:|VARCHAR(50)|
+|TELNR:|VARCHAR(15)|
+|TCNUMBER:|VARCHAR(11)|
+
+## Alıştırma 3
+1. CUSTOMERS tablosuna ID2 isimli yeni bir otomatik artan alan ekleyiniz.
+2. CUSTOMERS tablsoundan AGE ve AGEGROUP alanlarını kaldırınız.
+3. CUSTOMERS tablsouna 1 satır girecek insert cümlesini yazarak tabloya 1 satır veri giriniz.
+4. TRUNCATE komutu ile tabloyu siliniz ve içine tekrar insert yapraarak tabloyu kontrol ediniz.
+5. DELETE komutu ile tabloyu siliniz ve içine tekrar insert yaparak tabloyu kontrol ediniz.
+6. DROP komutu ile tabloyu siliniz ve içine insert yaparak tabloyu kontrol ediniz.
+
+|CUSTOMERS||
+|---------|---------|
+|ID:|INT IDENTITY(1,1)|
+|NAMESURNAME:|VARCHAR(50)|
+|GENDER:|VARCHAR(1)|
+|BIRTHDATE:|DATE|
+|CITY:|VARCHAR(50)|
+|TOWN:|VARCHAR(50)|
+|TELNR:|VARCHAR(15)|
+|TCNUMBER:|VARCHAR(11)|
