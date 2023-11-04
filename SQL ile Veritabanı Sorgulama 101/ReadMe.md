@@ -230,3 +230,26 @@ komutları ile iki tablonun boyutunu karşılaştırınız.
 
 2. Customers tablosundan İzmir'de yaşayan ve kategorisi Yaşlı Erkek ya da Genç Erkek olanların listesini çekiniz.
 3. Customer tablosundan İzmir'de yaşayan, ilçesi Karşıyaka, Bornova ya da Ödemiş olan ve kategorisi Yaşlı Erkek ya da Genç Erkek olanların listesini çekiniz.
+
+# Diğer SQL Komutları
+## Alıştırma 1
+1. CRM Database'ini siliniz ve CRM.bak dosyasından restore ediniz.
+2. CUSTOMERS tablosunda kaç tane tekil şehir olduğunu getiren SQL sorgusunu yazınız.
+3. CUSTOMERS tablosunda İzmir'in kaç tane ilçesi olduğunu çeken SQL sorgusunu yazınız.
+4. CUSTOMERS tablosuna AGE alanını ekleyip bu alanı doğum tarihine göre güncelleyiniz.
+5. CUSTOMERS tablosunda Ankara'da yaşayanların yaşçeşitliliğini getiren SQL sorgusunu yazınız.
+## Alıştırma 2
+1. CUSTOMERS tablosundaki kayıtları ID alanına göre küçükten büyüğe sıralı şekilde getiriniz. 
+2. CUSTOMERS tablosundaki kayıtları ID alanına göre büyükten küçüğe sıralı şekilde getiriniz. 
+3. CUSTOMERS tablosundaki kayıtları Ad Soyad alanına göre A'dan Z'ye sıralı şekilde getiriniz.
+4. CUSTOMERS tablosundaki kayıtları İl ve İlçeye göre sıralı şekilde getiriniz.
+5. CUSTOMERS tablosunda ANKARA'da yaşayanları yaşına göre sıralı şekilde getiriniz.
+6. CUSTOMERS tablosunda ANKARA'da yaşayanları doğum tarihine sıralı şekilde getiriniz.
+7. CUSTOMERS tablosunda İSTANBUL'da yaşayanları alias kullanarak Türkçe kolon isimleri ile ilçe ve yaşa göre sıralı şekilde getiriniz.
+
+## Alıştırma 3
+1. CUSTOMERS tablosunda en yaşlı 10 kişiyi getiren SQL sorgusunu yazınız.
+2. CUSTOMERS tablosunda en genç 10 kişiyi getiren SQL sorgusunu yazınız.
+3. CUSTOMERS tablosunda kadınlar arasında en genç 10 kişiyi getiren SQL sorgusunu yazınız.
+4. CUSTOMERS tablosunda erkekler arasında en yaşlı %10'luk kişiyi getiren SQL sorgusunu yazınız.
+5. CUSTOMERS tablosunda erkekler arasında adı A ile başlayan ilk 5 kişiyi getiriniz. 
